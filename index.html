@@ -2531,6 +2531,7 @@ body.member-mode [data-view="attend"],body.member-mode [data-view="members"],bod
   function gateSignedOut(kind) {
     document.body.classList.remove('booting', 'member-mode');
     document.body.classList.add('signed-out');
+    document.title = '신우회 기도제목';
     $('gate-title').textContent = '신우회 기도제목';
     $('gate-sub').textContent = 'Google 계정으로 로그인하면 함께 나눌 수 있어요';
     var btn = $('btn-google');
@@ -2901,6 +2902,8 @@ body.member-mode [data-view="attend"],body.member-mode [data-view="members"],bod
 
   function renderPrayers() {
     renderPrayerPersonOptions();
+    var addBtn = $('btn-add-prayer');
+    if (addBtn) addBtn.textContent = prayerMode === 'cloud' ? '+ 기도제목 나누기' : '+ 기도제목 추가';
     var all = allPrayers();
     var answered = 0;
     all.forEach(function (p) { if (p.answered) answered++; });
