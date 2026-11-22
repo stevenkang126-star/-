@@ -2975,7 +2975,7 @@ body.is-leader .leader-only{display:block}
     $('cloud-sync-cap').textContent = (n === null || n === undefined) ? '-' : n + '명';
     var bk = $('bk-cloud');
     if (bk) bk.textContent = '';
-    if (bk) bk.textContent = ((n === null || n === undefined) ? '확인 중' : n + '명') + (last ? ' · 올림 ' + last : '');
+    if (bk) bk.textContent = ((n === null || n === undefined) ? '확인 중' : n + '명') + ((last && n) ? ' · 올림 ' + last : '');
   }
 
   function memberCloudData(m, order) {
