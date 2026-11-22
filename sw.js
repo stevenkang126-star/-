@@ -1,5 +1,5 @@
-/* 신우회 출석부 - 오프라인 실행용 서비스 워커 (v4: 대표 인원 지정·출석 공유) */
-var CACHE_NAME = 'sinyuhoe-attendance-v4';
+/* 신우회 출석부 - 오프라인 실행용 서비스 워커 (v5: 6개 반 분리·반별 링크·교사/대표신우) */
+var CACHE_NAME = 'sinyuhoe-attendance-v5';
 var ASSETS = [
   './',
   './index.html',

@@ -270,18 +270,55 @@ body.signed-out .app-header,body.signed-out .wrap,body.signed-out .bnav{display:
 .ub-name{font-size:12.5px;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:150px}
 .ub-role{font-size:10.5px;font-weight:800;color:var(--brand);background:var(--brand-soft);border:1px solid rgba(43,74,111,.2);border-radius:999px;padding:1px 7px;white-space:nowrap}
 .userbar .btn{margin-left:auto;color:var(--muted)}
+/* 일반 신우: 기도제목만 */
 body.member-mode [data-view="attend"],body.member-mode [data-view="members"],body.member-mode [data-view="stats"],body.member-mode [data-view="backup"]{display:none !important}
-/* 대표 인원(리더): 출석 체크 + 기도제목만 */
-body.is-leader [data-view="members"],body.is-leader [data-view="stats"],body.is-leader [data-view="backup"]{display:none !important}
+/* 반 담임 교사: 출석·명단·통계·기도제목 (총괄 전용 백업만 숨김) */
+body.is-teacher [data-view="backup"]{display:none !important}
+/* 반 대표신우: 출석 체크 + 기도제목만 */
+body.is-rep [data-view="members"],body.is-rep [data-view="stats"],body.is-rep [data-view="backup"]{display:none !important}
 /* 관리자 전용 요소 */
 body:not(.is-admin) .admin-only{display:none !important}
-.leader-only{display:none}
-body.is-leader .leader-only{display:block}
+/* 교사·총괄: 이 반 교사/대표신우 관리 카드 */
+.manage-only{display:none !important}
+body.is-admin .manage-only,body.is-teacher .manage-only{display:block !important}
+.teacher-only{display:none !important}
+body.is-teacher .teacher-only{display:block !important}
+.rep-only{display:none !important}
+body.is-rep .rep-only{display:block !important}
 .ub-role.leader{color:#8a5a00;background:var(--warn-bg);border-color:var(--warn-line)}
+.ub-role.teacher{color:#8a5a00;background:var(--warn-bg);border-color:var(--warn-line)}
+.ub-role.rep{color:var(--attend);background:rgba(28,122,77,.1);border-color:rgba(28,122,77,.3)}
 .leadrow{display:flex;align-items:center;gap:9px;padding:10px 12px;border-bottom:1px solid var(--line)}
 .leadrow:last-child{border-bottom:0}
 .leadrow .em{flex:1 1 auto;font-size:13px;font-weight:800;word-break:break-all}
 .leadrow .when{font-size:11px;font-weight:600;color:var(--muted);white-space:nowrap}
+
+/* 현재 반 표시 · 반 전환 */
+.roombar{display:flex;align-items:center;gap:8px;max-width:940px;margin:0 auto;padding:0 16px 9px;flex-wrap:wrap}
+.room-now{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:800;color:var(--brand);background:var(--brand-soft);border:1px solid rgba(43,74,111,.22);border-radius:999px;padding:3px 11px;max-width:100%}
+.room-now .rt{font-size:10.5px;font-weight:800;opacity:.75}
+.room-switch{margin-left:auto;display:flex;align-items:center;gap:6px}
+.room-switch select{min-height:36px;font-size:12.5px;font-weight:800;padding:6px 9px;max-width:200px}
+
+/* 소속 반 선택 */
+.roomscreen{position:fixed;inset:0;z-index:90;background:var(--bg);display:none;align-items:flex-start;justify-content:center;padding:22px 16px;overflow:auto}
+body.pick-room .roomscreen{display:flex}
+body.pick-room .gate,body.pick-room .app-header,body.pick-room .wrap,body.pick-room .bnav{display:none !important}
+.room-card{width:100%;max-width:440px;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:22px 18px 16px;box-shadow:var(--shadow);margin:auto 0}
+.room-card h2{font-size:19px;font-weight:800;letter-spacing:-.4px;text-align:center}
+.room-card .sub{font-size:12.5px;color:var(--muted);text-align:center;margin-top:7px;line-height:1.55}
+.room-list{display:flex;flex-direction:column;gap:8px;margin-top:15px}
+.room-pick{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:var(--bg);border:1px solid var(--line);border-radius:13px;padding:12px 13px;min-height:54px}
+.room-pick:active{background:var(--brand-soft)}
+.room-pick .rn{display:block;font-size:14.5px;font-weight:800;letter-spacing:-.2px;line-height:1.35}
+.room-pick .rt2{display:block;font-size:11.5px;color:var(--muted);font-weight:700;margin-top:2px}
+.room-pick .go{margin-left:auto;color:var(--muted);font-size:17px;font-weight:800}
+
+/* 반별 전용 링크 */
+.linkrow{display:flex;align-items:center;gap:9px;padding:10px 12px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.linkrow:last-child{border-bottom:0}
+.linkrow .rn{font-size:13px;font-weight:800;flex:1 1 150px;line-height:1.4}
+.linkrow .ru{font-size:11px;color:var(--muted);word-break:break-all;font-family:ui-monospace,Menlo,Consolas,monospace;flex:1 1 100%}
 
 /* 공유 상태 */
 .cloudbar{display:flex;align-items:center;gap:7px;font-size:12.5px;font-weight:800;color:var(--text)}
@@ -360,10 +397,26 @@ body.is-leader .leader-only{display:block}
   </div>
 </div>
 
+<div class="roomscreen" id="room-screen">
+  <div class="room-card">
+    <h2>소속 반 선택</h2>
+    <p class="sub">우리 반을 누르면 그 반의 출석부·기도제목으로 들어갑니다.<br>들어간 뒤에는 즐겨찾기에 저장해 두세요.</p>
+    <div class="room-list" id="room-pick-list"></div>
+    <div class="gate-foot" style="text-align:center">반을 잘못 골랐다면 주소에서 <b>?room=</b> 값을 지우면 다시 이 화면이 나옵니다.</div>
+  </div>
+</div>
+
 <header class="app-header">
   <div class="hrow">
     <h1 class="app-title" id="app-title">신우회 출석부</h1>
     <div class="app-sub" id="save-state">자동 저장 준비</div>
+  </div>
+  <div class="roombar" id="room-bar">
+    <span class="room-now" id="room-now"><span class="rt">우리 반</span><span id="room-now-name">-</span></span>
+    <span class="room-switch admin-only">
+      <label class="sr" for="sel-room">반 선택</label>
+      <select id="sel-room" title="조회할 반 선택"></select>
+    </span>
   </div>
   <div class="userbar hidden" id="user-bar">
     <div class="who"><span class="ub-name" id="ub-name"></span><span class="ub-role" id="ub-role">신우</span></div>
@@ -381,10 +434,12 @@ body.is-leader .leader-only{display:block}
 <main class="wrap">
 
   <div class="banner no-print hidden" id="global-warn">이 브라우저에서는 자동 저장이 막혀 있습니다. 작업 전에 ‘저장·백업’에서 백업 파일을 내려받고, 작업 후에도 꼭 저장해 두세요.</div>
+  <div class="banner no-print hidden" id="room-mismatch">내 반(<b id="room-mismatch-name"></b>) 링크로 들어가면 그 반을 관리할 수 있습니다. <button type="button" class="btn sm" id="btn-room-mismatch" style="margin-left:6px">내 반으로 가기</button></div>
 
   <!-- ============ 출석 체크 ============ -->
   <section id="view-attend" class="view">
-    <div class="notice leader-only" style="margin-bottom:10px">👤 <b>대표 인원(출석담당)</b> 화면입니다. 이름·목장·입대일·전역 D-day·생일과 출석 상태를 함께 볼 수 있습니다. 명단 편집·백업은 관리자만 할 수 있습니다.</div>
+    <div class="notice teacher-only" style="margin-bottom:10px">🧑‍🏫 <b>반 담임 교사</b> 화면입니다. 이 반의 명단·출석·통계·기도제목을 모두 관리할 수 있고, 대표신우를 지정·해제할 수 있습니다. (반별 링크·백업은 총괄 관리자만 볼 수 있습니다)</div>
+    <div class="notice rep-only" style="margin-bottom:10px">🙋 <b>대표신우</b> 화면입니다. 이름·목장·입대일·전역 D-day·생일과 출석 상태를 함께 보고 출석을 체크할 수 있습니다. 명단 편집은 담임 교사가 합니다.</div>
     <div class="card no-print">
       <div class="row">
         <label class="field" style="flex:1 1 150px">
@@ -495,6 +550,18 @@ body.is-leader .leader-only{display:block}
 
   <!-- ============ 신우 명단 ============ -->
   <section id="view-members" class="view hidden">
+    <div class="card manage-only" data-lead-card="mem">
+      <div class="card-title"><span>👥 이 반 담임 교사·대표신우</span><span class="cap" data-lead-count>0명</span></div>
+      <div class="tip" data-lead-tip>지금 반의 담임 교사와 대표신우를 지정합니다.</div>
+      <div class="row" data-lead-addrow style="margin-top:9px">
+        <label class="field" style="flex:1 1 200px"><span class="fl">구글 이메일</span><input type="email" data-lead-email placeholder="예: leader@gmail.com" autocomplete="off" autocapitalize="off" spellcheck="false"></label>
+        <label class="field" style="flex:0 1 130px"><span class="fl">역할</span><select data-lead-role><option value="teacher">담임 교사</option><option value="rep">대표신우</option></select></label>
+        <button type="button" class="btn primary" data-lead-add>추가</button>
+      </div>
+      <ul class="list" data-lead-list></ul>
+      <div class="empty hidden" data-lead-empty>아직 지정한 교사·대표신우가 없습니다. 위에 구글 이메일을 넣고 ‘추가’를 눌러 주세요.</div>
+    </div>
+
     <div class="card no-print">
       <div class="row">
         <label class="field" style="flex:1 1 180px">
@@ -609,24 +676,31 @@ body.is-leader .leader-only{display:block}
 
   <!-- ============ 저장·백업 ============ -->
   <section id="view-backup" class="view hidden">
-    <div class="card admin-only" id="cloud-sync-card">
-      <div class="card-title"><span>☁️ 클라우드 출석부·명단</span><span class="cap" id="cloud-sync-cap">-</span></div>
-      <div class="cloudbar"><span class="dotlive off" id="cloud-sync-dot"></span><span id="cloud-sync-text">확인 중…</span></div>
-      <div class="row" style="margin-top:10px">
-        <button type="button" class="btn primary grow" id="btn-cloud-upload">내 폰 출석부·명단 클라우드로 올리기</button>
-      </div>
-      <div class="tip" style="margin-top:8px">이 폰의 명단과 출석 기록을 클라우드에 올립니다. 올라가는 정보는 이름·목장·직분·입대일·전역일·생일과 출석 상태이며, <b>연락처·비고는 이 폰에만</b> 남습니다. 대표 인원과 실시간으로 함께 봅니다.</div>
+    <div class="card admin-only" id="room-links-card">
+      <div class="card-title"><span>🔗 반별 전용 링크</span><span class="cap">6개 반</span></div>
+      <div class="tip">각 반 선생님·신우에게 자기 반 링크를 보내면, 그 링크로 들어온 사람은 그 반의 기도제목만 봅니다. 그 반의 담임 교사·대표신우로 지정된 계정은 그 반 화면을 관리할 수 있습니다.</div>
+      <ul class="list" id="room-link-list"></ul>
     </div>
 
-    <div class="card admin-only" id="leader-manage-card">
-      <div class="card-title"><span>👥 대표 인원 관리</span><span class="cap" id="leader-count">0명</span></div>
-      <div class="tip">대표 인원으로 지정한 구글 계정은 로그인하면 ‘출석 체크’와 ‘기도제목’ 화면을 함께 봅니다. 명단 편집·저장·백업은 관리자만 할 수 있습니다.</div>
-      <div class="row" style="margin-top:9px">
-        <label class="field" style="flex:1 1 220px"><span class="fl">구글 이메일</span><input type="email" id="leader-email" placeholder="예: leader@gmail.com" autocomplete="off" autocapitalize="off" spellcheck="false"></label>
-        <button type="button" class="btn primary" id="btn-leader-add">추가</button>
+    <div class="card manage-only" data-lead-card="bk">
+      <div class="card-title"><span>👥 이 반 담임 교사·대표신우</span><span class="cap" data-lead-count>0명</span></div>
+      <div class="tip" data-lead-tip>지금 반의 담임 교사와 대표신우를 지정합니다.</div>
+      <div class="row" data-lead-addrow style="margin-top:9px">
+        <label class="field" style="flex:1 1 200px"><span class="fl">구글 이메일</span><input type="email" data-lead-email placeholder="예: leader@gmail.com" autocomplete="off" autocapitalize="off" spellcheck="false"></label>
+        <label class="field" style="flex:0 1 130px"><span class="fl">역할</span><select data-lead-role><option value="teacher">담임 교사</option><option value="rep">대표신우</option></select></label>
+        <button type="button" class="btn primary" data-lead-add>추가</button>
       </div>
-      <ul class="list" id="leader-list"></ul>
-      <div class="empty hidden" id="leader-empty">아직 지정한 대표 인원이 없습니다. 위에 구글 이메일을 넣고 ‘추가’를 눌러 주세요.</div>
+      <ul class="list" data-lead-list></ul>
+      <div class="empty hidden" data-lead-empty>아직 지정한 교사·대표신우가 없습니다. 위에 구글 이메일을 넣고 ‘추가’를 눌러 주세요.</div>
+    </div>
+
+    <div class="card admin-only" id="cloud-sync-card">
+      <div class="card-title"><span>☁️ 로컬 출석부·명단 올리기</span><span class="cap" id="cloud-sync-cap">-</span></div>
+      <div class="cloudbar"><span class="dotlive off" id="cloud-sync-dot"></span><span id="cloud-sync-text">확인 중…</span></div>
+      <div class="row" style="margin-top:10px">
+        <button type="button" class="btn primary grow" id="btn-cloud-upload">이 폰 출석부·명단을 <b id="cloud-upload-room">이 반</b> 클라우드에 올리기</button>
+      </div>
+      <div class="tip" style="margin-top:8px">이 폰에 있는 명단과 출석 기록을 <b>지금 선택된 반</b>의 클라우드로 올립니다. 올라가는 정보는 이름·목장·직분·입대일·전역일·생일과 출석 상태이며, <b>연락처·비고는 이 폰에만</b> 남습니다. 그 반의 교사·대표신우와 실시간으로 함께 봅니다.</div>
     </div>
 
     <div class="card">
@@ -643,7 +717,7 @@ body.is-leader .leader-only{display:block}
         <dt>모임 종류</dt><dd id="bk-meetings">-</dd>
         <dt>클라우드 명단</dt><dd id="bk-cloud">-</dd>
       </dl>
-      <div class="tip" style="margin-top:9px">이 기기에 저장됩니다. 위 ☁️ 카드에서 ‘클라우드로 올리기’를 누르면 명단·출석이 대표 인원과 실시간으로 공유됩니다. 폰과 PC를 함께 쓰시려면 아래 JSON 백업을 쓰세요.</div>
+      <div class="tip" style="margin-top:9px">이 기기에 반별로 저장됩니다. 위 ☁️ 카드에서 ‘올리기’를 누르면 그 반의 명단·출석이 그 반 교사·대표신우와 실시간으로 공유됩니다. 폰과 PC를 함께 쓰시려면 아래 JSON 백업을 쓰세요.</div>
     </div>
 
     <div class="card">
@@ -660,7 +734,8 @@ body.is-leader .leader-only{display:block}
       <div class="card-title"><span>사용 안내</span></div>
       <ul class="tip" style="padding-left:18px;margin:0">
         <li><b>출석 체크</b>: 날짜와 모임을 고르고 신우별로 출석·결석·사유를 누르면 바로 저장됩니다. 같은 버튼을 다시 누르면 취소됩니다.</li>
-        <li><b>대표 인원</b>: 위 👥 대표 인원 관리에서 구글 이메일을 추가하면, 그 계정은 로그인할 때 ‘출석 체크’와 ‘기도제목’을 함께 봅니다. 대표 인원이 누른 출석은 클라우드에 바로 저장되어 서로 실시간으로 보입니다.</li>
+        <li><b>반(부대)</b>: 이 앱은 6개 반으로 나뉘어 있습니다. 위 🔗 반별 전용 링크를 각 반에 보내면, 그 링크로 들어온 사람은 그 반의 기도제목만 봅니다.</li>
+        <li><b>담임 교사·대표신우</b>: 위 👥 카드에서 그 반의 구글 이메일을 <b>담임 교사</b> 또는 <b>대표신우</b>로 지정합니다. 담임 교사는 자기 반의 출석·명단·통계·기도제목을 관리하고 대표신우를 지정하며, 대표신우는 출석 체크와 기도제목을 봅니다. 누른 출석은 클라우드에 바로 저장되어 서로 실시간으로 보입니다.</li>
         <li><b>기도제목</b>: ‘기도제목 추가’에서 신우를 고르면 그 신우의 기도제목으로 묶입니다. 명단에 없는 이름도 직접 적을 수 있습니다. 응답을 받으면 ‘응답 체크’를 눌러 감사로 표시하고, ‘전체·기도 중·응답됨’과 신우별로 모아 볼 수 있습니다.</li>
         <li><b>사유</b>: 출장·당직·휴가 등으로 못 오신 경우. 옆의 ‘메모’에 사유를 적어 두세요. 출석률 계산에서 빠집니다.</li>
         <li><b>명단</b>: 여러 명을 한 번에 등록할 때는 ‘일괄 등록’에 이름을 줄바꿈으로 붙여넣으면 됩니다.</li>
@@ -863,6 +938,21 @@ body.is-leader .leader-only{display:block}
     messagingSenderId: '939432194243',
     appId: '1:939432194243:web:633dc3fd23c21deba03276'
   };
+
+  /* 고정 6개 반(부대). URL ?room=<id> 로 현재 반이 결정된다. */
+  var ROOMS = [
+    { id: '701comm', name: '701통신 · 운영대대', teacher: '이재인 집사' },
+    { id: 'mp', name: '군사경찰 · 특임대', teacher: '박민지 집사님' },
+    { id: 'commhq', name: '통신단 본부', teacher: '박상두 집사님' },
+    { id: 'bonbu', name: '본부대', teacher: '강현욱 집사님' },
+    { id: 'band', name: '군악대', teacher: '마재국 집사님' },
+    { id: '140intel', name: '140정보대대 · 방첩 · 파견부대', teacher: '박규환 집사님' }
+  ];
+  var DEFAULT_ROOM = 'bonbu';
+  var ROOM_KEY = '';              /* 현재 반 id */
+  var roomFromUrl = false;        /* 주소에 유효한 ?room= 이 있었는지 */
+  var ROOM_LINK_BASE = 'https://stevenkang126-star.github.io/-/';
+  var currentView = 'attend';
   var prayerMode = 'local';          /* 'local' | 'cloud' */
   var localModeChosen = false;      /* 로그인 없이 이 기기의 출석부를 연 상태 */
   var migrateCardDismissed = false;
@@ -874,7 +964,8 @@ body.is-leader .leader-only{display:block}
     db: null,
     user: null,
     isAdmin: false,
-    role: '',            /* '' (로컬) | 'admin' | 'leader' | 'member' */
+    role: '',            /* '' (로컬) | 'admin' | 'teacher' | 'rep' | 'member' */
+    leaderRooms: [],     /* 이 계정이 교사·대표신우로 지정된 반 */
     list: [],
     subs: [],
     err: '',
@@ -894,6 +985,23 @@ body.is-leader .leader-only{display:block}
 
   /* ===================== 도우미 ===================== */
   function $(id) { return document.getElementById(id); }
+
+  /* ---- 반(부대) 도우미 ---- */
+  function roomById(id) {
+    for (var i = 0; i < ROOMS.length; i++) if (ROOMS[i].id === id) return ROOMS[i];
+    return null;
+  }
+  function roomName(id) { var r = roomById(id || ROOM_KEY); return r ? r.name : ''; }
+  function roomTeacher(id) { var r = roomById(id || ROOM_KEY); return r ? r.teacher : ''; }
+  function roomLabel(id) { var r = roomById(id || ROOM_KEY); return r ? (r.name + ' · ' + r.teacher) : ''; }
+  function roomLink(id) { return ROOM_LINK_BASE + '?room=' + encodeURIComponent(String(id || '')); }
+  function urlRoomId() {
+    var m = String(window.location.search || '').match(/[?&]room=([^&]*)/);
+    if (!m) return '';
+    var id = '';
+    try { id = decodeURIComponent(m[1]); } catch (e) { id = m[1]; }
+    return roomById(id) ? id : '';
+  }
   function pad2(n) { return (n < 10 ? '0' : '') + n; }
   function uid() { return 'm' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
   function puid() { return 'p' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
@@ -1099,13 +1207,20 @@ body.is-leader .leader-only{display:block}
     return s;
   }
 
+  /* 이 기기의 자료도 반별로 나누어 둔다 (반끼리 섞이지 않게) */
+  function storeKey() { return STORE_KEY + (ROOM_KEY ? '.room.' + ROOM_KEY : ''); }
+
   function loadState() {
     var raw = null;
+    var legacy = null;
     try {
-      raw = window.localStorage.getItem(STORE_KEY);
+      raw = window.localStorage.getItem(storeKey());
+      /* v3까지는 반 구분이 없었다. 그 자료는 총괄 관리자의 반(본부대)으로 이어받는다. */
+      if (!raw && ROOM_KEY === DEFAULT_ROOM) legacy = window.localStorage.getItem(STORE_KEY);
     } catch (e) {
       storageOK = false;
     }
+    if (!raw && legacy) raw = legacy;
     if (!raw) { state = emptyState(); return; }
     try {
       state = normalizeState(JSON.parse(raw));
@@ -1118,7 +1233,7 @@ body.is-leader .leader-only{display:block}
     state.meta.updatedAt = nowISO();
     if (!storageOK) { renderSaveState(); return false; }
     try {
-      window.localStorage.setItem(STORE_KEY, JSON.stringify(state));
+      window.localStorage.setItem(storeKey(), JSON.stringify(state));
     } catch (e) {
       storageOK = false;
       renderSaveState();
@@ -1135,8 +1250,12 @@ body.is-leader .leader-only{display:block}
       el.textContent = CLOUD.err ? '연결 오류 · 다시 시도 중' : '실시간 공유 중';
       return;
     }
-    if (CLOUD.role === 'leader') {
-      el.textContent = CLOUD.err ? '연결 오류 · 다시 시도 중' : '대표 인원 · 출석 실시간 공유 중';
+    if (CLOUD.role === 'teacher') {
+      el.textContent = CLOUD.err ? '연결 오류 · 다시 시도 중' : '반 담임 교사 · 실시간 공유 중';
+      return;
+    }
+    if (CLOUD.role === 'rep') {
+      el.textContent = CLOUD.err ? '연결 오류 · 다시 시도 중' : '대표신우 · 출석 실시간 공유 중';
       return;
     }
     if (storageOK) {
@@ -1288,9 +1407,21 @@ body.is-leader .leader-only{display:block}
   }
 
   /* ===================== 화면 전환 ===================== */
+  function viewAllowed(view) {
+    var role = CLOUD.role;
+    if (!role || role === 'admin') return true;
+    if (role === 'teacher') return view !== 'backup';
+    if (role === 'rep') return view === 'attend' || view === 'prayers';
+    return view === 'prayers';
+  }
+
+  function defaultView() {
+    return CLOUD.role === 'member' ? 'prayers' : 'attend';
+  }
+
   function switchView(view) {
-    if (CLOUD.role === 'member' && view !== 'prayers') view = 'prayers';
-    if (CLOUD.role === 'leader' && view !== 'attend' && view !== 'prayers') view = 'attend';
+    if (!viewAllowed(view)) view = defaultView();
+    currentView = view;
     var views = ['attend', 'prayers', 'members', 'stats', 'backup'];
     views.forEach(function (v) {
       var sec = $('view-' + v);
@@ -1366,7 +1497,7 @@ body.is-leader .leader-only{display:block}
   function milMetaHtml(m) {
     var out = [];
     /* 대표 인원 화면에서도 입대일·전역 D-day·생일을 그대로 보여 줍니다 */
-    if (CLOUD.role === 'leader' && m.enlistDate) {
+    if ((CLOUD.role === 'teacher' || CLOUD.role === 'rep') && m.enlistDate) {
       out.push('<span class="mil-inline">입대 ' + dateLabel(m.enlistDate) + '</span>');
     }
     var di = dischargeInfo(m);
@@ -1411,8 +1542,10 @@ body.is-leader .leader-only{display:block}
     var box = $('attn-empty');
     if (state.members.length === 0) {
       box.classList.remove('hidden');
-      if (CLOUD.role === 'leader') {
-        box.innerHTML = '<strong>아직 클라우드에 명단이 없습니다</strong>관리자가 ‘저장·백업’에서 명단을 클라우드로 올리면 여기에 보입니다.';
+      if (CLOUD.role === 'teacher') {
+        box.innerHTML = '<strong>아직 이 반 명단이 없습니다</strong>아래에서 신우를 등록하면 이 반 교사·대표신우와 함께 봅니다.'
+          + '<div class="btns"><button type="button" class="btn primary sm" data-empty-act="add">신우 등록</button>'
+          + '<button type="button" class="btn sm" data-empty-act="bulk">일괄 등록</button></div>';
         return true;
       }
       box.innerHTML = '<strong>등록된 신우가 없습니다</strong>명단을 먼저 등록하면 한 번 누르는 것으로 출석을 체크할 수 있습니다.'
@@ -1738,7 +1871,7 @@ body.is-leader .leader-only{display:block}
   }
 
   function openMemberModal(id) {
-    if (!isAdminRole()) { toast('관리자만 명단을 편집할 수 있습니다.'); return; }
+    if (!canEditMembers()) { toast('명단은 총괄 관리자와 담임 교사만 편집할 수 있습니다.'); return; }
     editMemberId = id || '';
     var m = id ? findMember(id) : null;
     $('member-modal-title').textContent = m ? '신우 정보 수정' : '신우 등록';
@@ -1829,7 +1962,7 @@ body.is-leader .leader-only{display:block}
   }
 
   function deleteMember(id) {
-    if (!isAdminRole()) { toast('관리자만 명단을 편집할 수 있습니다.'); return; }
+    if (!canEditMembers()) { toast('명단은 총괄 관리자와 담임 교사만 편집할 수 있습니다.'); return; }
     var m = findMember(id);
     if (!m) return;
     var used = 0;
@@ -1879,7 +2012,7 @@ body.is-leader .leader-only{display:block}
   ];
 
   function insertSample() {
-    if (!isAdminRole()) { toast('관리자만 명단을 편집할 수 있습니다.'); return; }
+    if (!canEditMembers()) { toast('명단은 총괄 관리자와 담임 교사만 편집할 수 있습니다.'); return; }
     var run = function () {
       var added = 0;
       SAMPLES.forEach(function (row) {
@@ -2097,7 +2230,7 @@ body.is-leader .leader-only{display:block}
   }
 
   function openBulkModal() {
-    if (!isAdminRole()) { toast('관리자만 명단을 편집할 수 있습니다.'); return; }
+    if (!canEditMembers()) { toast('명단은 총괄 관리자와 담임 교사만 편집할 수 있습니다.'); return; }
     bulkMode = 'names';
     bulkModeTouched = false;
     $('bulk-text').value = '';
@@ -2481,7 +2614,7 @@ body.is-leader .leader-only{display:block}
       confirmModal('마지막 확인', '정말 삭제할까요? 백업 파일이 없다면 복구할 수 없습니다.', '삭제', function () {
         state = emptyState();
         curMeeting = state.meetings[0];
-        try { window.localStorage.removeItem(STORE_KEY); } catch (e) {}
+        try { window.localStorage.removeItem(storeKey()); } catch (e) {}
         save();
         renderAll();
         syncMembersToCloud();
@@ -2509,7 +2642,14 @@ body.is-leader .leader-only{display:block}
   function isAdminEmail(email) { return String(email || '').toLowerCase() === ADMIN_EMAIL; }
   /* 로그인하지 않은 로컬 모드도 관리자와 같은 권한을 가진다 (기존 동작 유지) */
   function isAdminRole() { return !CLOUD.role || CLOUD.role === 'admin'; }
+  function isTeacherRole() { return !CLOUD.role || CLOUD.role === 'teacher'; }
+  function isRoomLeaderRole() { return CLOUD.role === 'teacher' || CLOUD.role === 'rep'; }
+  /* 교사·대표신우 관리 카드: 교사와 총괄만. 대표신우는 교사·총괄만 지정/해제 */
+  function canManageLeaders() { return !CLOUD.role || CLOUD.role === 'admin' || CLOUD.role === 'teacher'; }
   function cloudEmail() { return String((CLOUD.user && CLOUD.user.email) || '').toLowerCase(); }
+  /* 반별 서브컬렉션: rooms/{roomId}/{leaders|members|attendance|prayers} */
+  function roomCol(name) { return CLOUD.db.collection('rooms').doc(ROOM_KEY).collection(name); }
+  function roomDocRef(name, id) { return roomCol(name).doc(id); }
   function cloudDateKey(date, meeting) { return String(date || '') + '_' + String(meeting || ''); }
   function cloudDataError(kind, err) {
     var code = (err && err.code) || 'error';
@@ -2529,26 +2669,89 @@ body.is-leader .leader-only{display:block}
 
   function applyRoleUI() {
     var role = CLOUD.role;
-    document.body.classList.toggle('is-admin', role === 'admin');
-    document.body.classList.toggle('is-leader', role === 'leader');
-    document.body.classList.toggle('is-member', role === 'member');
-    document.body.classList.toggle('member-mode', role === 'member');
+    var body = document.body.classList;
+    body.toggle('is-admin', role === 'admin');
+    body.toggle('is-teacher', role === 'teacher');
+    body.toggle('is-rep', role === 'rep');
+    body.toggle('is-leader', role === 'teacher' || role === 'rep');
+    body.toggle('is-member', role === 'member');
+    body.toggle('member-mode', role === 'member');
     var isMember = role === 'member';
     $('app-title').textContent = isMember ? '신우회 기도제목' : '신우회 출석부';
-    document.title = isMember ? '신우회 기도제목' : '신우회 출석부';
+    document.title = (isMember ? '신우회 기도제목' : '신우회 출석부') + (ROOM_KEY ? ' · ' + roomName() : '');
+    renderRoomBar();
+    renderRoomPicker();
+    renderRoomMismatch();
   }
 
-  /* 로그인한 계정의 역할: 관리자 → leaders 문서가 있으면 대표 인원 → 일반 신우 */
+  /* 상단 현재 반 + 총괄 관리자용 반 전환 드롭다운 */
+  function renderRoomBar() {
+    var nowName = $('room-now-name');
+    if (nowName) nowName.textContent = roomLabel() || '-';
+    var sel = $('sel-room');
+    if (!sel) return;
+    if (!sel.options.length) {
+      sel.innerHTML = ROOMS.map(function (r) {
+        return '<option value="' + escapeHtml(r.id) + '">' + escapeHtml(r.name) + ' · ' + escapeHtml(r.teacher) + '</option>';
+      }).join('');
+    }
+    sel.value = ROOM_KEY;
+  }
+
+  /* 주소에 ?room= 없이 들어온 일반 신우·타 반 교사: 소속 반 선택 */
+  function needsRoomPick() {
+    return !!CLOUD.user && CLOUD.role !== 'admin' && !roomFromUrl;
+  }
+
+  function renderRoomPicker() {
+    var box = $('room-pick-list');
+    if (box && !box.children.length) {
+      box.innerHTML = ROOMS.map(function (r) {
+        return '<button type="button" class="room-pick" data-pick-room="' + escapeHtml(r.id) + '">'
+          + '<span><span class="rn">' + escapeHtml(r.name) + '</span><span class="rt2">' + escapeHtml(r.teacher) + '</span></span>'
+          + '<span class="go">\u203a</span></button>';
+      }).join('');
+    }
+    document.body.classList.toggle('pick-room', needsRoomPick());
+  }
+
+  /* 이 계정이 다른 반의 교사·대표신우라면 그 반 링크를 안내 */
+  function renderRoomMismatch() {
+    var el = $('room-mismatch');
+    if (!el) return;
+    var other = null;
+    (CLOUD.leaderRooms || []).forEach(function (h) { if (!other && h.id !== ROOM_KEY) other = h; });
+    if (!other || CLOUD.role === 'admin') { el.classList.add('hidden'); return; }
+    $('room-mismatch-name').textContent = roomName(other.id);
+    el.setAttribute('data-room', other.id);
+    el.classList.remove('hidden');
+  }
+
+  /* 로그인한 계정의 역할: 총괄 관리자 → 이 반의 담임 교사 → 이 반의 대표신우 → 일반 신우 */
   function resolveRole(user) {
-    if (isAdminEmail(user && user.email)) return Promise.resolve('admin');
-    if (!cloudReady()) return Promise.resolve('member');
+    if (isAdminEmail(user && user.email)) return Promise.resolve({ role: 'admin', rooms: [] });
+    if (!cloudReady()) return Promise.resolve({ role: 'member', rooms: [] });
     var email = cloudEmail();
-    if (!email) return Promise.resolve('member');
-    return CLOUD.db.collection(LEADERS_COL).doc(email).get().then(function (snap) {
-      return (snap && snap.exists) ? 'leader' : 'member';
-    }).catch(function (err) {
-      if (window.console) console.warn('leader check failed', (err && err.code) || '', err && err.message);
-      return 'member';
+    if (!email) return Promise.resolve({ role: 'member', rooms: [] });
+    var jobs = ROOMS.map(function (r) {
+      return CLOUD.db.collection('rooms').doc(r.id).collection(LEADERS_COL).doc(email).get()
+        .then(function (snap) {
+          if (!snap || !snap.exists) return null;
+          var d = snap.data() || {};
+          /* v3에서 만든 교사 문서에는 role이 없다 → 담임 교사로 본다 */
+          return { id: r.id, role: (d.role === 'rep' ? 'rep' : 'teacher') };
+        })
+        .catch(function (err) {
+          if (window.console) console.warn('leader check failed', r.id, (err && err.code) || '', err && err.message);
+          return null;
+        });
+    });
+    return Promise.all(jobs).then(function (hits) {
+      var list = hits.filter(function (h) { return !!h; });
+      CLOUD.leaderRooms = list;
+      var mine = null;
+      list.forEach(function (h) { if (h.id === ROOM_KEY) mine = h; });
+      return { role: mine ? mine.role : 'member', rooms: list };
     });
   }
 
@@ -2616,7 +2819,7 @@ body.is-leader .leader-only{display:block}
     var wasSignedIn = !!CLOUD.user && CLOUD.user.uid === user.uid;
     CLOUD.user = user;
     CLOUD.isAdmin = isAdminEmail(user.email);
-    CLOUD.role = CLOUD.isAdmin ? 'admin' : 'member';   /* 대표 인원은 확인 뒤 승격 */
+    CLOUD.role = CLOUD.isAdmin ? 'admin' : 'member';   /* 교사·대표신우는 확인 뒤 승격 */
     CLOUD.authError = '';
     CLOUD.dataErr = {};
     prayerMode = 'cloud';
@@ -2629,19 +2832,24 @@ body.is-leader .leader-only{display:block}
     renderAll();
     switchView(CLOUD.isAdmin ? 'attend' : 'prayers');
     if (!CLOUD.isAdmin && !wasSignedIn) toast('로그인했습니다. 기도제목을 나눠 주세요.');
-    resolveRole(user).then(function (role) {
+    resolveRole(user).then(function (res) {
       if (!CLOUD.user || CLOUD.user.uid !== user.uid) return;
+      var role = (res && res.role) || 'member';
       var changed = CLOUD.role !== role;
       CLOUD.role = role;
       CLOUD.isAdmin = role === 'admin';
+      CLOUD.leaderRooms = (res && res.rooms) || [];
       applyRoleUI();
       updateUserBar();
       if (changed) {
         subscribeCloudData();
         renderAll();
-        if (role === 'leader') {
+        if (role === 'teacher') {
           switchView('attend');
-          toast('대표 인원(출석담당)으로 로그인했습니다.');
+          toast(roomName() + ' 반 담임 교사로 로그인했습니다.');
+        } else if (role === 'rep') {
+          switchView('attend');
+          toast(roomName() + ' 반 대표신우로 로그인했습니다.');
         } else if (role === 'member') {
           switchView('prayers');
         }
@@ -2654,6 +2862,7 @@ body.is-leader .leader-only{display:block}
     CLOUD.user = null;
     CLOUD.isAdmin = false;
     CLOUD.role = '';
+    CLOUD.leaderRooms = [];
     CLOUD.list = [];
     CLOUD.leaders = [];
     CLOUD.cloudMembers = null;
@@ -2703,8 +2912,9 @@ body.is-leader .leader-only{display:block}
     $('ub-name').textContent = cloudDisplayName();
     var role = CLOUD.role;
     var el = $('ub-role');
-    el.textContent = role === 'admin' ? '관리자' : (role === 'leader' ? '리더(출석담당)' : '신우');
-    el.classList.toggle('leader', role === 'leader');
+    var label = role === 'admin' ? '관리자' : (role === 'teacher' ? '반 담임 교사' : (role === 'rep' ? '대표신우' : '신우'));
+    el.textContent = label;
+    el.className = 'ub-role' + (role === 'teacher' ? ' teacher' : (role === 'rep' ? ' rep' : ''));
     el.classList.remove('hidden');
   }
 
@@ -2772,6 +2982,30 @@ body.is-leader .leader-only{display:block}
     toast('이 기기의 출석부를 열었습니다.');
   }
 
+  /* 총괄 관리자: 반 전환 (로그인·주소 유지, 그 반 자료로 다시 연결) */
+  function enterRoom(roomId) {
+    if (!roomById(roomId) || roomId === ROOM_KEY) return;
+    save();
+    ROOM_KEY = roomId;
+    roomFromUrl = true;
+    try {
+      if (window.history && history.replaceState) history.replaceState(null, '', '?room=' + encodeURIComponent(roomId));
+    } catch (e) {}
+    unsubPrayers();
+    loadState();
+    if (state.meetings.indexOf(curMeeting) < 0) curMeeting = state.meetings[0] || '주일예배';
+    statsMonth = todayISO().slice(0, 7);
+    openMemo = {}; searchText = ''; groupFilter = ''; onlyUnmarked = false;
+    memSearchText = ''; memFilter = 'all'; praySearchText = ''; prayPerson = ''; prayState = 'all';
+    CLOUD.list = []; CLOUD.leaders = []; CLOUD.cloudMembers = null; CLOUD.attKey = '';
+    CLOUD.err = ''; CLOUD.errShown = false; CLOUD.dataErr = {};
+    applyRoleUI();
+    renderAll();
+    if (CLOUD.user) { subscribePrayers(); subscribeCloudData(); }
+    switchView(viewAllowed(currentView) ? currentView : defaultView());
+    toast('\u2018' + roomName() + '\u2019 \ubc18\uc73c\ub85c \uc804\ud658\ud588\uc2b5\ub2c8\ub2e4.');
+  }
+
   function unsubPrayers() {
     CLOUD.subs.forEach(function (fn) { try { fn(); } catch (e) {} });
     CLOUD.subs = [];
@@ -2780,19 +3014,23 @@ body.is-leader .leader-only{display:block}
     if (CLOUD.unsubLeaders) { try { CLOUD.unsubLeaders(); } catch (e) {} CLOUD.unsubLeaders = null; }
   }
 
-  /* ===================== 클라우드 명단·출석 (대표 인원 공유) ===================== */
+  /* ===================== 클라우드 명단·출석 (반별 공유) ===================== */
+  /* 출석 체크: 총괄 관리자 · 반 담임 교사 · 반 대표신우 */
   function canShareAttendance() {
-    return cloudReady() && !!CLOUD.user && (CLOUD.role === 'admin' || CLOUD.role === 'leader');
+    return cloudReady() && !!CLOUD.user && !!ROOM_KEY &&
+      (CLOUD.role === 'admin' || CLOUD.role === 'teacher' || CLOUD.role === 'rep');
   }
 
+  /* 명단 편집: 총괄 관리자 · 반 담임 교사 (대표신우는 읽기만) */
+  function canEditMembers() { return !CLOUD.role || CLOUD.role === 'admin' || CLOUD.role === 'teacher'; }
+
   function subscribeCloudData() {
-    if (!cloudReady() || !CLOUD.user) return;
+    if (!cloudReady() || !CLOUD.user || !ROOM_KEY) return;
     var role = CLOUD.role;
-    if (role === 'admin') subscribeLeaders();
-    if (role === 'admin' || role === 'leader') {
+    if (role === 'admin' || role === 'teacher') subscribeLeaders();
+    if (role === 'admin' || role === 'teacher' || role === 'rep') {
       subscribeAttendance();
-      if (role === 'leader') subscribeMembers();
-      else refreshCloudStatus();
+      subscribeMembers();
     }
   }
 
@@ -2807,7 +3045,7 @@ body.is-leader .leader-only{display:block}
     if (!canShareAttendance()) return;
     var key = cloudDateKey(curDate, curMeeting);
     CLOUD.attKey = key;
-    CLOUD.unsubAtt = CLOUD.db.collection(ATTENDANCE_COL).doc(key).onSnapshot(function (snap) {
+    CLOUD.unsubAtt = roomDocRef(ATTENDANCE_COL, key).onSnapshot(function (snap) {
       var d = (snap && snap.exists) ? (snap.data() || {}) : {};
       applyCloudRecords(d.records || {});
     }, function (err) { cloudDataError('attendance', err); });
@@ -2852,9 +3090,9 @@ body.is-leader .leader-only{display:block}
   function pushAttendanceRecord(id, status, memo) {
     if (!canShareAttendance()) return;
     var key = cloudDateKey(curDate, curMeeting);
-    var payload = { date: curDate, meeting: curMeeting, updatedAt: nowISO(), updatedBy: cloudEmail(), records: {} };
+    var payload = { date: curDate, meeting: curMeeting, updatedAt: nowISO(), updatedBy: cloudEmail(), room: ROOM_KEY, records: {} };
     payload.records[id] = { status: status || '', note: memo || '', updatedBy: cloudEmail(), updatedAt: nowISO() };
-    CLOUD.db.collection(ATTENDANCE_COL).doc(key).set(payload, { merge: true })
+    roomDocRef(ATTENDANCE_COL, key).set(payload, { merge: true })
       .catch(function (err) { cloudDataError('attendance-write', err); });
   }
 
@@ -2876,14 +3114,14 @@ body.is-leader .leader-only{display:block}
     Object.keys(recs).forEach(function (id) {
       records[id] = { status: recs[id].status || '', note: recs[id].memo || '', updatedBy: cloudEmail(), updatedAt: nowISO() };
     });
-    CLOUD.db.collection(ATTENDANCE_COL).doc(cloudDateKey(curDate, curMeeting)).set({
-      date: curDate, meeting: curMeeting, records: records, updatedAt: nowISO(), updatedBy: cloudEmail()
+    roomDocRef(ATTENDANCE_COL, cloudDateKey(curDate, curMeeting)).set({
+      date: curDate, meeting: curMeeting, records: records, updatedAt: nowISO(), updatedBy: cloudEmail(), room: ROOM_KEY
     }, { merge: true }).catch(function (err) { cloudDataError('attendance-write', err); });
   }
 
   function pushAttendanceReset() {
     if (!canShareAttendance()) return;
-    CLOUD.db.collection(ATTENDANCE_COL).doc(cloudDateKey(curDate, curMeeting)).delete()
+    roomDocRef(ATTENDANCE_COL, cloudDateKey(curDate, curMeeting)).delete()
       .catch(function (err) { cloudDataError('attendance-write', err); });
   }
 
@@ -2903,10 +3141,11 @@ body.is-leader .leader-only{display:block}
     };
   }
 
-  /* 대표 인원: 클라우드 명단을 그대로 받아 온다 */
+  /* 이 반 명단: 클라우드 명단을 그대로 받아 온다. 클라우드가 비어 있으면 이 폰 명단을 유지한다. */
   function subscribeMembers() {
     if (CLOUD.unsubMembers) { try { CLOUD.unsubMembers(); } catch (e) {} CLOUD.unsubMembers = null; }
-    CLOUD.unsubMembers = CLOUD.db.collection(MEMBERS_COL).onSnapshot(function (snap) {
+    if (!ROOM_KEY) return;
+    CLOUD.unsubMembers = roomCol(MEMBERS_COL).onSnapshot(function (snap) {
       var list = snap.docs.map(mapCloudMember).filter(function (m) { return !!m.name; });
       list.sort(function (a, b) {
         if (a.order !== b.order) return a.order - b.order;
@@ -2914,8 +3153,16 @@ body.is-leader .leader-only{display:block}
         if (ga !== gb) return ga.localeCompare(gb, 'ko');
         return a.name.localeCompare(b.name, 'ko');
       });
-      state.members = list;
       CLOUD.cloudMembers = list.length;
+      if (!list.length) { renderCloudStatus(); return; }
+      /* 연락처·비고는 이 폰에만 있으므로 클라우드 값에 덮어쓰지 않고 살려 둔다 */
+      var localById = {};
+      state.members.forEach(function (m) { localById[m.id] = m; });
+      list.forEach(function (m) {
+        var l = localById[m.id];
+        if (l) { m.phone = l.phone || ''; m.note = l.note || ''; }
+      });
+      state.members = list;
       save();
       renderAll();
     }, function (err) { cloudDataError('members', err); });
@@ -2923,33 +3170,63 @@ body.is-leader .leader-only{display:block}
 
   function subscribeLeaders() {
     if (CLOUD.unsubLeaders) { try { CLOUD.unsubLeaders(); } catch (e) {} CLOUD.unsubLeaders = null; }
-    CLOUD.unsubLeaders = CLOUD.db.collection(LEADERS_COL).onSnapshot(function (snap) {
+    if (!ROOM_KEY) return;
+    CLOUD.unsubLeaders = roomCol(LEADERS_COL).onSnapshot(function (snap) {
       CLOUD.leaders = snap.docs.map(function (d) {
         var v = d.data() || {};
-        return { email: d.id, addedAt: v.addedAt ? String(v.addedAt) : '' };
-      }).sort(function (a, b) { return a.email < b.email ? -1 : (a.email > b.email ? 1 : 0); });
+        return { email: d.id, role: (v.role === 'rep' ? 'rep' : 'teacher'), addedAt: v.addedAt ? String(v.addedAt) : '' };
+      }).sort(function (a, b) {
+        if (a.role !== b.role) return a.role === 'teacher' ? -1 : 1;
+        return a.email < b.email ? -1 : (a.email > b.email ? 1 : 0);
+      });
       renderLeaderList();
     }, function (err) { cloudDataError('leaders', err); });
   }
 
+  function leadRoleLabel(role) { return role === 'rep' ? '대표신우' : '담임 교사'; }
+
+  /* 저장·백업 탭과 명단 탭의 ‘교사·대표신우’ 카드를 함께 갱신 */
   function renderLeaderList() {
-    var ul = $('leader-list');
-    if (!ul) return;
     var list = CLOUD.leaders || [];
-    ul.innerHTML = list.map(function (l) {
-      return '<li class="leadrow" data-email="' + escapeHtml(l.email) + '">'
-        + '<div class="em">' + escapeHtml(l.email) + '</div>'
-        + (l.addedAt ? '<div class="when">' + escapeHtml(fmtTime(l.addedAt).replace(/^\d+\.\s*/, '')) + '</div>' : '')
-        + '<button type="button" class="btn sm danger" data-leader-act="del">삭제</button></li>';
-    }).join('');
-    $('leader-count').textContent = list.length + '명';
-    $('leader-empty').classList.toggle('hidden', !!list.length);
+    var admin = CLOUD.role === 'admin' || !CLOUD.role;
+    var teacher = CLOUD.role === 'teacher';
+    Array.prototype.forEach.call(document.querySelectorAll('[data-lead-card]'), function (box) {
+      var roleSel = box.querySelector('[data-lead-role]');
+      if (roleSel) {
+        var tOpt = roleSel.querySelector('option[value="teacher"]');
+        if (tOpt) tOpt.disabled = !admin;
+        if (!admin && roleSel.value !== 'rep') roleSel.value = 'rep';
+      }
+      var tip = box.querySelector('[data-lead-tip]');
+      if (tip) {
+        tip.innerHTML = '지금 반: <b>' + escapeHtml(roomLabel()) + '</b><br>'
+          + (admin
+            ? '담임 교사는 이 반의 출석·명단·통계·기도제목을 관리하고 대표신우를 지정합니다. 대표신우는 출석 체크와 기도제목을 봅니다.'
+            : '담임 교사는 대표신우만 지정·해제할 수 있습니다. (담임 교사 변경은 총괄 관리자만)');
+      }
+      var ul = box.querySelector('[data-lead-list]');
+      if (ul) {
+        ul.innerHTML = list.map(function (l) {
+          var canDel = admin || (teacher && l.role === 'rep');
+          return '<li class="leadrow" data-email="' + escapeHtml(l.email) + '">'
+            + '<div class="em">' + escapeHtml(l.email) + ' <span class="badge">' + leadRoleLabel(l.role) + '</span></div>'
+            + (l.addedAt ? '<div class="when">' + escapeHtml(fmtTime(l.addedAt).replace(/^\d+\.\s*/, '')) + '</div>' : '')
+            + (canDel ? '<button type="button" class="btn sm danger" data-lead-act="del">삭제</button>' : '')
+            + '</li>';
+        }).join('');
+      }
+      var cnt = box.querySelector('[data-lead-count]');
+      if (cnt) cnt.textContent = list.length + '명';
+      var empty = box.querySelector('[data-lead-empty]');
+      if (empty) empty.classList.toggle('hidden', !!list.length);
+    });
   }
 
   function refreshCloudStatus() {
     renderCloudStatus();
-    if (!cloudReady() || !CLOUD.user || !isAdminRole()) return;
-    CLOUD.db.collection(MEMBERS_COL).get().then(function (snap) {
+    if (!cloudReady() || !CLOUD.user || !ROOM_KEY) return;
+    if (!(CLOUD.role === 'admin' || CLOUD.role === 'teacher' || CLOUD.role === 'rep')) return;
+    roomCol(MEMBERS_COL).get().then(function (snap) {
       CLOUD.cloudMembers = snap.size;
       renderCloudStatus();
       renderBackup();
@@ -2967,14 +3244,15 @@ body.is-leader .leader-only{display:block}
     if (n === null || n === undefined) {
       text.textContent = '클라우드 상태를 확인하는 중이거나 확인하지 못했습니다.';
     } else if (!n) {
-      text.textContent = '아직 클라우드에 명단이 없습니다. 아래 버튼으로 이 폰의 명단을 올려 주세요.';
+      text.textContent = '아직 ‘' + roomName() + '’ 클라우드에 명단이 없습니다. 아래 버튼으로 이 폰의 명단을 올려 주세요.';
     } else {
-      text.textContent = '클라우드 명단 ' + n + '명 · 대표 인원과 실시간 공유 중' + (last ? ' (마지막 올림 ' + last + ')' : '');
+      text.textContent = '‘' + roomName() + '’ 클라우드 명단 ' + n + '명 · 이 반 교사·대표신우와 실시간 공유 중' + (last ? ' (마지막 올림 ' + last + ')' : '');
     }
     $('cloud-sync-dot').classList.toggle('off', !n);
     $('cloud-sync-cap').textContent = (n === null || n === undefined) ? '-' : n + '명';
+    var roomTag = $('cloud-upload-room');
+    if (roomTag) roomTag.textContent = roomName();
     var bk = $('bk-cloud');
-    if (bk) bk.textContent = '';
     if (bk) bk.textContent = ((n === null || n === undefined) ? '확인 중' : n + '명') + ((last && n) ? ' · 올림 ' + last : '');
   }
 
@@ -2992,16 +3270,17 @@ body.is-leader .leader-only{display:block}
     };
   }
 
-  /* 관리자: 이 폰의 명단 전체를 members 컬렉션에 맞춘다 (추가·수정·삭제 반영) */
+  /* 총괄 관리자·반 담임 교사: 이 폰의 명단을 ‘이 반’의 클라우드 명단에 맞춘다 (추가·수정·삭제 반영) */
   function syncMembersToCloud() {
-    if (!cloudReady() || !CLOUD.user || CLOUD.role !== 'admin') return Promise.resolve(false);
+    if (!cloudReady() || !CLOUD.user || !ROOM_KEY || !canEditMembers()) return Promise.resolve(false);
+    var col = roomCol(MEMBERS_COL);
     var batch = CLOUD.db.batch();
     var ids = {};
     state.members.forEach(function (m, i) {
       ids[m.id] = true;
-      batch.set(CLOUD.db.collection(MEMBERS_COL).doc(m.id), memberCloudData(m, i), { merge: true });
+      batch.set(col.doc(m.id), memberCloudData(m, i), { merge: true });
     });
-    return CLOUD.db.collection(MEMBERS_COL).get().then(function (snap) {
+    return col.get().then(function (snap) {
       snap.docs.forEach(function (d) { if (!ids[d.id]) batch.delete(d.ref); });
       return batch.commit();
     }).then(function () {
@@ -3015,20 +3294,23 @@ body.is-leader .leader-only{display:block}
 
   function uploadLocalToCloud() {
     if (!cloudReady() || !CLOUD.user || CLOUD.role !== 'admin') {
-      toast('관리자 계정으로 로그인해야 올릴 수 있습니다.');
+      toast('총괄 관리자 계정으로 로그인해야 올릴 수 있습니다.');
       return;
     }
+    if (!ROOM_KEY) { toast('먼저 반을 선택해 주세요.'); return; }
     var members = state.members.slice();
     var sessions = Object.keys(state.records);
     if (!members.length && !sessions.length) { toast('이 폰에 올릴 명단이나 출석 기록이 없습니다.'); return; }
-    confirmModal('클라우드로 올리기',
-      '이 폰의 신우 ' + members.length + '명과 출석 기록 ' + sessions.length + '개 모임을 클라우드에 올립니다.\n'
+    confirmModal('‘' + roomName() + '’ 반으로 올리기',
+      '이 폰의 신우 ' + members.length + '명과 출석 기록 ' + sessions.length + '개 모임을 ‘' + roomName() + '’ 반 클라우드에 올립니다.\n'
       + '이름·목장·직분·입대일·전역일·생일과 출석 상태가 올라가고, 연락처·비고는 이 폰에만 남습니다.\n'
-      + '대표 인원이 로그인하면 이 명단과 출석이 보입니다.',
+      + '이 반의 담임 교사·대표신우가 로그인하면 이 명단과 출석이 보입니다.',
       '올리기', function () {
+        var col = roomCol(MEMBERS_COL);
+        var attCol = roomCol(ATTENDANCE_COL);
         var batch = CLOUD.db.batch();
         members.forEach(function (m, i) {
-          batch.set(CLOUD.db.collection(MEMBERS_COL).doc(m.id), memberCloudData(m, i), { merge: true });
+          batch.set(col.doc(m.id), memberCloudData(m, i), { merge: true });
         });
         sessions.forEach(function (k) {
           var idx = k.indexOf('|');
@@ -3040,8 +3322,8 @@ body.is-leader .leader-only{display:block}
             recs[id] = { status: r.status || '', note: r.memo || '', updatedBy: cloudEmail(), updatedAt: nowISO() };
           });
           if (!Object.keys(recs).length) return;
-          batch.set(CLOUD.db.collection(ATTENDANCE_COL).doc(cloudDateKey(date, meeting)), {
-            date: date, meeting: meeting, records: recs, updatedAt: nowISO(), updatedBy: cloudEmail()
+          batch.set(attCol.doc(cloudDateKey(date, meeting)), {
+            date: date, meeting: meeting, room: ROOM_KEY, records: recs, updatedAt: nowISO(), updatedBy: cloudEmail()
           }, { merge: true });
         });
         batch.commit().then(function () {
@@ -3051,7 +3333,7 @@ body.is-leader .leader-only{display:block}
           renderCloudStatus();
           renderBackup();
           subscribeAttendance();
-          toast('클라우드에 올렸습니다. 신우 ' + members.length + '명 · 모임 ' + sessions.length + '개');
+          toast('‘' + roomName() + '’ 반에 올렸습니다. 신우 ' + members.length + '명 · 모임 ' + sessions.length + '개');
         }).catch(function (err) {
           cloudDataError('member-sync', err);
           toast('올리지 못했습니다. (' + ((err && err.code) || 'error') + ')');
@@ -3059,38 +3341,96 @@ body.is-leader .leader-only{display:block}
       }, false);
   }
 
-  function addLeader() {
-    if (!cloudReady() || !CLOUD.user || CLOUD.role !== 'admin') { toast('관리자 계정으로 로그인해야 합니다.'); return; }
-    var inp = $('leader-email');
+  /* 반 담임 교사·대표신우 지정 (rooms/{roomId}/leaders/{email}) */
+  function addLeader(box) {
+    if (!canManageLeaders()) { toast('담임 교사 또는 총괄 관리자만 지정할 수 있습니다.'); return; }
+    if (!cloudReady() || !CLOUD.user || !ROOM_KEY) { toast('로그인이 필요합니다.'); return; }
+    if (!box) return;
+    var inp = box.querySelector('[data-lead-email]');
+    var sel = box.querySelector('[data-lead-role]');
+    var btn = box.querySelector('[data-lead-add]');
+    if (!inp) return;
     var email = String(inp.value || '').trim().toLowerCase();
+    var admin = CLOUD.role === 'admin' || !CLOUD.role;
+    var role = (sel && sel.value === 'teacher' && admin) ? 'teacher' : 'rep';
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) { toast('올바른 구글 이메일을 넣어 주세요.'); return; }
     if (email === ADMIN_EMAIL) { toast('관리자 계정은 이미 모든 권한을 가집니다.'); return; }
-    var btn = $('btn-leader-add');
-    btn.disabled = true;
-    CLOUD.db.collection(LEADERS_COL).doc(email).set({ email: email, addedBy: cloudEmail(), addedAt: nowISO() }, { merge: true })
+    var existing = null;
+    (CLOUD.leaders || []).forEach(function (l) { if (l.email === email) existing = l; });
+    if (existing && existing.role === role) {
+      toast('이미 ' + roomName() + ' 반 ' + leadRoleLabel(role) + '로 지정되어 있습니다.');
+      return;
+    }
+    if (!admin && existing && existing.role === 'teacher') {
+      toast('담임 교사는 총괄 관리자만 바꿀 수 있습니다.');
+      return;
+    }
+    if (btn) btn.disabled = true;
+    roomDocRef(LEADERS_COL, email).set({ email: email, role: role, addedBy: cloudEmail(), addedAt: nowISO() }, { merge: true })
       .then(function () {
-        btn.disabled = false;
+        if (btn) btn.disabled = false;
         inp.value = '';
-        toast(email + ' 님을 대표 인원으로 지정했습니다.');
+        toast(email + ' 님을 ‘' + roomName() + '’ 반 ' + leadRoleLabel(role) + '로 지정했습니다.');
       }).catch(function (err) {
-        btn.disabled = false;
-        toast('대표 인원을 추가하지 못했습니다. (' + ((err && err.code) || 'error') + ')');
+        if (btn) btn.disabled = false;
+        toast('지정하지 못했습니다. (' + ((err && err.code) || 'error') + ')');
       });
   }
 
   function removeLeader(email) {
-    if (!isAdminRole()) { toast('관리자만 대표 인원을 바꿀 수 있습니다.'); return; }
-    confirmModal('대표 인원 해제', email + ' 님의 대표 인원 권한을 뺄까요?\n이 계정은 다시 ‘기도제목’ 화면만 보게 됩니다.', '해제', function () {
-      CLOUD.db.collection(LEADERS_COL).doc(email).delete()
-        .then(function () { toast(email + ' 님을 대표 인원에서 뺐습니다.'); })
-        .catch(function (err) { toast('삭제하지 못했습니다. (' + ((err && err.code) || 'error') + ')'); });
-    }, true);
+    if (!canManageLeaders()) { toast('담임 교사 또는 총괄 관리자만 바꿀 수 있습니다.'); return; }
+    var target = null;
+    (CLOUD.leaders || []).forEach(function (l) { if (l.email === email) target = l; });
+    if (!target) return;
+    var admin = CLOUD.role === 'admin' || !CLOUD.role;
+    if (!admin && target.role !== 'rep') { toast('담임 교사는 총괄 관리자만 바꿀 수 있습니다.'); return; }
+    confirmModal(leadRoleLabel(target.role) + ' 해제',
+      email + ' 님의 ‘' + roomName() + '’ 반 ' + leadRoleLabel(target.role) + ' 권한을 뺄까요?\n'
+      + (target.role === 'rep' ? '이 계정은 그 반의 기도제목 화면만 보게 됩니다.' : '이 계정은 그 반의 기도제목 화면만 보게 됩니다.'),
+      '해제', function () {
+        roomDocRef(LEADERS_COL, email).delete()
+          .then(function () { toast(email + ' 님을 ' + leadRoleLabel(target.role) + '에서 뺐습니다.'); })
+          .catch(function (err) { toast('삭제하지 못했습니다. (' + ((err && err.code) || 'error') + ')'); });
+      }, true);
+  }
+
+  /* ===================== 반별 전용 링크 ===================== */
+  function renderRoomLinks() {
+    var ul = $('room-link-list');
+    if (!ul) return;
+    ul.innerHTML = ROOMS.map(function (r) {
+      var url = roomLink(r.id);
+      return '<li class="linkrow" data-room="' + escapeHtml(r.id) + '">'
+        + '<div class="rn">' + escapeHtml(r.name) + ' <span class="badge">' + escapeHtml(r.teacher) + '</span></div>'
+        + '<button type="button" class="btn sm" data-link-act="copy">복사</button>'
+        + '<div class="ru">' + escapeHtml(url) + '</div></li>';
+    }).join('');
+  }
+
+  function copyText(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(text);
+    return new Promise(function (resolve, reject) {
+      try {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.setAttribute('readonly', 'readonly');
+        ta.style.position = 'fixed';
+        ta.style.top = '0';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        ta.setSelectionRange(0, text.length);
+        var ok = document.execCommand('copy');
+        document.body.removeChild(ta);
+        if (ok) resolve(); else reject(new Error('copy failed'));
+      } catch (e) { reject(e); }
+    });
   }
 
   function subscribePrayers() {
     unsubPrayers();
     if (!cloudReady() || !CLOUD.user) return;
-    var col = CLOUD.db.collection('prayers');
+    var col = roomCol('prayers');
     var onErr = function (err) {
       CLOUD.err = (err && err.code) ? err.code : 'error';
       renderPrayers();
@@ -3506,8 +3846,8 @@ body.is-leader .leader-only{display:block}
       var btn = $('prayer-submit');
       btn.disabled = true;
       var job = wasEdit
-        ? CLOUD.db.collection('prayers').doc(target).update(base)
-        : CLOUD.db.collection('prayers').add(base);
+        ? roomDocRef('prayers', target).update(base)
+        : roomCol('prayers').add(base);
       job.then(function () {
         btn.disabled = false;
         editPrayerId = '';
@@ -3569,7 +3909,7 @@ body.is-leader .leader-only{display:block}
     if (!canEditPrayer(p)) { toast('내가 쓴 기도제목만 바꿀 수 있습니다.'); return; }
     if (prayerMode === 'cloud') {
       var next = !p.answered;
-      CLOUD.db.collection('prayers').doc(id).update({
+      roomDocRef('prayers', id).update({
         answered: next,
         answeredAt: next ? (p.answeredAt || todayISO()) : null,
         updatedAt: nowISO()
@@ -3595,7 +3935,7 @@ body.is-leader .leader-only{display:block}
     var cloud = prayerMode === 'cloud';
     confirmModal('기도제목 삭제', prayerName(p) + ' 님의 기도제목을 지웁니다.\n‘' + preview + '’\n되돌릴 수 없습니다.', '삭제', function () {
       if (cloud) {
-        CLOUD.db.collection('prayers').doc(id).delete().then(function () {
+        roomDocRef('prayers', id).delete().then(function () {
           toast('기도제목을 삭제했습니다.');
         }).catch(prayerWriteError);
         return;
@@ -3644,7 +3984,7 @@ body.is-leader .leader-only{display:block}
       '옮기기', function () {
         var batch = CLOUD.db.batch();
         pend.forEach(function (p) {
-          var ref = CLOUD.db.collection('prayers').doc();
+          var ref = roomCol('prayers').doc();
           batch.set(ref, {
             authorUid: CLOUD.user.uid,
             authorName: prayerName(p),
@@ -3690,6 +4030,8 @@ body.is-leader .leader-only{display:block}
   function renderAll() {
     if (state.meetings.indexOf(curMeeting) < 0) curMeeting = state.meetings[0] || '주일예배';
     if (!curDate) curDate = todayISO();
+    renderRoomBar();
+    renderRoomLinks();
     renderSaveState();
     renderAttend();
     renderPrayers();
@@ -3869,8 +4211,8 @@ body.is-leader .leader-only{display:block}
         confirmModal('기록 삭제', labelDate(date) + ' · ' + meeting + ' 기록을 지울까요?\n되돌릴 수 없습니다.', '삭제', function () {
           delete state.records[sessionKey(date, meeting)];
           save();
-          if (cloudReady() && CLOUD.user && (CLOUD.role === 'admin' || CLOUD.role === 'leader')) {
-            CLOUD.db.collection(ATTENDANCE_COL).doc(cloudDateKey(date, meeting)).delete()
+          if (canShareAttendance()) {
+            roomDocRef(ATTENDANCE_COL, cloudDateKey(date, meeting)).delete()
               .catch(function (err) { cloudDataError('attendance-write', err); });
           }
           if (curDate === date && curMeeting === meeting) {
@@ -3894,18 +4236,51 @@ body.is-leader .leader-only{display:block}
     });
     $('btn-clear-all').addEventListener('click', clearAllData);
 
-    /* 클라우드 동기화 · 대표 인원 관리 (관리자) */
+    /* 클라우드 올리기 · 반 전환 · 교사/대표신우 관리 */
     $('btn-cloud-upload').addEventListener('click', uploadLocalToCloud);
-    $('btn-leader-add').addEventListener('click', addLeader);
-    $('leader-email').addEventListener('keydown', function (e) {
-      if (e.key === 'Enter') { e.preventDefault(); addLeader(); }
+    $('sel-room').addEventListener('change', function () {
+      var id = $('sel-room').value;
+      if (id && id !== ROOM_KEY) enterRoom(id);
     });
-    $('leader-list').addEventListener('click', function (e) {
-      var btn = e.target.closest('button[data-leader-act]');
+    $('btn-room-mismatch').addEventListener('click', function () {
+      var id = $('room-mismatch').getAttribute('data-room');
+      if (id) window.location.href = roomLink(id);
+    });
+    $('room-pick-list').addEventListener('click', function (e) {
+      var btn = e.target.closest('[data-pick-room]');
       if (!btn) return;
-      var row = btn.closest('.leadrow');
-      if (!row) return;
-      if (btn.getAttribute('data-leader-act') === 'del') removeLeader(row.getAttribute('data-email'));
+      window.location.href = roomLink(btn.getAttribute('data-pick-room'));
+    });
+    document.addEventListener('click', function (e) {
+      var t = e.target;
+      if (!t || !t.closest) return;
+      var addBtn = t.closest('[data-lead-add]');
+      if (addBtn) { addLeader(addBtn.closest('[data-lead-card]')); return; }
+      var delBtn = t.closest('[data-lead-act="del"]');
+      if (delBtn) {
+        var row = delBtn.closest('.leadrow');
+        if (row) removeLeader(row.getAttribute('data-email'));
+        return;
+      }
+      var copyBtn = t.closest('[data-link-act="copy"]');
+      if (copyBtn) {
+        var li = copyBtn.closest('.linkrow');
+        var rid = li ? li.getAttribute('data-room') : '';
+        if (!rid) return;
+        copyText(roomLink(rid)).then(function () {
+          toast(roomName(rid) + ' 반 링크를 복사했습니다.');
+        }).catch(function () {
+          toast('복사하지 못했습니다. 아래 주소를 길게 눌러 복사해 주세요.');
+        });
+      }
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key !== 'Enter') return;
+      var t = e.target;
+      if (t && t.closest && t.closest('[data-lead-email]')) {
+        e.preventDefault();
+        addLeader(t.closest('[data-lead-card]'));
+      }
     });
 
     /* 모달 공통 */
@@ -3958,6 +4333,9 @@ body.is-leader .leader-only{display:block}
 
   /* ===================== 시작 ===================== */
   function init() {
+    var urlRoom = urlRoomId();
+    roomFromUrl = !!urlRoom;
+    ROOM_KEY = urlRoom || DEFAULT_ROOM;
     loadState();
     curDate = todayISO();
     curMeeting = state.meetings[0] || '주일예배';
