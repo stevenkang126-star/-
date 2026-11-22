@@ -4,15 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#2b4a6f">
-<meta name="description" content="교회 신우회 출석 관리 - 설치 없이 브라우저에서 바로 쓰는 출석부">
-<title>신우회 출석부</title>
+<meta name="description" content="신우회 기도제목 - Google 로그인으로 신우들과 실시간으로 나누는 기도제목">
+<title>신우회 기도제목</title>
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
 <link rel="apple-touch-icon" href="./icon-192.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="신우회 출석부">
+<meta name="apple-mobile-web-app-title" content="신우회 기도제목">
 <style>
 :root{
   --bg:#f2f4f7;
@@ -246,6 +246,49 @@ tr.streak td{background:var(--warn-bg)}
 .chk{display:flex;align-items:center;gap:9px;padding:10px 11px;border:1px solid var(--line);border-radius:10px;background:var(--bg);font-size:14px;font-weight:700;cursor:pointer}
 .chk input{width:20px;height:20px;min-height:0;margin:0;accent-color:var(--attend)}
 
+/* 로그인 게이트 */
+.gate{position:fixed;inset:0;z-index:80;background:var(--bg);display:none;align-items:center;justify-content:center;padding:20px 16px;overflow:auto}
+body.booting .gate,body.signed-out .gate{display:flex}
+body.booting .app-header,body.booting .wrap,body.booting .bnav,
+body.signed-out .app-header,body.signed-out .wrap,body.signed-out .bnav{display:none !important}
+.gate-card{width:100%;max-width:400px;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:26px 20px 22px;text-align:center;box-shadow:var(--shadow)}
+.gate-icon{font-size:38px;line-height:1}
+.gate-title{font-size:20px;font-weight:800;letter-spacing:-.4px;margin-top:9px}
+.gate-sub{font-size:13.5px;color:var(--muted);margin-top:6px;line-height:1.55}
+.gate-btn{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;margin-top:13px;min-height:48px;font-size:14.5px;font-weight:800;border-radius:12px}
+.btn.google{background:var(--card);border:1px solid var(--line);color:var(--text);box-shadow:0 1px 2px rgba(16,24,40,.07)}
+.btn.google:active{background:var(--bg)}
+.btn.google svg{width:19px;height:19px;flex:0 0 auto}
+.gate-note{font-size:12px;color:var(--muted);line-height:1.6;margin-top:14px;text-align:left;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.gate-note b{color:var(--text)}
+.gate-foot{font-size:11.5px;color:var(--muted);margin-top:11px;line-height:1.55}
+.gate-foot.err{color:var(--absent);font-weight:700}
+
+/* 로그인한 사람 표시 */
+.userbar{display:flex;align-items:center;gap:8px;max-width:940px;margin:0 auto;padding:0 16px 9px}
+.userbar .who{display:flex;align-items:center;gap:6px;min-width:0}
+.ub-name{font-size:12.5px;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:150px}
+.ub-role{font-size:10.5px;font-weight:800;color:var(--brand);background:var(--brand-soft);border:1px solid rgba(43,74,111,.2);border-radius:999px;padding:1px 7px;white-space:nowrap}
+.userbar .btn{margin-left:auto;color:var(--muted)}
+body.member-mode [data-view="attend"],body.member-mode [data-view="members"],body.member-mode [data-view="stats"],body.member-mode [data-view="backup"]{display:none !important}
+
+/* 공유 상태 */
+.cloudbar{display:flex;align-items:center;gap:7px;font-size:12.5px;font-weight:800;color:var(--text)}
+.dotlive{width:8px;height:8px;border-radius:50%;background:var(--attend);box-shadow:0 0 0 3px rgba(28,122,77,.14);flex:0 0 auto}
+.dotlive.off{background:var(--absent);box-shadow:0 0 0 3px rgba(192,57,43,.13)}
+.badge.lock{color:var(--excuse);background:var(--warn-bg);border-color:var(--warn-line)}
+.prow.private{border-left-color:rgba(160,106,12,.4)}
+.prow.private.answered{border-left-color:rgba(28,122,77,.45)}
+
+/* 공개 범위 선택 */
+.vis-box{display:flex;flex-direction:column;gap:7px;margin:6px 0 11px}
+.vis-opt{display:flex;gap:9px;align-items:flex-start;border:1px solid var(--line);border-radius:11px;padding:10px 11px;background:var(--bg);cursor:pointer}
+.vis-opt input{width:18px;height:18px;min-height:0;margin:2px 0 0;accent-color:var(--brand);flex:0 0 auto}
+.vis-opt .vt{display:block;font-size:13.5px;font-weight:800}
+.vis-opt .vd{display:block;font-size:11.5px;color:var(--muted);line-height:1.45;margin-top:2px;font-weight:600}
+.vis-opt.on{border-color:var(--brand);background:var(--brand-soft)}
+.vis-opt.on .vd{color:var(--text)}
+
 /* print */
 #print-head{display:none}
 @media (max-width:700px){
@@ -285,12 +328,35 @@ tr.streak td{background:var(--warn-bg)}
 }
 </style>
 </head>
-<body>
+<body class="booting">
+
+<div class="gate" id="auth-screen">
+  <div class="gate-card">
+    <div class="gate-icon">🙏</div>
+    <h2 class="gate-title" id="gate-title">신우회 기도제목</h2>
+    <p class="gate-sub" id="gate-sub">로그인 상태를 확인하고 있어요…</p>
+    <button type="button" class="btn google gate-btn" id="btn-google">
+      <svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+      <span>Google 계정으로 로그인</span>
+    </button>
+    <button type="button" class="btn ghost gate-btn hidden" id="btn-redirect">리디렉션으로 다시 로그인</button>
+    <button type="button" class="btn ghost gate-btn hidden" id="btn-local">이 기기의 로컬 출석부 열기</button>
+    <div class="gate-note" id="gate-note">
+      <b>🌐 전체 공유</b> 기도제목은 신우들이 함께 보고 기도합니다.<br>
+      <b>🔒 리더에게만</b> 적은 기도제목은 나와 리더만 봅니다.
+    </div>
+    <div class="gate-foot" id="gate-foot">출석·명단 자료는 이 기기에 그대로 남습니다.</div>
+  </div>
+</div>
 
 <header class="app-header">
   <div class="hrow">
-    <h1 class="app-title">신우회 출석부</h1>
+    <h1 class="app-title" id="app-title">신우회 출석부</h1>
     <div class="app-sub" id="save-state">자동 저장 준비</div>
+  </div>
+  <div class="userbar hidden" id="user-bar">
+    <div class="who"><span class="ub-name" id="ub-name"></span><span class="ub-role" id="ub-role">신우</span></div>
+    <button type="button" class="btn sm ghost" id="btn-signout">로그아웃</button>
   </div>
   <nav class="tabs" aria-label="화면 선택">
     <button type="button" class="tab active" data-view="attend">출석 체크</button>
@@ -360,6 +426,21 @@ tr.streak td{background:var(--warn-bg)}
 
   <!-- ============ 기도제목 ============ -->
   <section id="view-prayers" class="view hidden">
+    <div class="card hidden" id="pray-mode-card">
+      <div class="cloudbar"><span class="dotlive" id="pray-mode-dot"></span><span id="pray-mode-text">이 기기에만 저장 중</span></div>
+      <div class="tip" id="pray-mode-tip" style="margin-top:6px"></div>
+      <div class="row" id="pray-mode-actions" style="margin-top:9px">
+        <button type="button" class="btn primary sm grow hidden" id="btn-cloud-login">Google 로그인</button>
+      </div>
+    </div>
+    <div class="card hidden" id="migrate-card">
+      <div class="card-title"><span>기존 내 폰 기도제목</span><span class="cap" id="migrate-count"></span></div>
+      <div class="tip" id="migrate-text"></div>
+      <div class="row" style="margin-top:9px">
+        <button type="button" class="btn primary grow" id="btn-migrate">클라우드로 옮기기</button>
+        <button type="button" class="btn sm" id="btn-migrate-hide">나중에</button>
+      </div>
+    </div>
     <div class="card no-print">
       <div class="row">
         <label class="field" style="flex:1 1 170px">
@@ -367,7 +448,7 @@ tr.streak td{background:var(--warn-bg)}
           <input type="search" id="pray-search" placeholder="예: 김성도, 건강" autocomplete="off">
         </label>
         <label class="field" style="flex:0 1 145px">
-          <span class="fl">신우</span>
+          <span class="fl" id="pray-person-label">신우</span>
           <select id="pray-person"><option value="">전체</option></select>
         </label>
         <label class="field" style="flex:0 1 125px">
@@ -644,12 +725,25 @@ tr.streak td{background:var(--warn-bg)}
     <h2 id="prayer-modal-title">기도제목 추가</h2>
     <p class="sub" id="prayer-modal-sub">신우를 고르거나 이름을 직접 적어 주세요.</p>
     <form id="prayer-form" class="mform" autocomplete="off">
-      <label class="field"><span class="fl">신우</span><select id="f-pray-person"><option value="">직접 입력</option></select></label>
+      <label class="field hidden" id="f-pray-person-wrap"><span class="fl">신우</span><select id="f-pray-person"><option value="">직접 입력</option></select></label>
       <label class="field"><span class="fl">이름 *</span><input type="text" id="f-pray-name" maxlength="30" placeholder="예: 김성도" list="member-name-list"></label>
       <label class="field"><span class="fl">기도제목 *</span><textarea id="f-pray-text" maxlength="500" style="min-height:98px" placeholder="예: 아버지 수술이 잘 마무리되도록"></textarea></label>
       <div class="grid2">
         <label class="field"><span class="fl">카테고리</span><input type="text" id="f-pray-cat" maxlength="20" list="cat-list" placeholder="예: 건강"></label>
         <label class="field"><span class="fl">작성일</span><input type="date" id="f-pray-date"></label>
+      </div>
+      <div class="hidden" id="f-pray-vis-wrap">
+        <div class="fl">공개 범위</div>
+        <div class="vis-box" id="f-pray-vis-box">
+          <label class="vis-opt on" id="vis-opt-public">
+            <input type="radio" name="pray-vis" value="public" checked>
+            <span><span class="vt">🌐 전체 공유 (신우들과 함께)</span><span class="vd">신우들이 함께 보고 같이 기도합니다.</span></span>
+          </label>
+          <label class="vis-opt" id="vis-opt-private">
+            <input type="radio" name="pray-vis" value="private">
+            <span><span class="vt">🔒 리더에게만 비공개 (나와 현욱 님만)</span><span class="vd">다른 신우에게는 보이지 않습니다.</span></span>
+          </label>
+        </div>
       </div>
       <label class="chk" for="f-pray-answered"><input type="checkbox" id="f-pray-answered"> 응답됨(감사)으로 표시</label>
       <div class="modal-actions">
@@ -687,6 +781,10 @@ tr.streak td{background:var(--warn-bg)}
   </div>
 </div>
 
+<!-- Firebase (Google 로그인 · 실시간 공유). CDN이 막혀도 로컬 출석부는 그대로 동작합니다 -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script>
 (function () {
   'use strict';
@@ -720,6 +818,34 @@ tr.streak td{background:var(--warn-bg)}
   var promptCallback = null;
   var openMemo = {};
   var toastTimer = null;
+
+  /* 클라우드(실시간 공유) 상태 */
+  var ADMIN_EMAIL = 'stevenkang126@gmail.com';
+  var FIREBASE_CONFIG = {
+    apiKey: 'AIzaSyDw_KiD04PtZ77pPEsI8LpQAh6zE6wcr1A',
+    authDomain: 'sinyuhoe-prayer.firebaseapp.com',
+    projectId: 'sinyuhoe-prayer',
+    storageBucket: 'sinyuhoe-prayer.firebasestorage.app',
+    messagingSenderId: '939432194243',
+    appId: '1:939432194243:web:633dc3fd23c21deba03276'
+  };
+  var prayerMode = 'local';          /* 'local' | 'cloud' */
+  var localModeChosen = false;      /* 로그인 없이 이 기기의 출석부를 연 상태 */
+  var migrateCardDismissed = false;
+  var authBusy = false;
+  var CLOUD = {
+    ready: false,          /* firebase 초기화 완료 */
+    sdk: false,            /* SDK 로드 여부 */
+    auth: null,
+    db: null,
+    user: null,
+    isAdmin: false,
+    list: [],
+    subs: [],
+    err: '',
+    errShown: false,
+    authError: ''
+  };
 
   /* ===================== 도우미 ===================== */
   function $(id) { return document.getElementById(id); }
@@ -828,7 +954,7 @@ tr.streak td{background:var(--warn-bg)}
       meetings: DEFAULT_MEETINGS.slice(),
       records: {},
       prayers: [],
-      meta: { createdAt: nowISO(), updatedAt: nowISO() }
+      meta: { createdAt: nowISO(), updatedAt: nowISO(), migratedPrayers: [] }
     };
   }
 
@@ -891,7 +1017,8 @@ tr.streak td{background:var(--warn-bg)}
     if (obj.meta && typeof obj.meta === 'object') {
       s.meta = {
         createdAt: obj.meta.createdAt || nowISO(),
-        updatedAt: obj.meta.updatedAt || nowISO()
+        updatedAt: obj.meta.updatedAt || nowISO(),
+        migratedPrayers: Array.isArray(obj.meta.migratedPrayers) ? obj.meta.migratedPrayers.map(function (x) { return String(x); }) : []
       };
     }
 
@@ -957,6 +1084,11 @@ tr.streak td{background:var(--warn-bg)}
 
   function renderSaveState() {
     var el = $('save-state');
+    if (!el) return;
+    if (document.body.classList.contains('member-mode')) {
+      el.textContent = CLOUD.err ? '연결 오류 · 다시 시도 중' : '실시간 공유 중';
+      return;
+    }
     if (storageOK) {
       el.textContent = '자동 저장 ' + fmtTime(state.meta.updatedAt).replace(/^\d+\. \d+\. \d+\. /, '');
     } else {
@@ -1107,6 +1239,7 @@ tr.streak td{background:var(--warn-bg)}
 
   /* ===================== 화면 전환 ===================== */
   function switchView(view) {
+    if (document.body.classList.contains('member-mode') && view !== 'prayers') view = 'prayers';
     var views = ['attend', 'prayers', 'members', 'stats', 'backup'];
     views.forEach(function (v) {
       var sec = $('view-' + v);
@@ -2223,7 +2356,8 @@ tr.streak td{background:var(--warn-bg)}
     $('bk-updated').textContent = fmtTime(state.meta.updatedAt);
     $('bk-members').textContent = state.members.length + '명';
     $('bk-sessions').textContent = sessions.length + '회';
-    $('bk-prayers').textContent = state.prayers.length + '개';
+    $('bk-prayers').textContent = state.prayers.length + '개'
+      + (prayerMode === 'cloud' ? ' · 클라우드 ' + CLOUD.list.length + '개' : '');
     $('bk-meetings').textContent = state.meetings.join(', ') || '-';
     if (storageOK) $('storage-warn').classList.add('hidden');
     else $('storage-warn').classList.remove('hidden');
@@ -2279,21 +2413,332 @@ tr.streak td{background:var(--warn-bg)}
     }, true);
   }
 
+  /* ===================== 클라우드 연결 (Google 로그인 · 실시간 공유) ===================== */
+  function cloudSdk() {
+    return typeof window.firebase !== 'undefined' && window.firebase &&
+      typeof window.firebase.initializeApp === 'function';
+  }
+  function cloudReady() { return !!(CLOUD.auth && CLOUD.db); }
+  function cloudDisplayName() {
+    var u = CLOUD.user;
+    if (!u) return '';
+    var n = String(u.displayName || '').trim();
+    if (!n && u.email) n = String(u.email).split('@')[0];
+    return n || '신우';
+  }
+  function hasLocalData() {
+    return !!(state && (state.members.length || state.prayers.length || Object.keys(state.records).length));
+  }
+  function isAdminEmail(email) { return String(email || '').toLowerCase() === ADMIN_EMAIL; }
+
+  function authMessage(err) {
+    var code = (err && err.code) || '';
+    var map = {
+      'auth/popup-blocked': '로그인 창이 차단되었습니다. ‘리디렉션으로 다시 로그인’을 눌러 주세요.',
+      'auth/popup-closed-by-user': '로그인 창이 닫혔습니다. 다시 시도해 주세요.',
+      'auth/cancelled-popup-request': '로그인 창이 여러 번 열렸습니다. 다시 시도해 주세요.',
+      'auth/operation-not-supported-in-this-environment': '이 브라우저에서는 팝업 로그인이 안 됩니다. ‘리디렉션으로 다시 로그인’을 눌러 주세요.',
+      'auth/unauthorized-domain': '이 주소가 Firebase 로그인 허용 도메인에 없습니다. 관리자에게 알려 주세요.',
+      'auth/network-request-failed': '네트워크에 연결되지 않았습니다. 잠시 뒤 다시 시도해 주세요.',
+      'auth/invalid-api-key': 'Firebase 설정(API 키)을 확인해 주세요.',
+      'auth/configuration-not-found': 'Firebase에서 Google 로그인이 켜져 있지 않습니다.',
+      'auth/account-exists-with-different-credential': '다른 방식으로 가입된 계정입니다.',
+      'auth/internal-error': '로그인 처리 중 문제가 생겼습니다. 잠시 뒤 다시 시도해 주세요.'
+    };
+    if (map[code]) return map[code];
+    if (code) return '로그인하지 못했습니다. (' + code + ')';
+    return '로그인하지 못했습니다. 잠시 뒤 다시 시도해 주세요.';
+  }
+
+  function startAuth() {
+    if (cloudSdk()) { initCloud(); return; }
+    var tries = 0;
+    (function wait() {
+      if (cloudSdk()) { initCloud(); return; }
+      if (tries++ >= 30) { gateSignedOut('offline'); return; }
+      setTimeout(wait, 100);
+    })();
+  }
+
+  function initCloud() {
+    if (CLOUD.ready) return;
+    CLOUD.sdk = true;
+    try {
+      if (!window.firebase.apps || !window.firebase.apps.length) window.firebase.initializeApp(FIREBASE_CONFIG);
+      CLOUD.auth = window.firebase.auth();
+      CLOUD.db = window.firebase.firestore();
+      CLOUD.ready = true;
+    } catch (e) {
+      CLOUD.ready = false;
+      gateSignedOut('offline');
+      return;
+    }
+    if (window.firebase.firestore && window.firebase.firestore.setLogLevel) {
+      try { window.firebase.firestore.setLogLevel('error'); } catch (e) {}
+    }
+    CLOUD.auth.getRedirectResult().catch(function (err) {
+      var code = (err && err.code) || '';
+      if (code && code !== 'auth/no-auth-event' && code !== 'auth/popup-closed-by-user') {
+        CLOUD.authError = authMessage(err);
+      }
+    });
+    CLOUD.auth.onAuthStateChanged(function (user) {
+      if (user) enterCloud(user);
+      else leaveCloud();
+    });
+    setTimeout(function () {
+      if (document.body.classList.contains('booting')) gateSignedOut('');
+    }, 8000);
+  }
+
+  function enterCloud(user) {
+    CLOUD.user = user;
+    CLOUD.isAdmin = isAdminEmail(user.email);
+    CLOUD.authError = '';
+    prayerMode = 'cloud';
+    localModeChosen = false;
+    document.body.classList.remove('booting', 'signed-out');
+    document.body.classList.toggle('member-mode', !CLOUD.isAdmin);
+    updateUserBar();
+    $('app-title').textContent = CLOUD.isAdmin ? '신우회 출석부' : '신우회 기도제목';
+    document.title = CLOUD.isAdmin ? '신우회 출석부' : '신우회 기도제목';
+    subscribePrayers();
+    renderAll();
+    switchView(CLOUD.isAdmin ? 'attend' : 'prayers');
+    if (!CLOUD.isAdmin) toast('로그인했습니다. 기도제목을 나눠 주세요.');
+  }
+
+  function leaveCloud() {
+    unsubPrayers();
+    CLOUD.user = null;
+    CLOUD.isAdmin = false;
+    CLOUD.list = [];
+    CLOUD.err = '';
+    CLOUD.errShown = false;
+    prayerMode = 'local';
+    document.body.classList.remove('member-mode');
+    updateUserBar();
+    $('app-title').textContent = '신우회 출석부';
+    document.title = '신우회 출석부';
+    if (localModeChosen) {
+      document.body.classList.remove('booting', 'signed-out');
+      renderAll();
+    } else {
+      gateSignedOut('');
+    }
+  }
+
+  function gateSignedOut(kind) {
+    document.body.classList.remove('booting', 'member-mode');
+    document.body.classList.add('signed-out');
+    $('gate-title').textContent = '신우회 기도제목';
+    $('gate-sub').textContent = 'Google 계정으로 로그인하면 함께 나눌 수 있어요';
+    var btn = $('btn-google');
+    btn.classList.remove('hidden');
+    btn.disabled = !cloudReady();
+    $('btn-local').classList.toggle('hidden', !hasLocalData());
+    $('btn-redirect').classList.add('hidden');
+    var foot = $('gate-foot');
+    foot.classList.remove('err');
+    if (CLOUD.authError) {
+      foot.classList.add('err');
+      foot.textContent = CLOUD.authError;
+    } else if (kind === 'offline' || !cloudReady()) {
+      foot.textContent = '지금은 로그인 서버에 연결하지 못했습니다. 인터넷에 연결되면 Google 로그인을 쓸 수 있습니다.'
+        + (hasLocalData() ? ' 이 기기의 출석부는 그대로 열 수 있어요.' : '');
+    } else {
+      foot.textContent = '출석·명단 자료는 이 기기에 그대로 남습니다.';
+    }
+  }
+
+  function updateUserBar() {
+    var bar = $('user-bar');
+    if (!CLOUD.user) { bar.classList.add('hidden'); return; }
+    bar.classList.remove('hidden');
+    $('ub-name').textContent = cloudDisplayName();
+    $('ub-role').textContent = CLOUD.isAdmin ? '리더 · 관리자' : '신우';
+    $('ub-role').classList.remove('hidden');
+  }
+
+  function signInGoogle() {
+    if (!cloudReady()) { toast('인터넷 연결을 확인한 뒤 다시 시도해 주세요.'); return; }
+    if (authBusy) return;
+    authBusy = true;
+    $('btn-google').disabled = true;
+    $('btn-redirect').classList.add('hidden');
+    $('gate-foot').classList.remove('err');
+    var provider = new window.firebase.auth.GoogleAuthProvider();
+    provider.setCustomParameters({ prompt: 'select_account' });
+    CLOUD.auth.signInWithPopup(provider).then(function () {
+      authBusy = false;
+      $('btn-google').disabled = false;
+    }).catch(function (err) {
+      authBusy = false;
+      $('btn-google').disabled = false;
+      handleSignInError(err);
+    });
+  }
+
+  function handleSignInError(err) {
+    var code = (err && err.code) || '';
+    var foot = $('gate-foot');
+    foot.classList.add('err');
+    foot.textContent = authMessage(err);
+    if (window.console) console.warn('sign-in failed', code, err && err.message);
+    if (code === 'auth/popup-blocked' || code === 'auth/operation-not-supported-in-this-environment') {
+      signInRedirect();
+      return;
+    }
+    if (code === 'auth/unauthorized-domain' || code === 'auth/configuration-not-found' || code === 'auth/invalid-api-key') {
+      return;
+    }
+    $('btn-redirect').classList.remove('hidden');
+  }
+
+  function signInRedirect() {
+    if (!cloudReady()) return;
+    var provider = new window.firebase.auth.GoogleAuthProvider();
+    provider.setCustomParameters({ prompt: 'select_account' });
+    CLOUD.auth.signInWithRedirect(provider).catch(function (err) {
+      var foot = $('gate-foot');
+      foot.classList.add('err');
+      foot.textContent = authMessage(err);
+    });
+  }
+
+  function signOutUser() {
+    confirmModal('로그아웃', '로그아웃하면 공유 기도제목은 이 화면에서 사라집니다.\n이 기기에 저장된 출석·명단 자료는 그대로 남습니다.', '로그아웃', function () {
+      if (!CLOUD.auth) return;
+      CLOUD.auth.signOut().catch(function () { toast('로그아웃하지 못했습니다.'); });
+    });
+  }
+
+  function enterLocalMode() {
+    localModeChosen = true;
+    prayerMode = 'local';
+    document.body.classList.remove('booting', 'signed-out', 'member-mode');
+    $('app-title').textContent = '신우회 출석부';
+    document.title = '신우회 출석부';
+    renderAll();
+    switchView('attend');
+    toast('이 기기의 출석부를 열었습니다.');
+  }
+
+  function unsubPrayers() {
+    CLOUD.subs.forEach(function (fn) { try { fn(); } catch (e) {} });
+    CLOUD.subs = [];
+  }
+
+  function subscribePrayers() {
+    unsubPrayers();
+    if (!cloudReady() || !CLOUD.user) return;
+    var col = CLOUD.db.collection('prayers');
+    var onErr = function (err) {
+      CLOUD.err = (err && err.code) ? err.code : 'error';
+      renderPrayers();
+      renderSaveState();
+      if (!CLOUD.errShown) {
+        CLOUD.errShown = true;
+        toast(CLOUD.err === 'permission-denied' ? '기도제목을 불러올 권한이 없습니다.' : '기도제목을 불러오지 못했습니다.');
+      }
+      if (window.console) console.warn('prayer snapshot failed', CLOUD.err, err && err.message);
+    };
+    if (CLOUD.isAdmin) {
+      CLOUD.subs.push(col.onSnapshot(function (snap) {
+        CLOUD.list = snap.docs.map(mapCloudDoc);
+        cloudChanged();
+      }, onErr));
+    } else {
+      /* 보안 규칙상 일반 신우는 전체 컬렉션을 구독할 수 없습니다.
+         공개 글과 내 글을 따로 구독해 합칩니다. */
+      var pub = [], mine = [];
+      var emit = function () {
+        var byId = {};
+        pub.forEach(function (p) { byId[p.id] = p; });
+        mine.forEach(function (p) { byId[p.id] = p; });
+        CLOUD.list = Object.keys(byId).map(function (k) { return byId[k]; });
+        cloudChanged();
+      };
+      CLOUD.subs.push(col.where('visibility', '==', 'public').onSnapshot(function (snap) {
+        pub = snap.docs.map(mapCloudDoc);
+        emit();
+      }, onErr));
+      CLOUD.subs.push(col.where('authorUid', '==', CLOUD.user.uid).onSnapshot(function (snap) {
+        mine = snap.docs.map(mapCloudDoc);
+        emit();
+      }, onErr));
+    }
+  }
+
+  function cloudChanged() {
+    CLOUD.err = '';
+    if (document.body.classList.contains('member-mode')) renderSaveState();
+    renderPrayers();
+  }
+
+  function isoShort(v) {
+    if (!v) return '';
+    if (typeof v === 'string') return normDate(v) || String(v).slice(0, 10);
+    if (typeof v.toDate === 'function') { try { return normDate(v.toDate().toISOString().slice(0, 10)); } catch (e) { return ''; } }
+    if (v.seconds) return normDate(new Date(v.seconds * 1000).toISOString().slice(0, 10));
+    return '';
+  }
+
+  function mapCloudDoc(doc) {
+    var d = doc.data() || {};
+    return {
+      id: doc.id,
+      memberId: '',
+      name: String(d.authorName || d.authorEmail || '신우'),
+      text: String(d.content || ''),
+      category: String(d.category || ''),
+      createdAt: isoShort(d.createdAt),
+      answered: !!d.answered,
+      answeredAt: d.answered ? isoShort(d.answeredAt) : '',
+      updatedAt: (typeof d.updatedAt === 'string') ? d.updatedAt : '',
+      authorUid: String(d.authorUid || ''),
+      authorName: String(d.authorName || ''),
+      authorEmail: String(d.authorEmail || ''),
+      visibility: d.visibility === 'private' ? 'private' : 'public'
+    };
+  }
+
+  function prayerWriteError(err) {
+    var code = (err && err.code) || '';
+    if (window.console) console.warn('prayer write failed', code, err && err.message);
+    if (code === 'permission-denied') toast('권한이 없습니다. 내가 쓴 기도제목만 고칠 수 있어요.');
+    else if (code === 'unavailable' || code === 'network-request-failed' || code === 'failed-precondition') toast('인터넷 연결이 끊겨 저장하지 못했습니다. 잠시 뒤 다시 시도해 주세요.');
+    else toast('저장하지 못했습니다. 잠시 뒤 다시 시도해 주세요.');
+  }
+
   /* ===================== 기도제목 ===================== */
   var PRAYER_CATEGORIES = ['건강', '가족', '군 생활', '학업·진로', '신앙', '감사', '기타'];
 
+  function allPrayers() { return prayerMode === 'cloud' ? CLOUD.list : state.prayers; }
+
   function findPrayer(id) {
-    for (var i = 0; i < state.prayers.length; i++) {
-      if (state.prayers[i].id === id) return state.prayers[i];
+    var list = allPrayers();
+    for (var i = 0; i < list.length; i++) {
+      if (list[i].id === id) return list[i];
     }
     return null;
   }
   function prayerMember(p) { return p && p.memberId ? findMember(p.memberId) : null; }
   function prayerName(p) {
     var m = prayerMember(p);
-    return m ? m.name : (p.name || '이름 없음');
+    return m ? m.name : (p.name || p.authorName || '이름 없음');
   }
-  function prayerPersonKey(p) { return p.memberId ? ('m:' + p.memberId) : ('n:' + (p.name || '')); }
+  function prayerPersonKey(p) { return p.memberId ? ('m:' + p.memberId) : ('n:' + prayerName(p)); }
+  function prayerVisibility(p) { return p.visibility === 'private' ? 'private' : 'public'; }
+  function isMyPrayer(p) {
+    if (prayerMode !== 'cloud') return true;
+    if (!CLOUD.user) return false;
+    return p.authorUid === CLOUD.user.uid;
+  }
+  function canEditPrayer(p) {
+    if (prayerMode !== 'cloud') return true;
+    return isMyPrayer(p) || CLOUD.isAdmin;
+  }
   function prayerDateLabel(iso) {
     if (!iso) return '';
     var d = parseISO(iso);
@@ -2302,9 +2747,26 @@ tr.streak td{background:var(--warn-bg)}
     return y + (d.getMonth() + 1) + '월 ' + d.getDate() + '일';
   }
 
-  /* 필터에 쓸 사람 목록: 등록 신우 + 이름만 적은 기도제목의 이름 */
+  /* 필터에 쓸 사람 목록:
+     - 공유 모드: 글을 쓴 사람 이름
+     - 로컬 모드: 등록 신우 + 이름만 적은 기도제목의 이름 */
   function prayerPeople() {
     var out = [];
+    var list = allPrayers();
+    if (prayerMode === 'cloud') {
+      var names = [];
+      list.forEach(function (p) {
+        var n = prayerName(p);
+        if (n && names.indexOf(n) < 0) names.push(n);
+      });
+      names.sort(function (a, b) { return a.localeCompare(b, 'ko'); });
+      names.forEach(function (n) {
+        var cnt = 0;
+        list.forEach(function (p) { if (prayerName(p) === n) cnt++; });
+        out.push({ key: 'n:' + n, label: n, count: cnt });
+      });
+      return out;
+    }
     state.members.forEach(function (m) {
       var cnt = 0;
       state.prayers.forEach(function (p) { if (p.memberId === m.id) cnt++; });
@@ -2312,12 +2774,12 @@ tr.streak td{background:var(--warn-bg)}
       out.push({ key: 'm:' + m.id, label: m.name + (m.group ? ' · ' + m.group : ''), count: cnt });
     });
     out.sort(function (a, b) { return a.label.localeCompare(b.label, 'ko'); });
-    var names = [];
+    var names2 = [];
     state.prayers.forEach(function (p) {
-      if (!p.memberId && p.name && names.indexOf(p.name) < 0) names.push(p.name);
+      if (!p.memberId && p.name && names2.indexOf(p.name) < 0) names2.push(p.name);
     });
-    names.sort(function (a, b) { return a.localeCompare(b, 'ko'); });
-    names.forEach(function (n) {
+    names2.sort(function (a, b) { return a.localeCompare(b, 'ko'); });
+    names2.forEach(function (n) {
       var cnt = 0;
       state.prayers.forEach(function (p) { if (!p.memberId && p.name === n) cnt++; });
       out.push({ key: 'n:' + n, label: n + ' (직접 입력)', count: cnt });
@@ -2337,6 +2799,8 @@ tr.streak td{background:var(--warn-bg)}
     people.forEach(function (pp) { if (pp.key === prayPerson) keep = true; });
     if (!keep) prayPerson = '';
     sel.value = prayPerson;
+    var lbl = $('pray-person-label');
+    if (lbl) lbl.textContent = prayerMode === 'cloud' ? '작성자' : '신우';
 
     var psel = $('f-pray-person');
     var pcur = psel.value;
@@ -2353,7 +2817,7 @@ tr.streak td{background:var(--warn-bg)}
     }).join('');
 
     var cats = PRAYER_CATEGORIES.slice();
-    state.prayers.forEach(function (p) {
+    allPrayers().forEach(function (p) {
       if (p.category && cats.indexOf(p.category) < 0) cats.push(p.category);
     });
     $('cat-list').innerHTML = cats.map(function (c) {
@@ -2373,27 +2837,71 @@ tr.streak td{background:var(--warn-bg)}
 
   function prayerRowHtml(p) {
     var m = prayerMember(p);
+    var isPrivate = prayerVisibility(p) === 'private';
+    var mine = isMyPrayer(p);
     var badges = '';
     if (m && m.group) badges += '<span class="badge">' + escapeHtml(m.group) + '</span>';
-    if (!m) badges += '<span class="badge">직접 입력</span>';
+    if (prayerMode !== 'cloud' && !m) badges += '<span class="badge">직접 입력</span>';
     if (p.category) badges += '<span class="badge cat">' + escapeHtml(p.category) + '</span>';
+    if (isPrivate) badges += '<span class="badge lock">🔒 ' + (mine ? '나·리더만 열람' : '비공개') + '</span>';
+    if (prayerMode === 'cloud' && mine) badges += '<span class="badge">내 글</span>';
     if (p.answered) badges += '<span class="badge ok">응답됨' + (p.answeredAt ? ' · ' + escapeHtml(mdLabel(p.answeredAt)) : '') + '</span>';
     var html = '';
-    html += '<li class="prow' + (p.answered ? ' answered' : '') + '" data-id="' + escapeHtml(p.id) + '">';
+    html += '<li class="prow' + (p.answered ? ' answered' : '') + (isPrivate ? ' private' : '') + '" data-id="' + escapeHtml(p.id) + '">';
     html += '<div class="p-head"><span class="p-name">' + escapeHtml(prayerName(p)) + '</span>' + badges;
     html += '<span class="p-date">' + escapeHtml(prayerDateLabel(p.createdAt)) + '</span></div>';
     html += '<div class="p-text">' + escapeHtml(p.text) + '</div>';
-    html += '<div class="p-actions">';
-    html += '<button type="button" class="btn sm' + (p.answered ? ' ok' : '') + '" data-pray-act="toggle">' + (p.answered ? '✓ 응답됨' : '응답 체크') + '</button>';
-    html += '<button type="button" class="btn sm" data-pray-act="edit">수정</button>';
-    html += '<button type="button" class="btn sm danger" data-pray-act="del">삭제</button>';
-    html += '</div></li>';
+    if (canEditPrayer(p)) {
+      html += '<div class="p-actions">';
+      html += '<button type="button" class="btn sm' + (p.answered ? ' ok' : '') + '" data-pray-act="toggle">' + (p.answered ? '✓ 응답됨' : '응답 체크') + '</button>';
+      html += '<button type="button" class="btn sm" data-pray-act="edit">수정</button>';
+      html += '<button type="button" class="btn sm danger" data-pray-act="del">삭제</button>';
+      html += '</div>';
+    }
+    html += '</li>';
     return html;
+  }
+
+  function pendingLocalPrayers() {
+    var done = (state.meta && state.meta.migratedPrayers) || [];
+    return state.prayers.filter(function (p) { return done.indexOf(p.id) < 0; });
+  }
+
+  function renderPrayModeCards() {
+    var card = $('pray-mode-card');
+    var mig = $('migrate-card');
+    if (!card) return;
+    card.classList.remove('hidden');
+    var dot = $('pray-mode-dot');
+    if (prayerMode === 'cloud') {
+      dot.classList.toggle('off', !!CLOUD.err);
+      $('pray-mode-text').textContent = CLOUD.err ? '불러오지 못했습니다' : '실시간으로 함께 나누는 중';
+      $('pray-mode-tip').innerHTML = CLOUD.err
+        ? '기도제목을 불러오지 못했습니다. (' + escapeHtml(CLOUD.err) + ') 네트워크와 로그인 상태를 확인해 주세요.'
+        : (CLOUD.isAdmin
+          ? '전체 공유 기도제목과 모든 신우의 비공개 기도제목을 함께 보고 관리합니다.'
+          : '전체 공유 기도제목과 내가 쓴 비공개 기도제목이 바로 보입니다.');
+      $('btn-cloud-login').classList.add('hidden');
+    } else {
+      dot.classList.add('off');
+      $('pray-mode-text').textContent = '이 기기에만 저장 중';
+      $('pray-mode-tip').innerHTML = (state.prayers.length ? '기도제목 ' + state.prayers.length + '개가 이 폰에만 저장돼 있습니다. ' : '')
+        + 'Google 계정으로 로그인하면 신우들과 실시간으로 나눌 수 있어요.';
+      $('btn-cloud-login').classList.toggle('hidden', !cloudReady());
+    }
+    var pend = pendingLocalPrayers();
+    if (prayerMode === 'cloud' && CLOUD.isAdmin && pend.length && !migrateCardDismissed) {
+      mig.classList.remove('hidden');
+      $('migrate-count').textContent = pend.length + '개';
+      $('migrate-text').innerHTML = '이 폰(브라우저)에 저장돼 있던 기도제목 <b>' + pend.length + '개</b>를 클라우드로 옮기면 신우들과 함께 볼 수 있습니다. 옮긴 글은 <b>전체 공유</b>로 올라가고, 이 폰의 원본은 그대로 남습니다.';
+    } else {
+      mig.classList.add('hidden');
+    }
   }
 
   function renderPrayers() {
     renderPrayerPersonOptions();
-    var all = state.prayers;
+    var all = allPrayers();
     var answered = 0;
     all.forEach(function (p) { if (p.answered) answered++; });
     $('ptile-all').textContent = String(all.length);
@@ -2421,19 +2929,25 @@ tr.streak td{background:var(--warn-bg)}
     note.push('<span class="chip">응답률 ' + (all.length ? Math.round((answered / all.length) * 100) : 0) + '%</span>');
     if (prayState === 'praying') note.push('<span class="chip">기도 중만 보기</span>');
     if (prayState === 'answered') note.push('<span class="chip">응답됨만 보기</span>');
-    note.push('<span>기도 중인 제목이 위에 오고, 기도제목은 이 기기에만 저장됩니다</span>');
+    if (prayerMode === 'cloud') note.push('<span>신우들과 실시간으로 나누는 기도제목입니다</span>');
+    else note.push('<span>기도 중인 제목이 위에 오고, 기도제목은 이 기기에만 저장됩니다</span>');
     $('pray-note').innerHTML = note.join('');
+
+    renderPrayModeCards();
 
     var box = $('pray-empty');
     if (!list.length) {
       box.classList.remove('hidden');
       if (!all.length) {
-        box.innerHTML = '<strong>아직 기도제목이 없습니다</strong>신우별 기도제목을 적어 두고, 응답을 받으면 체크해 두세요.'
-          + '<div class="btns"><button type="button" class="btn primary sm" data-pray-empty="add">기도제목 추가</button>'
-          + (state.members.length ? '' : '<button type="button" class="btn sm" data-pray-empty="members">신우 명단 등록</button>')
-          + '</div>';
+        box.innerHTML = prayerMode === 'cloud'
+          ? '<strong>아직 나눈 기도제목이 없습니다</strong>첫 기도제목을 적어 신우들과 함께 나눠 보세요.'
+            + '<div class="btns"><button type="button" class="btn primary sm" data-pray-empty="add">기도제목 나누기</button></div>'
+          : '<strong>아직 기도제목이 없습니다</strong>신우별 기도제목을 적어 두고, 응답을 받으면 체크해 두세요.'
+            + '<div class="btns"><button type="button" class="btn primary sm" data-pray-empty="add">기도제목 추가</button>'
+            + (state.members.length ? '' : '<button type="button" class="btn sm" data-pray-empty="members">신우 명단 등록</button>')
+            + '</div>';
       } else {
-        box.innerHTML = '<strong>조건에 맞는 기도제목이 없습니다</strong>검색어나 신우·상태 필터를 바꿔 보세요.';
+        box.innerHTML = '<strong>조건에 맞는 기도제목이 없습니다</strong>검색어나 작성자·상태 필터를 바꿔 보세요.';
       }
     } else {
       box.classList.add('hidden');
@@ -2449,12 +2963,32 @@ tr.streak td{background:var(--warn-bg)}
     else { inp.readOnly = false; }
   }
 
+  function setPrayerVis(vis) {
+    var v = vis === 'private' ? 'private' : 'public';
+    var box = $('f-pray-vis-box');
+    if (!box) return;
+    Array.prototype.forEach.call(box.querySelectorAll('input[name="pray-vis"]'), function (r) {
+      r.checked = (r.value === v);
+    });
+    $('vis-opt-public').classList.toggle('on', v === 'public');
+    $('vis-opt-private').classList.toggle('on', v === 'private');
+  }
+  function getPrayerVis() {
+    var r = document.querySelector('#f-pray-vis-box input[name="pray-vis"]:checked');
+    return (r && r.value === 'private') ? 'private' : 'public';
+  }
+
   function openPrayerModal(id) {
     editPrayerId = id || '';
     var p = id ? findPrayer(id) : null;
-    $('prayer-modal-title').textContent = p ? '기도제목 수정' : '기도제목 추가';
-    $('prayer-modal-sub').textContent = p ? '내용을 고친 뒤 저장을 눌러 주세요.' : '신우를 고르거나 이름을 직접 적어 주세요.';
+    var cloud = prayerMode === 'cloud';
+    $('prayer-modal-title').textContent = p ? '기도제목 수정' : (cloud ? '기도제목 나누기' : '기도제목 추가');
+    $('prayer-modal-sub').textContent = p
+      ? '내용을 고친 뒤 저장을 눌러 주세요.'
+      : (cloud ? '전체 공유하면 신우들이 함께 보고 기도합니다.' : '신우를 고르거나 이름을 직접 적어 주세요.');
     $('prayer-submit').textContent = p ? '수정 저장' : '저장';
+    $('f-pray-person-wrap').classList.toggle('hidden', cloud);
+    $('f-pray-vis-wrap').classList.toggle('hidden', !cloud);
     renderPrayerPersonOptions();
     var psel = $('f-pray-person');
     var preMember = '';
@@ -2462,6 +2996,8 @@ tr.streak td{background:var(--warn-bg)}
     if (p) {
       preMember = p.memberId || '';
       preName = p.name || (p.memberId ? prayerName(p) : '');
+    } else if (cloud) {
+      preName = cloudDisplayName();
     } else if (prayPerson) {
       if (prayPerson.indexOf('m:') === 0) preMember = prayPerson.slice(2);
       else preName = prayPerson.slice(2);
@@ -2472,6 +3008,7 @@ tr.streak td{background:var(--warn-bg)}
     $('f-pray-cat').value = p ? (p.category || '') : '';
     $('f-pray-date').value = p ? (p.createdAt || todayISO()) : todayISO();
     $('f-pray-answered').checked = p ? !!p.answered : false;
+    setPrayerVis(p ? prayerVisibility(p) : 'public');
     syncPrayerNameField();
     openModal('modal-prayer');
     setTimeout(function () { try { $('f-pray-text').focus(); } catch (e) {} }, 60);
@@ -2479,18 +3016,54 @@ tr.streak td{background:var(--warn-bg)}
 
   function submitPrayer() {
     var text = $('f-pray-text').value.trim();
-    var mid = $('f-pray-person').value;
+    var cloud = prayerMode === 'cloud';
+    var mid = cloud ? '' : $('f-pray-person').value;
     var m = mid ? findMember(mid) : null;
     var name = m ? m.name : $('f-pray-name').value.trim();
+    if (cloud && !name) name = cloudDisplayName();
     if (!name) { toast('이름을 입력하거나 신우를 골라 주세요.'); $('f-pray-name').focus(); return; }
     if (!text) { toast('기도제목을 적어 주세요.'); $('f-pray-text').focus(); return; }
+    var cat = $('f-pray-cat').value.trim();
+    var created = normDate($('f-pray-date').value) || todayISO();
+    var checked = $('f-pray-answered').checked;
+
+    if (cloud) {
+      if (!CLOUD.user || !cloudReady()) { toast('로그인이 필요합니다.'); return; }
+      var wasEdit = !!editPrayerId;
+      var target = editPrayerId;
+      var base = {
+        authorUid: CLOUD.user.uid,
+        authorName: name,
+        authorEmail: CLOUD.user.email || '',
+        visibility: getPrayerVis(),
+        content: text,
+        category: cat,
+        answered: checked,
+        answeredAt: checked ? (wasEdit ? (findPrayer(target) && findPrayer(target).answeredAt) || todayISO() : todayISO()) : null,
+        createdAt: created,
+        updatedAt: nowISO()
+      };
+      var btn = $('prayer-submit');
+      btn.disabled = true;
+      var job = wasEdit
+        ? CLOUD.db.collection('prayers').doc(target).update(base)
+        : CLOUD.db.collection('prayers').add(base);
+      job.then(function () {
+        btn.disabled = false;
+        editPrayerId = '';
+        closeModal('modal-prayer');
+        toast(wasEdit ? '기도제목을 수정했습니다.' : name + ' 님의 기도제목을 올렸습니다.');
+      }).catch(function (err) {
+        btn.disabled = false;
+        prayerWriteError(err);
+      });
+      return;
+    }
+
     if (!m) {
       var hit = state.members.filter(function (x) { return x.name === name; })[0];
       if (hit) m = hit;
     }
-    var cat = $('f-pray-cat').value.trim();
-    var created = normDate($('f-pray-date').value) || todayISO();
-    var checked = $('f-pray-answered').checked;
     if (editPrayerId) {
       var p = findPrayer(editPrayerId);
       if (p) {
@@ -2533,6 +3106,18 @@ tr.streak td{background:var(--warn-bg)}
   function togglePrayerAnswered(id) {
     var p = findPrayer(id);
     if (!p) return;
+    if (!canEditPrayer(p)) { toast('내가 쓴 기도제목만 바꿀 수 있습니다.'); return; }
+    if (prayerMode === 'cloud') {
+      var next = !p.answered;
+      CLOUD.db.collection('prayers').doc(id).update({
+        answered: next,
+        answeredAt: next ? (p.answeredAt || todayISO()) : null,
+        updatedAt: nowISO()
+      }).then(function () {
+        toast(next ? '응답 감사로 표시했습니다.' : '다시 기도 중으로 옮겼습니다.');
+      }).catch(prayerWriteError);
+      return;
+    }
     p.answered = !p.answered;
     p.answeredAt = p.answered ? todayISO() : '';
     p.updatedAt = nowISO();
@@ -2545,8 +3130,16 @@ tr.streak td{background:var(--warn-bg)}
   function deletePrayer(id) {
     var p = findPrayer(id);
     if (!p) return;
+    if (!canEditPrayer(p)) { toast('내가 쓴 기도제목만 지울 수 있습니다.'); return; }
     var preview = p.text.length > 46 ? p.text.slice(0, 46) + '…' : p.text;
+    var cloud = prayerMode === 'cloud';
     confirmModal('기도제목 삭제', prayerName(p) + ' 님의 기도제목을 지웁니다.\n‘' + preview + '’\n되돌릴 수 없습니다.', '삭제', function () {
+      if (cloud) {
+        CLOUD.db.collection('prayers').doc(id).delete().then(function () {
+          toast('기도제목을 삭제했습니다.');
+        }).catch(prayerWriteError);
+        return;
+      }
       state.prayers = state.prayers.filter(function (x) { return x.id !== id; });
       save();
       renderPrayers();
@@ -2568,13 +3161,69 @@ tr.streak td{background:var(--warn-bg)}
   }
 
   function exportPrayerCSV() {
-    if (!state.prayers.length) { toast('내보낼 기도제목이 없습니다.'); return; }
-    var rows = [['이름', '소속', '카테고리', '기도제목', '작성일', '상태', '응답일']];
-    prayerSort(state.prayers).forEach(function (p) {
+    var list = allPrayers();
+    if (!list.length) { toast('내보낼 기도제목이 없습니다.'); return; }
+    var rows = [['이름', '소속', '카테고리', '기도제목', '작성일', '상태', '응답일', '공개범위']];
+    prayerSort(list).forEach(function (p) {
       var m = prayerMember(p);
-      rows.push([prayerName(p), m ? m.group : '', p.category || '', p.text, p.createdAt, p.answered ? '응답됨' : '기도 중', p.answeredAt || '']);
+      rows.push([prayerName(p), m ? m.group : '', p.category || '', p.text, p.createdAt,
+        p.answered ? '응답됨' : '기도 중', p.answeredAt || '',
+        prayerMode === 'cloud' ? (prayerVisibility(p) === 'private' ? '리더에게만' : '전체 공유') : '']);
     });
     download('신우회_기도제목.csv', toCSV(rows));
+  }
+
+  function migrateLocalPrayers() {
+    if (!cloudReady() || !CLOUD.user) { toast('로그인이 필요합니다.'); return; }
+    var pend = pendingLocalPrayers();
+    if (!pend.length) { toast('옮길 기도제목이 없습니다.'); return; }
+    confirmModal('클라우드로 옮기기',
+      '이 폰에만 있던 기도제목 ' + pend.length + '개를 클라우드로 올립니다.\n'
+      + '올린 글은 ‘전체 공유’로 신우들과 함께 보게 됩니다.\n'
+      + '이 폰의 원본은 그대로 남습니다.',
+      '옮기기', function () {
+        var batch = CLOUD.db.batch();
+        pend.forEach(function (p) {
+          var ref = CLOUD.db.collection('prayers').doc();
+          batch.set(ref, {
+            authorUid: CLOUD.user.uid,
+            authorName: prayerName(p),
+            authorEmail: CLOUD.user.email || '',
+            visibility: 'public',
+            content: p.text,
+            category: p.category || '',
+            answered: !!p.answered,
+            answeredAt: p.answered ? (normDate(p.answeredAt) || normDate(p.createdAt) || todayISO()) : null,
+            createdAt: normDate(p.createdAt) || todayISO(),
+            updatedAt: nowISO()
+          });
+        });
+        batch.commit().then(function () {
+          var done = (state.meta.migratedPrayers || []).slice();
+          pend.forEach(function (p) { if (done.indexOf(p.id) < 0) done.push(p.id); });
+          state.meta.migratedPrayers = done;
+          save();
+          renderPrayers();
+          renderBackup();
+          toast(pend.length + '개를 클라우드로 옮겼습니다.');
+        }).catch(prayerWriteError);
+      });
+  }
+
+  function bindAuthEvents() {
+    $('btn-google').addEventListener('click', signInGoogle);
+    $('btn-redirect').addEventListener('click', signInRedirect);
+    $('btn-local').addEventListener('click', enterLocalMode);
+    $('btn-signout').addEventListener('click', signOutUser);
+    $('btn-cloud-login').addEventListener('click', signInGoogle);
+    $('btn-migrate').addEventListener('click', migrateLocalPrayers);
+    $('btn-migrate-hide').addEventListener('click', function () {
+      migrateCardDismissed = true;
+      $('migrate-card').classList.add('hidden');
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('#f-pray-vis-box input[name="pray-vis"]'), function (r) {
+      r.addEventListener('change', function () { setPrayerVis(r.value); });
+    });
   }
 
   /* ===================== 전체 렌더 ===================== */
@@ -2833,12 +3482,14 @@ tr.streak td{background:var(--warn-bg)}
     curMeeting = state.meetings[0] || '주일예배';
     statsMonth = todayISO().slice(0, 7);
     bindEvents();
+    bindAuthEvents();
     renderAll();
     if (!storageOK) {
       renderSaveState();
     } else if (!state.members.length) {
       $('save-state').textContent = '시작하려면 명단을 등록하세요';
     }
+    startAuth();
   }
 
   if (document.readyState === 'loading') {
