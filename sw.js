@@ -1,5 +1,5 @@
 /* 신우회 출석부 - 오프라인 실행용 서비스 워커 */
-var CACHE_NAME = 'sinyuhoe-attendance-v1';
+var CACHE_NAME = 'sinyuhoe-attendance-v2';
 var ASSETS = [
   './',
   './index.html',
