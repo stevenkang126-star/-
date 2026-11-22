@@ -8,7 +8,7 @@
 
 | 반 | 담임 교사 | 전용 링크 |
 | --- | --- | --- |
-| 701통신 · 운영대대 | 이재인 집사 | <https://stevenkang126-star.github.io/-/?room=701comm> |
+| 701통신 · 운영대대 | 이재인 집사님 | <https://stevenkang126-star.github.io/-/?room=701comm> |
 | 군사경찰 · 특임대 | 박민지 집사님 | <https://stevenkang126-star.github.io/-/?room=mp> |
 | 통신단 본부 | 박상두 집사님 | <https://stevenkang126-star.github.io/-/?room=commhq> |
 | 본부대 | 강현욱 집사님 | <https://stevenkang126-star.github.io/-/?room=bonbu> |
