@@ -271,6 +271,17 @@ body.signed-out .app-header,body.signed-out .wrap,body.signed-out .bnav{display:
 .ub-role{font-size:10.5px;font-weight:800;color:var(--brand);background:var(--brand-soft);border:1px solid rgba(43,74,111,.2);border-radius:999px;padding:1px 7px;white-space:nowrap}
 .userbar .btn{margin-left:auto;color:var(--muted)}
 body.member-mode [data-view="attend"],body.member-mode [data-view="members"],body.member-mode [data-view="stats"],body.member-mode [data-view="backup"]{display:none !important}
+/* 대표 인원(리더): 출석 체크 + 기도제목만 */
+body.is-leader [data-view="members"],body.is-leader [data-view="stats"],body.is-leader [data-view="backup"]{display:none !important}
+/* 관리자 전용 요소 */
+body:not(.is-admin) .admin-only{display:none !important}
+.leader-only{display:none}
+body.is-leader .leader-only{display:block}
+.ub-role.leader{color:#8a5a00;background:var(--warn-bg);border-color:var(--warn-line)}
+.leadrow{display:flex;align-items:center;gap:9px;padding:10px 12px;border-bottom:1px solid var(--line)}
+.leadrow:last-child{border-bottom:0}
+.leadrow .em{flex:1 1 auto;font-size:13px;font-weight:800;word-break:break-all}
+.leadrow .when{font-size:11px;font-weight:600;color:var(--muted);white-space:nowrap}
 
 /* 공유 상태 */
 .cloudbar{display:flex;align-items:center;gap:7px;font-size:12.5px;font-weight:800;color:var(--text)}
@@ -373,6 +384,7 @@ body.member-mode [data-view="attend"],body.member-mode [data-view="members"],bod
 
   <!-- ============ 출석 체크 ============ -->
   <section id="view-attend" class="view">
+    <div class="notice leader-only" style="margin-bottom:10px">👤 <b>대표 인원(출석담당)</b> 화면입니다. 이름·목장·입대일·전역 D-day·생일과 출석 상태를 함께 볼 수 있습니다. 명단 편집·백업은 관리자만 할 수 있습니다.</div>
     <div class="card no-print">
       <div class="row">
         <label class="field" style="flex:1 1 150px">
@@ -384,7 +396,7 @@ body.member-mode [data-view="attend"],body.member-mode [data-view="members"],bod
           <span class="fl">모임</span>
           <select id="in-meeting"></select>
         </label>
-        <button type="button" class="btn sm" id="btn-meet-manage" title="모임 종류 추가·이름변경·삭제">모임 관리</button>
+        <button type="button" class="btn sm admin-only" id="btn-meet-manage" title="모임 종류 추가·이름변경·삭제">모임 관리</button>
       </div>
       <div class="row" style="margin-top:8px">
         <label class="field" style="flex:1 1 170px">
@@ -597,6 +609,26 @@ body.member-mode [data-view="attend"],body.member-mode [data-view="members"],bod
 
   <!-- ============ 저장·백업 ============ -->
   <section id="view-backup" class="view hidden">
+    <div class="card admin-only" id="cloud-sync-card">
+      <div class="card-title"><span>☁️ 클라우드 출석부·명단</span><span class="cap" id="cloud-sync-cap">-</span></div>
+      <div class="cloudbar"><span class="dotlive off" id="cloud-sync-dot"></span><span id="cloud-sync-text">확인 중…</span></div>
+      <div class="row" style="margin-top:10px">
+        <button type="button" class="btn primary grow" id="btn-cloud-upload">내 폰 출석부·명단 클라우드로 올리기</button>
+      </div>
+      <div class="tip" style="margin-top:8px">이 폰의 명단과 출석 기록을 클라우드에 올립니다. 올라가는 정보는 이름·목장·직분·입대일·전역일·생일과 출석 상태이며, <b>연락처·비고는 이 폰에만</b> 남습니다. 대표 인원과 실시간으로 함께 봅니다.</div>
+    </div>
+
+    <div class="card admin-only" id="leader-manage-card">
+      <div class="card-title"><span>👥 대표 인원 관리</span><span class="cap" id="leader-count">0명</span></div>
+      <div class="tip">대표 인원으로 지정한 구글 계정은 로그인하면 ‘출석 체크’와 ‘기도제목’ 화면을 함께 봅니다. 명단 편집·저장·백업은 관리자만 할 수 있습니다.</div>
+      <div class="row" style="margin-top:9px">
+        <label class="field" style="flex:1 1 220px"><span class="fl">구글 이메일</span><input type="email" id="leader-email" placeholder="예: leader@gmail.com" autocomplete="off" autocapitalize="off" spellcheck="false"></label>
+        <button type="button" class="btn primary" id="btn-leader-add">추가</button>
+      </div>
+      <ul class="list" id="leader-list"></ul>
+      <div class="empty hidden" id="leader-empty">아직 지정한 대표 인원이 없습니다. 위에 구글 이메일을 넣고 ‘추가’를 눌러 주세요.</div>
+    </div>
+
     <div class="card">
       <div class="card-title"><span>저장 상태</span></div>
       <div class="notice warn hidden" id="storage-warn">
@@ -609,6 +641,7 @@ body.member-mode [data-view="attend"],body.member-mode [data-view="members"],bod
         <dt>기록된 모임</dt><dd id="bk-sessions">0회</dd>
         <dt>기도제목</dt><dd id="bk-prayers">0개</dd>
         <dt>모임 종류</dt><dd id="bk-meetings">-</dd>
+        <dt>클라우드 명단</dt><dd id="bk-cloud">-</dd>
       </dl>
       <div class="tip" style="margin-top:9px">이 기기의 브라우저에만 저장됩니다(인터넷으로 전송되지 않습니다). 폰과 PC를 함께 쓰시려면 아래 JSON 백업으로 옮겨 주세요.</div>
     </div>
@@ -840,12 +873,23 @@ body.member-mode [data-view="attend"],body.member-mode [data-view="members"],bod
     db: null,
     user: null,
     isAdmin: false,
+    role: '',            /* '' (로컬) | 'admin' | 'leader' | 'member' */
     list: [],
     subs: [],
     err: '',
     errShown: false,
-    authError: ''
+    authError: '',
+    leaders: [],         /* 관리자: leaders 컬렉션 목록 */
+    cloudMembers: null,  /* 클라우드 members 문서 수 (모르면 null) */
+    unsubAtt: null,
+    unsubMembers: null,
+    unsubLeaders: null,
+    attKey: '',
+    dataErr: {}
   };
+  var LEADERS_COL = 'leaders';
+  var MEMBERS_COL = 'members';
+  var ATTENDANCE_COL = 'attendance';
 
   /* ===================== 도우미 ===================== */
   function $(id) { return document.getElementById(id); }
@@ -954,7 +998,7 @@ body.member-mode [data-view="attend"],body.member-mode [data-view="members"],bod
       meetings: DEFAULT_MEETINGS.slice(),
       records: {},
       prayers: [],
-      meta: { createdAt: nowISO(), updatedAt: nowISO(), migratedPrayers: [] }
+      meta: { createdAt: nowISO(), updatedAt: nowISO(), migratedPrayers: [], cloudSyncedAt: '' }
     };
   }
 
@@ -1018,7 +1062,8 @@ body.member-mode [data-view="attend"],body.member-mode [data-view="members"],bod
       s.meta = {
         createdAt: obj.meta.createdAt || nowISO(),
         updatedAt: obj.meta.updatedAt || nowISO(),
-        migratedPrayers: Array.isArray(obj.meta.migratedPrayers) ? obj.meta.migratedPrayers.map(function (x) { return String(x); }) : []
+        migratedPrayers: Array.isArray(obj.meta.migratedPrayers) ? obj.meta.migratedPrayers.map(function (x) { return String(x); }) : [],
+        cloudSyncedAt: obj.meta.cloudSyncedAt ? String(obj.meta.cloudSyncedAt) : ''
       };
     }
 
@@ -1085,8 +1130,12 @@ body.member-mode [data-view="attend"],body.member-mode [data-view="members"],bod
   function renderSaveState() {
     var el = $('save-state');
     if (!el) return;
-    if (document.body.classList.contains('member-mode')) {
+    if (CLOUD.role === 'member') {
       el.textContent = CLOUD.err ? '연결 오류 · 다시 시도 중' : '실시간 공유 중';
+      return;
+    }
+    if (CLOUD.role === 'leader') {
+      el.textContent = CLOUD.err ? '연결 오류 · 다시 시도 중' : '대표 인원 · 출석 실시간 공유 중';
       return;
     }
     if (storageOK) {
@@ -1239,7 +1288,8 @@ body.member-mode [data-view="attend"],body.member-mode [data-view="members"],bod
 
   /* ===================== 화면 전환 ===================== */
   function switchView(view) {
-    if (document.body.classList.contains('member-mode') && view !== 'prayers') view = 'prayers';
+    if (CLOUD.role === 'member' && view !== 'prayers') view = 'prayers';
+    if (CLOUD.role === 'leader' && view !== 'attend' && view !== 'prayers') view = 'attend';
     var views = ['attend', 'prayers', 'members', 'stats', 'backup'];
     views.forEach(function (v) {
       var sec = $('view-' + v);
@@ -1314,6 +1364,10 @@ body.member-mode [data-view="attend"],body.member-mode [data-view="members"],bod
 
   function milMetaHtml(m) {
     var out = [];
+    /* 대표 인원 화면에서도 입대일·전역 D-day·생일을 그대로 보여 줍니다 */
+    if (CLOUD.role === 'leader' && m.enlistDate) {
+      out.push('<span class="mil-inline">입대 ' + dateLabel(m.enlistDate) + '</span>');
+    }
     var di = dischargeInfo(m);
     if (di) {
       out.push('<span class="dd-inline">' + (di.done ? '전역' : '전역 ' + di.label) + '</span>');
@@ -1356,6 +1410,10 @@ body.member-mode [data-view="attend"],body.member-mode [data-view="members"],bod
     var box = $('attn-empty');
     if (state.members.length === 0) {
       box.classList.remove('hidden');
+      if (CLOUD.role === 'leader') {
+        box.innerHTML = '<strong>아직 클라우드에 명단이 없습니다</strong>관리자가 ‘저장·백업’에서 명단을 클라우드로 올리면 여기에 보입니다.';
+        return true;
+      }
       box.innerHTML = '<strong>등록된 신우가 없습니다</strong>명단을 먼저 등록하면 한 번 누르는 것으로 출석을 체크할 수 있습니다.'
         + '<div class="btns"><button type="button" class="btn primary sm" data-empty-act="add">신우 등록</button>'
         + '<button type="button" class="btn sm" data-empty-act="bulk">일괄 등록</button>'
@@ -1444,6 +1502,7 @@ body.member-mode [data-view="attend"],body.member-mode [data-view="members"],bod
     if (!st && !memo) delete s[id];
     else s[id] = { status: st, memo: memo };
     pruneAndSave();
+    pushAttendanceRecord(id, st, memo);
   }
 
   function onAttendClick(e) {
@@ -1511,6 +1570,7 @@ body.member-mode [data-view="attend"],body.member-mode [data-view="members"],bod
       else toggle.classList.remove('has');
     }
     pruneAndSave();
+    pushAttendanceMemoSoon(id);
   }
 
   function bulkAttend() {
@@ -1526,6 +1586,7 @@ body.member-mode [data-view="attend"],body.member-mode [data-view="members"],bod
         s[m.id] = { status: 'attend', memo: prev ? (prev.memo || '') : '' };
       });
       save();
+      pushAttendanceSession();
       renderAttend();
       toast(list.length + '명을 출석으로 표시했습니다.');
     }, false);
@@ -1538,6 +1599,7 @@ body.member-mode [data-view="attend"],body.member-mode [data-view="members"],bod
     confirmModal('출석 초기화', labelDate(curDate) + ' · ' + curMeeting + '\n기록 ' + n + '건을 모두 지울까요?', '초기화', function () {
       delete state.records[currentKey()];
       save();
+      pushAttendanceReset();
       renderAttend();
       toast('이 날짜의 출석 기록을 지웠습니다.');
     }, true);
@@ -1675,6 +1737,7 @@ body.member-mode [data-view="attend"],body.member-mode [data-view="members"],bod
   }
 
   function openMemberModal(id) {
+    if (!isAdminRole()) { toast('관리자만 명단을 편집할 수 있습니다.'); return; }
     editMemberId = id || '';
     var m = id ? findMember(id) : null;
     $('member-modal-title').textContent = m ? '신우 정보 수정' : '신우 등록';
@@ -1726,11 +1789,13 @@ body.member-mode [data-view="attend"],body.member-mode [data-view="members"],bod
         var m = findMember(editMemberId);
         if (m) applyMember(m);
         save(); closeModal('modal-member'); renderAll();
+        syncMembersToCloud();
         toast('수정했습니다.');
       } else {
         data.id = uid();
         state.members.push(data);
         save(); closeModal('modal-member'); renderAll();
+        syncMembersToCloud();
         toast(data.name + ' 님을 등록했습니다.');
       }
       editMemberId = '';
@@ -1763,6 +1828,7 @@ body.member-mode [data-view="attend"],body.member-mode [data-view="members"],bod
   }
 
   function deleteMember(id) {
+    if (!isAdminRole()) { toast('관리자만 명단을 편집할 수 있습니다.'); return; }
     var m = findMember(id);
     if (!m) return;
     var used = 0;
@@ -1776,6 +1842,7 @@ body.member-mode [data-view="attend"],body.member-mode [data-view="members"],bod
       + '\n되돌릴 수 없습니다.', '삭제', function () {
       removeMembers([id]);
       save(); renderAll();
+      syncMembersToCloud();
       toast(m.name + ' 님을 삭제했습니다.');
     }, true);
   }
@@ -1790,6 +1857,7 @@ body.member-mode [data-view="attend"],body.member-mode [data-view="members"],bod
     confirmModal('샘플 명단 지우기', '샘플로 표시된 신우 ' + list.length + '명을 명단에서 지웁니다.\n이들의 출석 기록도 함께 지워집니다.', '지우기', function () {
       removeMembers(list.map(function (m) { return m.id; }));
       save(); renderAll();
+      syncMembersToCloud();
       toast('샘플 신우 ' + list.length + '명을 지웠습니다.');
     }, true);
   }
@@ -1810,6 +1878,7 @@ body.member-mode [data-view="attend"],body.member-mode [data-view="members"],bod
   ];
 
   function insertSample() {
+    if (!isAdminRole()) { toast('관리자만 명단을 편집할 수 있습니다.'); return; }
     var run = function () {
       var added = 0;
       SAMPLES.forEach(function (row) {
@@ -1829,6 +1898,7 @@ body.member-mode [data-view="attend"],body.member-mode [data-view="members"],bod
         added++;
       });
       save(); renderAll();
+      syncMembersToCloud();
       toast(added ? '샘플 신우 ' + added + '명을 넣었습니다. 이름을 눌러 확인해 보세요.' : '샘플 명단은 이미 들어 있습니다.');
     };
     if (state.members.length) {
@@ -2026,6 +2096,7 @@ body.member-mode [data-view="attend"],body.member-mode [data-view="members"],bod
   }
 
   function openBulkModal() {
+    if (!isAdminRole()) { toast('관리자만 명단을 편집할 수 있습니다.'); return; }
     bulkMode = 'names';
     bulkModeTouched = false;
     $('bulk-text').value = '';
@@ -2055,6 +2126,7 @@ body.member-mode [data-view="attend"],body.member-mode [data-view="members"],bod
     save();
     closeModal('modal-bulk');
     renderAll();
+    syncMembersToCloud();
     toast(added + '명을 등록했습니다.');
   }
 
@@ -2361,6 +2433,8 @@ body.member-mode [data-view="attend"],body.member-mode [data-view="members"],bod
     $('bk-meetings').textContent = state.meetings.join(', ') || '-';
     if (storageOK) $('storage-warn').classList.add('hidden');
     else $('storage-warn').classList.remove('hidden');
+    renderCloudStatus();
+    renderLeaderList();
   }
 
   function exportJSON() {
@@ -2393,6 +2467,7 @@ body.member-mode [data-view="attend"],body.member-mode [data-view="members"],bod
           if (state.meetings.indexOf(curMeeting) < 0) curMeeting = state.meetings[0] || '주일예배';
           save();
           renderAll();
+          syncMembersToCloud();
           toast('백업을 복원했습니다.');
         }, true);
     };
@@ -2408,6 +2483,7 @@ body.member-mode [data-view="attend"],body.member-mode [data-view="members"],bod
         try { window.localStorage.removeItem(STORE_KEY); } catch (e) {}
         save();
         renderAll();
+        syncMembersToCloud();
         toast('모든 데이터를 지웠습니다.');
       }, true);
     }, true);
@@ -2430,6 +2506,50 @@ body.member-mode [data-view="attend"],body.member-mode [data-view="members"],bod
     return !!(state && (state.members.length || state.prayers.length || Object.keys(state.records).length));
   }
   function isAdminEmail(email) { return String(email || '').toLowerCase() === ADMIN_EMAIL; }
+  /* 로그인하지 않은 로컬 모드도 관리자와 같은 권한을 가진다 (기존 동작 유지) */
+  function isAdminRole() { return !CLOUD.role || CLOUD.role === 'admin'; }
+  function cloudEmail() { return String((CLOUD.user && CLOUD.user.email) || '').toLowerCase(); }
+  function cloudDateKey(date, meeting) { return String(date || '') + '_' + String(meeting || ''); }
+  function cloudDataError(kind, err) {
+    var code = (err && err.code) || 'error';
+    if (window.console) console.warn('cloud ' + kind + ' failed', code, err && err.message);
+    if (CLOUD.dataErr[kind]) return;
+    CLOUD.dataErr[kind] = true;
+    if (kind === 'attendance' || kind === 'attendance-write') {
+      toast(code === 'permission-denied' ? '출석 공유 권한이 없습니다. 관리자에게 대표 인원 등록을 요청해 주세요.' : '출석을 클라우드에 연결하지 못했습니다.');
+    } else if (kind === 'members') {
+      toast(code === 'permission-denied' ? '명단을 불러올 권한이 없습니다.' : '명단을 클라우드에서 불러오지 못했습니다.');
+    } else if (kind === 'leaders') {
+      toast('대표 인원 목록을 불러오지 못했습니다.');
+    } else if (kind === 'member-sync') {
+      toast('클라우드로 올리지 못했습니다. (' + code + ')');
+    }
+  }
+
+  function applyRoleUI() {
+    var role = CLOUD.role;
+    document.body.classList.toggle('is-admin', role === 'admin');
+    document.body.classList.toggle('is-leader', role === 'leader');
+    document.body.classList.toggle('is-member', role === 'member');
+    document.body.classList.toggle('member-mode', role === 'member');
+    var isMember = role === 'member';
+    $('app-title').textContent = isMember ? '신우회 기도제목' : '신우회 출석부';
+    document.title = isMember ? '신우회 기도제목' : '신우회 출석부';
+  }
+
+  /* 로그인한 계정의 역할: 관리자 → leaders 문서가 있으면 대표 인원 → 일반 신우 */
+  function resolveRole(user) {
+    if (isAdminEmail(user && user.email)) return Promise.resolve('admin');
+    if (!cloudReady()) return Promise.resolve('member');
+    var email = cloudEmail();
+    if (!email) return Promise.resolve('member');
+    return CLOUD.db.collection(LEADERS_COL).doc(email).get().then(function (snap) {
+      return (snap && snap.exists) ? 'leader' : 'member';
+    }).catch(function (err) {
+      if (window.console) console.warn('leader check failed', (err && err.code) || '', err && err.message);
+      return 'member';
+    });
+  }
 
   function authMessage(err) {
     var code = (err && err.code) || '';
@@ -2492,34 +2612,57 @@ body.member-mode [data-view="attend"],body.member-mode [data-view="members"],bod
   }
 
   function enterCloud(user) {
+    var wasSignedIn = !!CLOUD.user && CLOUD.user.uid === user.uid;
     CLOUD.user = user;
     CLOUD.isAdmin = isAdminEmail(user.email);
+    CLOUD.role = CLOUD.isAdmin ? 'admin' : 'member';   /* 대표 인원은 확인 뒤 승격 */
     CLOUD.authError = '';
+    CLOUD.dataErr = {};
     prayerMode = 'cloud';
     localModeChosen = false;
     document.body.classList.remove('booting', 'signed-out');
-    document.body.classList.toggle('member-mode', !CLOUD.isAdmin);
+    applyRoleUI();
     updateUserBar();
-    $('app-title').textContent = CLOUD.isAdmin ? '신우회 출석부' : '신우회 기도제목';
-    document.title = CLOUD.isAdmin ? '신우회 출석부' : '신우회 기도제목';
     subscribePrayers();
+    subscribeCloudData();
     renderAll();
     switchView(CLOUD.isAdmin ? 'attend' : 'prayers');
-    if (!CLOUD.isAdmin) toast('로그인했습니다. 기도제목을 나눠 주세요.');
+    if (!CLOUD.isAdmin && !wasSignedIn) toast('로그인했습니다. 기도제목을 나눠 주세요.');
+    resolveRole(user).then(function (role) {
+      if (!CLOUD.user || CLOUD.user.uid !== user.uid) return;
+      var changed = CLOUD.role !== role;
+      CLOUD.role = role;
+      CLOUD.isAdmin = role === 'admin';
+      applyRoleUI();
+      updateUserBar();
+      if (changed) {
+        subscribeCloudData();
+        renderAll();
+        if (role === 'leader') {
+          switchView('attend');
+          toast('대표 인원(출석담당)으로 로그인했습니다.');
+        } else if (role === 'member') {
+          switchView('prayers');
+        }
+      }
+    });
   }
 
   function leaveCloud() {
     unsubPrayers();
     CLOUD.user = null;
     CLOUD.isAdmin = false;
+    CLOUD.role = '';
     CLOUD.list = [];
+    CLOUD.leaders = [];
+    CLOUD.cloudMembers = null;
     CLOUD.err = '';
     CLOUD.errShown = false;
+    CLOUD.attKey = '';
+    CLOUD.dataErr = {};
     prayerMode = 'local';
-    document.body.classList.remove('member-mode');
+    applyRoleUI();
     updateUserBar();
-    $('app-title').textContent = '신우회 출석부';
-    document.title = '신우회 출석부';
     if (localModeChosen) {
       document.body.classList.remove('booting', 'signed-out');
       renderAll();
@@ -2557,8 +2700,11 @@ body.member-mode [data-view="attend"],body.member-mode [data-view="members"],bod
     if (!CLOUD.user) { bar.classList.add('hidden'); return; }
     bar.classList.remove('hidden');
     $('ub-name').textContent = cloudDisplayName();
-    $('ub-role').textContent = CLOUD.isAdmin ? '리더 · 관리자' : '신우';
-    $('ub-role').classList.remove('hidden');
+    var role = CLOUD.role;
+    var el = $('ub-role');
+    el.textContent = role === 'admin' ? '관리자' : (role === 'leader' ? '리더(출석담당)' : '신우');
+    el.classList.toggle('leader', role === 'leader');
+    el.classList.remove('hidden');
   }
 
   function signInGoogle() {
@@ -2628,6 +2774,316 @@ body.member-mode [data-view="attend"],body.member-mode [data-view="members"],bod
   function unsubPrayers() {
     CLOUD.subs.forEach(function (fn) { try { fn(); } catch (e) {} });
     CLOUD.subs = [];
+    stopAttendance();
+    if (CLOUD.unsubMembers) { try { CLOUD.unsubMembers(); } catch (e) {} CLOUD.unsubMembers = null; }
+    if (CLOUD.unsubLeaders) { try { CLOUD.unsubLeaders(); } catch (e) {} CLOUD.unsubLeaders = null; }
+  }
+
+  /* ===================== 클라우드 명단·출석 (대표 인원 공유) ===================== */
+  function canShareAttendance() {
+    return cloudReady() && !!CLOUD.user && (CLOUD.role === 'admin' || CLOUD.role === 'leader');
+  }
+
+  function subscribeCloudData() {
+    if (!cloudReady() || !CLOUD.user) return;
+    var role = CLOUD.role;
+    if (role === 'admin') subscribeLeaders();
+    if (role === 'admin' || role === 'leader') {
+      subscribeAttendance();
+      if (role === 'leader') subscribeMembers();
+      else refreshCloudStatus();
+    }
+  }
+
+  function stopAttendance() {
+    if (CLOUD.unsubAtt) { try { CLOUD.unsubAtt(); } catch (e) {} CLOUD.unsubAtt = null; }
+    CLOUD.attKey = '';
+  }
+
+  /* 현재 날짜·모임의 출석 문서를 실시간 구독 */
+  function subscribeAttendance() {
+    stopAttendance();
+    if (!canShareAttendance()) return;
+    var key = cloudDateKey(curDate, curMeeting);
+    CLOUD.attKey = key;
+    CLOUD.unsubAtt = CLOUD.db.collection(ATTENDANCE_COL).doc(key).onSnapshot(function (snap) {
+      var d = (snap && snap.exists) ? (snap.data() || {}) : {};
+      applyCloudRecords(d.records || {});
+    }, function (err) { cloudDataError('attendance', err); });
+  }
+
+  function applyCloudRecords(records) {
+    var k = currentKey();
+    var local = state.records[k] || {};
+    var changed = false;
+    var activeId = '';
+    var ae = document.activeElement;
+    if (ae && ae.classList && ae.classList.contains('memo-input')) {
+      var li = ae.closest ? ae.closest('.mrow') : null;
+      if (li) activeId = li.getAttribute('data-id') || '';
+    }
+    Object.keys(records || {}).forEach(function (id) {
+      var r = records[id];
+      if (!r || typeof r !== 'object') return;
+      if (id === activeId) return;   /* 지금 메모를 쓰는 신우는 덮어쓰지 않는다 */
+      var st = (r.status === 'attend' || r.status === 'absent' || r.status === 'excuse') ? r.status : '';
+      var note = String(r.note || '');
+      var prev = local[id];
+      if (!st && !note) {
+        if (prev) { delete local[id]; changed = true; }
+        return;
+      }
+      if (!prev || prev.status !== st || prev.memo !== note) {
+        local[id] = { status: st, memo: note };
+        changed = true;
+      }
+    });
+    if (Object.keys(local).length) state.records[k] = local;
+    else delete state.records[k];
+    if (changed) {
+      save();
+      var sec = $('view-attend');
+      if (sec && !sec.classList.contains('hidden')) renderAttend();
+    }
+  }
+
+  /* 출석 버튼 → Firestore (다른 대표 인원 폰에 즉시 반영) */
+  function pushAttendanceRecord(id, status, memo) {
+    if (!canShareAttendance()) return;
+    var key = cloudDateKey(curDate, curMeeting);
+    var payload = { date: curDate, meeting: curMeeting, updatedAt: nowISO(), updatedBy: cloudEmail(), records: {} };
+    payload.records[id] = { status: status || '', note: memo || '', updatedBy: cloudEmail(), updatedAt: nowISO() };
+    CLOUD.db.collection(ATTENDANCE_COL).doc(key).set(payload, { merge: true })
+      .catch(function (err) { cloudDataError('attendance-write', err); });
+  }
+
+  var memoPushTimers = {};
+  function pushAttendanceMemoSoon(id) {
+    if (!canShareAttendance()) return;
+    if (memoPushTimers[id]) clearTimeout(memoPushTimers[id]);
+    memoPushTimers[id] = setTimeout(function () {
+      memoPushTimers[id] = null;
+      var rec = (state.records[currentKey()] || {})[id];
+      pushAttendanceRecord(id, rec ? rec.status : '', rec ? rec.memo : '');
+    }, 700);
+  }
+
+  function pushAttendanceSession() {
+    if (!canShareAttendance()) return;
+    var recs = state.records[currentKey()] || {};
+    var records = {};
+    Object.keys(recs).forEach(function (id) {
+      records[id] = { status: recs[id].status || '', note: recs[id].memo || '', updatedBy: cloudEmail(), updatedAt: nowISO() };
+    });
+    CLOUD.db.collection(ATTENDANCE_COL).doc(cloudDateKey(curDate, curMeeting)).set({
+      date: curDate, meeting: curMeeting, records: records, updatedAt: nowISO(), updatedBy: cloudEmail()
+    }, { merge: true }).catch(function (err) { cloudDataError('attendance-write', err); });
+  }
+
+  function pushAttendanceReset() {
+    if (!canShareAttendance()) return;
+    CLOUD.db.collection(ATTENDANCE_COL).doc(cloudDateKey(curDate, curMeeting)).delete()
+      .catch(function (err) { cloudDataError('attendance-write', err); });
+  }
+
+  function mapCloudMember(doc) {
+    var d = doc.data() || {};
+    return {
+      id: doc.id,
+      name: String(d.name || '').trim(),
+      group: String(d.group || '').trim(),
+      role: String(d.role || '').trim(),
+      phone: '',
+      note: '',
+      enlistDate: normDate(d.enlistDate),
+      dischargeDate: normDate(d.dischargeDate),
+      birthday: normDate(d.birthday),
+      order: (typeof d.order === 'number') ? d.order : 0
+    };
+  }
+
+  /* 대표 인원: 클라우드 명단을 그대로 받아 온다 */
+  function subscribeMembers() {
+    if (CLOUD.unsubMembers) { try { CLOUD.unsubMembers(); } catch (e) {} CLOUD.unsubMembers = null; }
+    CLOUD.unsubMembers = CLOUD.db.collection(MEMBERS_COL).onSnapshot(function (snap) {
+      var list = snap.docs.map(mapCloudMember).filter(function (m) { return !!m.name; });
+      list.sort(function (a, b) {
+        if (a.order !== b.order) return a.order - b.order;
+        var ga = a.group || '힣', gb = b.group || '힣';
+        if (ga !== gb) return ga.localeCompare(gb, 'ko');
+        return a.name.localeCompare(b.name, 'ko');
+      });
+      state.members = list;
+      CLOUD.cloudMembers = list.length;
+      save();
+      renderAll();
+    }, function (err) { cloudDataError('members', err); });
+  }
+
+  function subscribeLeaders() {
+    if (CLOUD.unsubLeaders) { try { CLOUD.unsubLeaders(); } catch (e) {} CLOUD.unsubLeaders = null; }
+    CLOUD.unsubLeaders = CLOUD.db.collection(LEADERS_COL).onSnapshot(function (snap) {
+      CLOUD.leaders = snap.docs.map(function (d) {
+        var v = d.data() || {};
+        return { email: d.id, addedAt: v.addedAt ? String(v.addedAt) : '' };
+      }).sort(function (a, b) { return a.email < b.email ? -1 : (a.email > b.email ? 1 : 0); });
+      renderLeaderList();
+    }, function (err) { cloudDataError('leaders', err); });
+  }
+
+  function renderLeaderList() {
+    var ul = $('leader-list');
+    if (!ul) return;
+    var list = CLOUD.leaders || [];
+    ul.innerHTML = list.map(function (l) {
+      return '<li class="leadrow" data-email="' + escapeHtml(l.email) + '">'
+        + '<div class="em">' + escapeHtml(l.email) + '</div>'
+        + (l.addedAt ? '<div class="when">' + escapeHtml(fmtTime(l.addedAt).replace(/^\d+\.\s*/, '')) + '</div>' : '')
+        + '<button type="button" class="btn sm danger" data-leader-act="del">삭제</button></li>';
+    }).join('');
+    $('leader-count').textContent = list.length + '명';
+    $('leader-empty').classList.toggle('hidden', !!list.length);
+  }
+
+  function refreshCloudStatus() {
+    renderCloudStatus();
+    if (!cloudReady() || !CLOUD.user || !isAdminRole()) return;
+    CLOUD.db.collection(MEMBERS_COL).get().then(function (snap) {
+      CLOUD.cloudMembers = snap.size;
+      renderCloudStatus();
+      renderBackup();
+    }).catch(function (err) {
+      cloudDataError('members', err);
+      renderCloudStatus();
+    });
+  }
+
+  function renderCloudStatus() {
+    var text = $('cloud-sync-text');
+    if (!text) return;
+    var n = CLOUD.cloudMembers;
+    var last = state.meta && state.meta.cloudSyncedAt ? fmtTime(state.meta.cloudSyncedAt) : '';
+    if (n === null || n === undefined) {
+      text.textContent = '클라우드 상태를 확인하는 중이거나 확인하지 못했습니다.';
+    } else if (!n) {
+      text.textContent = '아직 클라우드에 명단이 없습니다. 아래 버튼으로 이 폰의 명단을 올려 주세요.';
+    } else {
+      text.textContent = '클라우드 명단 ' + n + '명 · 대표 인원과 실시간 공유 중' + (last ? ' (마지막 올림 ' + last + ')' : '');
+    }
+    $('cloud-sync-dot').classList.toggle('off', !n);
+    $('cloud-sync-cap').textContent = (n === null || n === undefined) ? '-' : n + '명';
+    var bk = $('bk-cloud');
+    if (bk) bk.textContent = '';
+    if (bk) bk.textContent = ((n === null || n === undefined) ? '확인 중' : n + '명') + (last ? ' · 올림 ' + last : '');
+  }
+
+  function memberCloudData(m, order) {
+    return {
+      name: m.name,
+      group: m.group || '',
+      role: m.role || '',
+      enlistDate: m.enlistDate || '',
+      dischargeDate: m.dischargeDate || '',
+      birthday: m.birthday || '',
+      order: order,
+      active: true,
+      updatedAt: nowISO()
+    };
+  }
+
+  /* 관리자: 이 폰의 명단 전체를 members 컬렉션에 맞춘다 (추가·수정·삭제 반영) */
+  function syncMembersToCloud() {
+    if (!cloudReady() || !CLOUD.user || CLOUD.role !== 'admin') return Promise.resolve(false);
+    var batch = CLOUD.db.batch();
+    var ids = {};
+    state.members.forEach(function (m, i) {
+      ids[m.id] = true;
+      batch.set(CLOUD.db.collection(MEMBERS_COL).doc(m.id), memberCloudData(m, i), { merge: true });
+    });
+    return CLOUD.db.collection(MEMBERS_COL).get().then(function (snap) {
+      snap.docs.forEach(function (d) { if (!ids[d.id]) batch.delete(d.ref); });
+      return batch.commit();
+    }).then(function () {
+      state.meta.cloudSyncedAt = nowISO();
+      save();
+      CLOUD.cloudMembers = state.members.length;
+      renderCloudStatus();
+      return true;
+    }).catch(function (err) { cloudDataError('member-sync', err); return false; });
+  }
+
+  function uploadLocalToCloud() {
+    if (!cloudReady() || !CLOUD.user || CLOUD.role !== 'admin') {
+      toast('관리자 계정으로 로그인해야 올릴 수 있습니다.');
+      return;
+    }
+    var members = state.members.slice();
+    var sessions = Object.keys(state.records);
+    if (!members.length && !sessions.length) { toast('이 폰에 올릴 명단이나 출석 기록이 없습니다.'); return; }
+    confirmModal('클라우드로 올리기',
+      '이 폰의 신우 ' + members.length + '명과 출석 기록 ' + sessions.length + '개 모임을 클라우드에 올립니다.\n'
+      + '이름·목장·직분·입대일·전역일·생일과 출석 상태가 올라가고, 연락처·비고는 이 폰에만 남습니다.\n'
+      + '대표 인원이 로그인하면 이 명단과 출석이 보입니다.',
+      '올리기', function () {
+        var batch = CLOUD.db.batch();
+        members.forEach(function (m, i) {
+          batch.set(CLOUD.db.collection(MEMBERS_COL).doc(m.id), memberCloudData(m, i), { merge: true });
+        });
+        sessions.forEach(function (k) {
+          var idx = k.indexOf('|');
+          if (idx < 0) return;
+          var date = k.slice(0, idx), meeting = k.slice(idx + 1);
+          var recs = {};
+          Object.keys(state.records[k] || {}).forEach(function (id) {
+            var r = state.records[k][id] || {};
+            recs[id] = { status: r.status || '', note: r.memo || '', updatedBy: cloudEmail(), updatedAt: nowISO() };
+          });
+          if (!Object.keys(recs).length) return;
+          batch.set(CLOUD.db.collection(ATTENDANCE_COL).doc(cloudDateKey(date, meeting)), {
+            date: date, meeting: meeting, records: recs, updatedAt: nowISO(), updatedBy: cloudEmail()
+          }, { merge: true });
+        });
+        batch.commit().then(function () {
+          state.meta.cloudSyncedAt = nowISO();
+          save();
+          CLOUD.cloudMembers = members.length;
+          renderCloudStatus();
+          renderBackup();
+          subscribeAttendance();
+          toast('클라우드에 올렸습니다. 신우 ' + members.length + '명 · 모임 ' + sessions.length + '개');
+        }).catch(function (err) {
+          cloudDataError('member-sync', err);
+          toast('올리지 못했습니다. (' + ((err && err.code) || 'error') + ')');
+        });
+      }, false);
+  }
+
+  function addLeader() {
+    if (!cloudReady() || !CLOUD.user || CLOUD.role !== 'admin') { toast('관리자 계정으로 로그인해야 합니다.'); return; }
+    var inp = $('leader-email');
+    var email = String(inp.value || '').trim().toLowerCase();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) { toast('올바른 구글 이메일을 넣어 주세요.'); return; }
+    if (email === ADMIN_EMAIL) { toast('관리자 계정은 이미 모든 권한을 가집니다.'); return; }
+    var btn = $('btn-leader-add');
+    btn.disabled = true;
+    CLOUD.db.collection(LEADERS_COL).doc(email).set({ email: email, addedBy: cloudEmail(), addedAt: nowISO() }, { merge: true })
+      .then(function () {
+        btn.disabled = false;
+        inp.value = '';
+        toast(email + ' 님을 대표 인원으로 지정했습니다.');
+      }).catch(function (err) {
+        btn.disabled = false;
+        toast('대표 인원을 추가하지 못했습니다. (' + ((err && err.code) || 'error') + ')');
+      });
+  }
+
+  function removeLeader(email) {
+    if (!isAdminRole()) { toast('관리자만 대표 인원을 바꿀 수 있습니다.'); return; }
+    confirmModal('대표 인원 해제', email + ' 님의 대표 인원 권한을 뺄까요?\n이 계정은 다시 ‘기도제목’ 화면만 보게 됩니다.', '해제', function () {
+      CLOUD.db.collection(LEADERS_COL).doc(email).delete()
+        .then(function () { toast(email + ' 님을 대표 인원에서 뺐습니다.'); })
+        .catch(function (err) { toast('삭제하지 못했습니다. (' + ((err && err.code) || 'error') + ')'); });
+    }, true);
   }
 
   function subscribePrayers() {
@@ -3254,16 +3710,19 @@ body.member-mode [data-view="attend"],body.member-mode [data-view="members"],bod
       curDate = $('in-date').value || todayISO();
       openMemo = {};
       renderAttend();
+      subscribeAttendance();
     });
     $('in-meeting').addEventListener('change', function () {
       curMeeting = $('in-meeting').value;
       openMemo = {};
       renderAttend();
+      subscribeAttendance();
     });
     $('btn-today').addEventListener('click', function () {
       curDate = todayISO();
       openMemo = {};
       renderAttend();
+      subscribeAttendance();
     });
     $('sel-group').addEventListener('change', function () {
       groupFilter = $('sel-group').value;
@@ -3409,6 +3868,10 @@ body.member-mode [data-view="attend"],body.member-mode [data-view="members"],bod
         confirmModal('기록 삭제', labelDate(date) + ' · ' + meeting + ' 기록을 지울까요?\n되돌릴 수 없습니다.', '삭제', function () {
           delete state.records[sessionKey(date, meeting)];
           save();
+          if (cloudReady() && CLOUD.user && (CLOUD.role === 'admin' || CLOUD.role === 'leader')) {
+            CLOUD.db.collection(ATTENDANCE_COL).doc(cloudDateKey(date, meeting)).delete()
+              .catch(function (err) { cloudDataError('attendance-write', err); });
+          }
           if (curDate === date && curMeeting === meeting) {
             /* 출석 화면 데이터도 갱신 */
           }
@@ -3429,6 +3892,20 @@ body.member-mode [data-view="attend"],body.member-mode [data-view="members"],bod
       e.target.value = '';
     });
     $('btn-clear-all').addEventListener('click', clearAllData);
+
+    /* 클라우드 동기화 · 대표 인원 관리 (관리자) */
+    $('btn-cloud-upload').addEventListener('click', uploadLocalToCloud);
+    $('btn-leader-add').addEventListener('click', addLeader);
+    $('leader-email').addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') { e.preventDefault(); addLeader(); }
+    });
+    $('leader-list').addEventListener('click', function (e) {
+      var btn = e.target.closest('button[data-leader-act]');
+      if (!btn) return;
+      var row = btn.closest('.leadrow');
+      if (!row) return;
+      if (btn.getAttribute('data-leader-act') === 'del') removeLeader(row.getAttribute('data-email'));
+    });
 
     /* 모달 공통 */
     Array.prototype.forEach.call(document.querySelectorAll('[data-close]'), function (btn) {
