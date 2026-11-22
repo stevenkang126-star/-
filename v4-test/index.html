@@ -1,0 +1,4372 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#2b4a6f">
+<meta name="description" content="신우회 기도제목 - Google 로그인으로 신우들과 실시간으로 나누는 기도제목">
+<title>신우회 기도제목</title>
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png">
+<link rel="apple-touch-icon" href="./icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="신우회 기도제목">
+<style>
+:root{
+  --bg:#f2f4f7;
+  --card:#ffffff;
+  --text:#1b2430;
+  --muted:#6b7684;
+  --line:#e3e7ec;
+  --brand:#2b4a6f;
+  --brand-soft:#e9eff7;
+  --attend:#1c7a4d;
+  --absent:#c0392b;
+  --excuse:#a06a0c;
+  --warn-bg:#fff6e3;
+  --warn-line:#f0d9a8;
+  --shadow:0 1px 2px rgba(16,24,40,.05), 0 6px 16px rgba(16,24,40,.05);
+  --radius:14px;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#11151b;
+    --card:#1a2028;
+    --text:#e7ecf2;
+    --muted:#9aa5b3;
+    --line:#2b3440;
+    --brand:#8fb3dd;
+    --brand-soft:#22303f;
+    --attend:#5ec48f;
+    --absent:#f0806f;
+    --excuse:#e2b055;
+    --warn-bg:#2c2620;
+    --warn-line:#4a3d28;
+    --shadow:none;
+  }
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--bg);color:var(--text);font-size:15px;line-height:1.5;
+  font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","맑은 고딕","Noto Sans KR",Roboto,"Helvetica Neue",Arial,sans-serif;
+  -webkit-tap-highlight-color:transparent;
+}
+body.locked{overflow:hidden}
+h1,h2,h3,p{margin:0}
+button{font:inherit;color:inherit;cursor:pointer}
+.hidden{display:none !important}
+.sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+/* header */
+.app-header{position:sticky;top:0;z-index:30;background:var(--card);border-bottom:1px solid var(--line)}
+.hrow{display:flex;align-items:flex-end;gap:8px;padding:11px 16px 3px;max-width:940px;margin:0 auto}
+.app-title{font-size:18px;font-weight:800;letter-spacing:-.3px}
+.app-sub{font-size:11px;color:var(--muted);margin-left:auto;text-align:right;line-height:1.35;padding-bottom:2px}
+.tabs{display:flex;gap:4px;padding:5px 12px 8px;overflow-x:auto;max-width:940px;margin:0 auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:0 0 auto;border:1px solid transparent;background:transparent;color:var(--muted);font-size:14px;font-weight:700;padding:8px 15px;border-radius:10px;min-height:38px}
+.tab.active{background:var(--brand-soft);color:var(--brand)}
+.tab:focus-visible,.btn:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+
+/* layout */
+.wrap{max-width:940px;margin:0 auto;padding:12px 12px 44px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:13px;margin-bottom:11px;box-shadow:var(--shadow)}
+.card-tight{padding:0;overflow:hidden}
+.card-title{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:800;margin-bottom:10px}
+.card-title .cap{font-size:12px;font-weight:600;color:var(--muted);margin-left:auto}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.field{display:block;min-width:0}
+.field + .field{margin-top:0}
+.fl{display:block;font-size:11.5px;font-weight:700;color:var(--muted);margin-bottom:4px;letter-spacing:.1px}
+input[type=text],input[type=tel],input[type=date],input[type=month],input[type=search],select,textarea{
+  width:100%;font:inherit;font-size:15px;color:var(--text);background:var(--card);
+  border:1px solid var(--line);border-radius:10px;padding:9px 11px;min-height:44px;
+}
+input[readonly]{background:var(--bg);color:var(--muted)}
+textarea{min-height:120px;resize:vertical;line-height:1.55}
+select{appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);background-position:calc(100% - 17px) 20px,calc(100% - 12px) 20px;background-size:5px 5px,5px 5px;background-repeat:no-repeat;padding-right:32px}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:5px;
+  min-height:44px;padding:9px 14px;border-radius:11px;border:1px solid var(--line);
+  background:var(--card);font-size:14px;font-weight:700;color:var(--text);white-space:nowrap;
+}
+.btn:active{transform:translateY(1px)}
+.btn.primary{background:var(--brand);border-color:var(--brand);color:#fff}
+@media (prefers-color-scheme: dark){.btn.primary{color:#0f1620}}
+.btn.ghost{background:transparent}
+.btn.sm{min-height:36px;padding:6px 11px;font-size:13px;border-radius:9px}
+.btn.danger{color:var(--absent);border-color:var(--absent)}
+.btn.danger-solid{background:var(--absent);border-color:var(--absent);color:#fff}
+.btn.grow{flex:1}
+.btn:disabled{opacity:.45}
+
+/* tiles */
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:11px}
+.tile{background:var(--bg);border:1px solid var(--line);border-radius:11px;padding:8px 6px;text-align:center}
+.tile .k{font-size:11px;font-weight:700;color:var(--muted)}
+.tile .v{font-size:19px;font-weight:800;letter-spacing:-.3px;font-variant-numeric:tabular-nums}
+.tile.a .v{color:var(--attend)}
+.tile.b .v{color:var(--absent)}
+.tile.c .v{color:var(--excuse)}
+.tally-note{font-size:11.5px;color:var(--muted);margin-top:7px;display:flex;flex-wrap:wrap;gap:4px 8px}
+.chip{display:inline-flex;align-items:center;gap:4px;background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:2px 8px;font-size:11px;font-weight:700;color:var(--muted)}
+
+/* attendance list */
+.list{list-style:none;margin:0;padding:0}
+.mrow{display:grid;grid-template-columns:minmax(0,1fr) auto auto;align-items:center;gap:8px;padding:9px 12px;border-bottom:1px solid var(--line)}
+.mrow:last-child{border-bottom:0}
+.m-main{min-width:0;grid-column:1;grid-row:1}
+.mrow .seg{grid-column:2;grid-row:1}
+.memo-toggle{grid-column:3;grid-row:1}
+.m-name{font-size:15px;font-weight:800;letter-spacing:-.2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.m-meta{font-size:11.5px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.seg{display:inline-flex;background:var(--bg);border:1px solid var(--line);border-radius:11px;padding:3px;gap:3px}
+.seg-btn{min-height:38px;min-width:56px;padding:0 13px;border:1px solid transparent;background:transparent;color:var(--muted);border-radius:8px;font-size:13px;font-weight:800}
+.seg-btn.on.attend{background:rgba(28,122,77,.15);color:var(--attend);border-color:rgba(28,122,77,.35)}
+.seg-btn.on.absent{background:rgba(192,57,43,.13);color:var(--absent);border-color:rgba(192,57,43,.32)}
+.seg-btn.on.excuse{background:rgba(160,106,12,.15);color:var(--excuse);border-color:rgba(160,106,12,.32)}
+.memo-toggle{min-height:38px;padding:0 10px;border-radius:9px;border:1px solid var(--line);background:transparent;color:var(--muted);font-size:12px;font-weight:700}
+.memo-toggle.has{color:var(--brand);border-color:var(--brand);background:var(--brand-soft)}
+.memo-wrap{grid-column:1/-1;grid-row:2;display:none;padding:2px 0 4px}
+.memo-wrap.open{display:block}
+.memo-input{min-height:40px;font-size:14px}
+.mrow.st-attend{border-left:3px solid rgba(28,122,77,.55);padding-left:9px}
+.mrow.st-absent{border-left:3px solid rgba(192,57,43,.5);padding-left:9px}
+.mrow.st-excuse{border-left:3px solid rgba(160,106,12,.5);padding-left:9px}
+
+.empty{padding:26px 16px;text-align:center;color:var(--muted);font-size:13.5px}
+.empty strong{display:block;font-size:15px;color:var(--text);margin-bottom:5px}
+.empty .btn{margin-top:12px}
+.empty .btns{display:flex;gap:7px;justify-content:center;flex-wrap:wrap;margin-top:12px}
+
+/* members */
+.memrow{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid var(--line)}
+.memrow:last-child{border-bottom:0}
+.badges{display:flex;gap:4px;flex-wrap:wrap;margin-top:3px}
+.badge{font-size:11px;font-weight:700;color:var(--muted);background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:1px 7px}
+.badge.mil{color:var(--brand);background:var(--brand-soft);border-color:rgba(43,74,111,.28)}
+@media (prefers-color-scheme: dark){.badge.mil{border-color:rgba(143,179,221,.35)}}
+.badge.mil.done{color:var(--muted);background:var(--bg);border-color:var(--line)}
+.badge.mil.dday{color:var(--absent);background:rgba(192,57,43,.10);border-color:rgba(192,57,43,.35)}
+.badge.bday{color:var(--excuse);background:var(--warn-bg);border-color:var(--warn-line)}
+.badge.bday.on{color:var(--absent);background:rgba(192,57,43,.10);border-color:rgba(192,57,43,.35)}
+.badges.dates{margin-top:5px}
+.dd-inline{color:var(--brand);font-weight:800}
+.ba-inline{color:var(--excuse);font-weight:700}
+.fsection{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:800;color:var(--muted);margin:13px 0 8px;padding-top:11px;border-top:1px dashed var(--line)}
+.fsection span{font-weight:700;font-size:11px;opacity:.85}
+.fhint{font-size:11.5px;font-weight:700;color:var(--absent);margin:-3px 0 9px;line-height:1.45}
+.mem-actions{display:flex;gap:5px}
+
+/* stats */
+.warncard{background:var(--warn-bg);border:1px solid var(--warn-line);border-radius:var(--radius);padding:12px;margin-bottom:11px}
+.warncard h3{font-size:13px;font-weight:800;margin-bottom:6px}
+.warnlist{display:flex;flex-wrap:wrap;gap:6px}
+.warnitem{background:var(--card);border:1px solid var(--warn-line);border-radius:999px;padding:4px 10px;font-size:12.5px;font-weight:700}
+.warnitem b{color:var(--absent)}
+.tblwrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 -13px;padding:0 13px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{padding:8px 6px;border-bottom:1px solid var(--line);text-align:left;white-space:nowrap}
+th{font-size:11.5px;font-weight:800;color:var(--muted);background:var(--card)}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+tr.streak td{background:var(--warn-bg)}
+.streakflag{font-size:11px;font-weight:800;color:var(--absent)}
+.dots{display:inline-flex;gap:3px}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--line);display:inline-block}
+.dot.attend{background:var(--attend)}
+.dot.absent{background:var(--absent)}
+.dot.excuse{background:var(--excuse)}
+.ratebar{position:relative;height:6px;border-radius:999px;background:var(--line);width:54px;display:inline-block;vertical-align:middle;overflow:hidden}
+.ratebar i{position:absolute;left:0;top:0;bottom:0;background:var(--brand);border-radius:999px}
+.ratecell{display:inline-flex;align-items:center;gap:6px;font-variant-numeric:tabular-nums}
+
+/* backup */
+.kv{display:grid;grid-template-columns:auto minmax(0,1fr);gap:7px 12px;font-size:13px}
+.kv dt{color:var(--muted);font-weight:700}
+.kv dd{margin:0;font-weight:600;word-break:break-all}
+.tip{font-size:12.5px;color:var(--muted);line-height:1.6}
+.tip li{margin-bottom:4px}
+.stack{display:flex;flex-direction:column;gap:8px}
+.notice{border:1px dashed var(--line);border-radius:12px;padding:10px 12px;font-size:12.5px;color:var(--muted);line-height:1.55}
+.notice.warn{border-color:var(--absent);color:var(--absent);border-style:solid;background:rgba(192,57,43,.06)}
+.banner{border:1px solid var(--absent);background:rgba(192,57,43,.08);color:var(--absent);border-radius:12px;padding:10px 12px;font-size:12.5px;font-weight:600;line-height:1.5;margin-bottom:11px}
+
+/* bottom nav */
+.bnav{position:fixed;left:0;right:0;bottom:0;z-index:35;display:none;background:var(--card);border-top:1px solid var(--line);padding:5px 4px calc(5px + env(safe-area-inset-bottom))}
+.bnav button{flex:1;display:flex;flex-direction:column;align-items:center;gap:1px;border:0;background:transparent;color:var(--muted);font-size:10.5px;font-weight:700;padding:6px 2px;min-height:52px;border-radius:10px}
+.bnav button .ic{font-size:18px;line-height:1.15}
+.bnav button.active{color:var(--brand);background:var(--brand-soft)}
+
+/* toast */
+.toast{position:fixed;left:50%;bottom:86px;transform:translate(-50%,10px);z-index:90;background:#1b2430;color:#fff;font-size:13px;font-weight:600;
+  padding:10px 16px;border-radius:999px;box-shadow:0 8px 24px rgba(0,0,0,.25);opacity:0;pointer-events:none;transition:opacity .18s, transform .18s;max-width:88vw;text-align:center}
+@media (prefers-color-scheme: dark){.toast{background:#e7ecf2;color:#11151b}}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* modals */
+.backdrop{position:fixed;inset:0;z-index:70;background:rgba(9,13,19,.45);display:none;align-items:flex-end;justify-content:center;padding:0}
+.backdrop.open{display:flex}
+.modal{background:var(--card);width:100%;max-width:540px;max-height:90vh;overflow:auto;border-radius:18px 18px 0 0;padding:16px 15px calc(16px + env(safe-area-inset-bottom))}
+.modal h2{font-size:16px;font-weight:800;margin-bottom:2px}
+.modal .sub{font-size:12.5px;color:var(--muted);margin-bottom:12px}
+.modal-actions{display:flex;gap:8px;margin-top:14px}
+.modal-actions .btn{flex:1}
+.mform .field{margin-bottom:9px}
+.mlist{list-style:none;margin:0 0 4px;padding:0}
+.mlist li{display:flex;align-items:center;gap:8px;padding:9px 2px;border-bottom:1px solid var(--line)}
+.mlist li:last-child{border-bottom:0}
+.mlist .nm{font-weight:700;font-size:14px}
+.mlist .ct{font-size:11.5px;color:var(--muted);margin-left:auto;margin-right:4px}
+.preview{font-size:12.5px;color:var(--muted);margin-top:9px;line-height:1.55}
+.preview b{color:var(--text)}
+.pvnames{margin-top:6px;font-size:12.5px;color:var(--text);max-height:110px;overflow:auto;border:1px solid var(--line);border-radius:9px;padding:7px 9px;background:var(--bg)}
+.seg2{display:flex;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:3px;gap:3px;margin-bottom:9px}
+.seg2 label{flex:1;text-align:center;font-size:13px;font-weight:700;color:var(--muted);padding:8px 4px;border-radius:7px;cursor:pointer}
+.seg2 input{position:absolute;opacity:0;width:0;height:0}
+.seg2 label.on{background:var(--card);color:var(--brand);box-shadow:0 1px 2px rgba(0,0,0,.08)}
+
+/* prayers */
+.prow{padding:11px 12px 11px 9px;border-bottom:1px solid var(--line);border-left:3px solid transparent}
+.prow:last-child{border-bottom:0}
+.prow.answered{border-left-color:rgba(28,122,77,.45);background:rgba(28,122,77,.045)}
+.p-head{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.p-name{font-size:15px;font-weight:800;letter-spacing:-.2px}
+.p-date{margin-left:auto;font-size:11.5px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.p-text{font-size:14px;line-height:1.62;margin-top:5px;white-space:pre-wrap;word-break:break-word}
+.prow.answered .p-text{color:var(--muted)}
+.p-actions{display:flex;gap:6px;margin-top:9px;flex-wrap:wrap;align-items:center}
+.badge.cat{color:var(--brand);background:var(--brand-soft);border-color:rgba(43,74,111,.28)}
+.badge.ok{color:var(--attend);background:rgba(28,122,77,.12);border-color:rgba(28,122,77,.32)}
+@media (prefers-color-scheme: dark){.badge.cat{border-color:rgba(143,179,221,.35)}}
+.btn.ok{color:var(--attend);border-color:var(--attend);background:rgba(28,122,77,.08)}
+.chk{display:flex;align-items:center;gap:9px;padding:10px 11px;border:1px solid var(--line);border-radius:10px;background:var(--bg);font-size:14px;font-weight:700;cursor:pointer}
+.chk input{width:20px;height:20px;min-height:0;margin:0;accent-color:var(--attend)}
+
+/* 로그인 게이트 */
+.gate{position:fixed;inset:0;z-index:80;background:var(--bg);display:none;align-items:center;justify-content:center;padding:20px 16px;overflow:auto}
+body.booting .gate,body.signed-out .gate{display:flex}
+body.booting .app-header,body.booting .wrap,body.booting .bnav,
+body.signed-out .app-header,body.signed-out .wrap,body.signed-out .bnav{display:none !important}
+.gate-card{width:100%;max-width:400px;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:26px 20px 22px;text-align:center;box-shadow:var(--shadow)}
+.gate-icon{font-size:38px;line-height:1}
+.gate-title{font-size:20px;font-weight:800;letter-spacing:-.4px;margin-top:9px}
+.gate-sub{font-size:13.5px;color:var(--muted);margin-top:6px;line-height:1.55}
+.gate-btn{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;margin-top:13px;min-height:48px;font-size:14.5px;font-weight:800;border-radius:12px}
+.btn.google{background:var(--card);border:1px solid var(--line);color:var(--text);box-shadow:0 1px 2px rgba(16,24,40,.07)}
+.btn.google:active{background:var(--bg)}
+.btn.google svg{width:19px;height:19px;flex:0 0 auto}
+.gate-note{font-size:12px;color:var(--muted);line-height:1.6;margin-top:14px;text-align:left;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.gate-note b{color:var(--text)}
+.gate-foot{font-size:11.5px;color:var(--muted);margin-top:11px;line-height:1.55}
+.gate-foot.err{color:var(--absent);font-weight:700}
+
+/* 로그인한 사람 표시 */
+.userbar{display:flex;align-items:center;gap:8px;max-width:940px;margin:0 auto;padding:0 16px 9px}
+.userbar .who{display:flex;align-items:center;gap:6px;min-width:0}
+.ub-name{font-size:12.5px;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:150px}
+.ub-role{font-size:10.5px;font-weight:800;color:var(--brand);background:var(--brand-soft);border:1px solid rgba(43,74,111,.2);border-radius:999px;padding:1px 7px;white-space:nowrap}
+.userbar .btn{margin-left:auto;color:var(--muted)}
+/* 일반 신우: 기도제목만 */
+body.member-mode [data-view="attend"],body.member-mode [data-view="members"],body.member-mode [data-view="stats"],body.member-mode [data-view="backup"]{display:none !important}
+/* 반 담임 교사: 출석·명단·통계·기도제목 (총괄 전용 백업만 숨김) */
+body.is-teacher [data-view="backup"]{display:none !important}
+/* 반 대표신우: 출석 체크 + 기도제목만 */
+body.is-rep [data-view="members"],body.is-rep [data-view="stats"],body.is-rep [data-view="backup"]{display:none !important}
+/* 관리자 전용 요소 */
+body:not(.is-admin) .admin-only{display:none !important}
+/* 교사·총괄: 이 반 교사/대표신우 관리 카드 */
+.manage-only{display:none !important}
+body.is-admin .manage-only,body.is-teacher .manage-only{display:block !important}
+.teacher-only{display:none !important}
+body.is-teacher .teacher-only{display:block !important}
+.rep-only{display:none !important}
+body.is-rep .rep-only{display:block !important}
+.ub-role.leader{color:#8a5a00;background:var(--warn-bg);border-color:var(--warn-line)}
+.ub-role.teacher{color:#8a5a00;background:var(--warn-bg);border-color:var(--warn-line)}
+.ub-role.rep{color:var(--attend);background:rgba(28,122,77,.1);border-color:rgba(28,122,77,.3)}
+.leadrow{display:flex;align-items:center;gap:9px;padding:10px 12px;border-bottom:1px solid var(--line)}
+.leadrow:last-child{border-bottom:0}
+.leadrow .em{flex:1 1 auto;font-size:13px;font-weight:800;word-break:break-all}
+.leadrow .when{font-size:11px;font-weight:600;color:var(--muted);white-space:nowrap}
+
+/* 현재 반 표시 · 반 전환 */
+.roombar{display:flex;align-items:center;gap:8px;max-width:940px;margin:0 auto;padding:0 16px 9px;flex-wrap:wrap}
+.room-now{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:800;color:var(--brand);background:var(--brand-soft);border:1px solid rgba(43,74,111,.22);border-radius:999px;padding:3px 11px;max-width:100%}
+.room-now .rt{font-size:10.5px;font-weight:800;opacity:.75}
+.room-switch{margin-left:auto;display:flex;align-items:center;gap:6px}
+.room-switch select{min-height:36px;font-size:12.5px;font-weight:800;padding:6px 9px;max-width:200px}
+
+/* 소속 반 선택 */
+.roomscreen{position:fixed;inset:0;z-index:90;background:var(--bg);display:none;align-items:flex-start;justify-content:center;padding:22px 16px;overflow:auto}
+body.pick-room .roomscreen{display:flex}
+body.pick-room .gate,body.pick-room .app-header,body.pick-room .wrap,body.pick-room .bnav{display:none !important}
+.room-card{width:100%;max-width:440px;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:22px 18px 16px;box-shadow:var(--shadow);margin:auto 0}
+.room-card h2{font-size:19px;font-weight:800;letter-spacing:-.4px;text-align:center}
+.room-card .sub{font-size:12.5px;color:var(--muted);text-align:center;margin-top:7px;line-height:1.55}
+.room-list{display:flex;flex-direction:column;gap:8px;margin-top:15px}
+.room-pick{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:var(--bg);border:1px solid var(--line);border-radius:13px;padding:12px 13px;min-height:54px}
+.room-pick:active{background:var(--brand-soft)}
+.room-pick .rn{display:block;font-size:14.5px;font-weight:800;letter-spacing:-.2px;line-height:1.35}
+.room-pick .rt2{display:block;font-size:11.5px;color:var(--muted);font-weight:700;margin-top:2px}
+.room-pick .go{margin-left:auto;color:var(--muted);font-size:17px;font-weight:800}
+
+/* 반별 전용 링크 */
+.linkrow{display:flex;align-items:center;gap:9px;padding:10px 12px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.linkrow:last-child{border-bottom:0}
+.linkrow .rn{font-size:13px;font-weight:800;flex:1 1 150px;line-height:1.4}
+.linkrow .ru{font-size:11px;color:var(--muted);word-break:break-all;font-family:ui-monospace,Menlo,Consolas,monospace;flex:1 1 100%}
+
+/* 공유 상태 */
+.cloudbar{display:flex;align-items:center;gap:7px;font-size:12.5px;font-weight:800;color:var(--text)}
+.dotlive{width:8px;height:8px;border-radius:50%;background:var(--attend);box-shadow:0 0 0 3px rgba(28,122,77,.14);flex:0 0 auto}
+.dotlive.off{background:var(--absent);box-shadow:0 0 0 3px rgba(192,57,43,.13)}
+.badge.lock{color:var(--excuse);background:var(--warn-bg);border-color:var(--warn-line)}
+.prow.private{border-left-color:rgba(160,106,12,.4)}
+.prow.private.answered{border-left-color:rgba(28,122,77,.45)}
+
+/* 공개 범위 선택 */
+.vis-box{display:flex;flex-direction:column;gap:7px;margin:6px 0 11px}
+.vis-opt{display:flex;gap:9px;align-items:flex-start;border:1px solid var(--line);border-radius:11px;padding:10px 11px;background:var(--bg);cursor:pointer}
+.vis-opt input{width:18px;height:18px;min-height:0;margin:2px 0 0;accent-color:var(--brand);flex:0 0 auto}
+.vis-opt .vt{display:block;font-size:13.5px;font-weight:800}
+.vis-opt .vd{display:block;font-size:11.5px;color:var(--muted);line-height:1.45;margin-top:2px;font-weight:600}
+.vis-opt.on{border-color:var(--brand);background:var(--brand-soft)}
+.vis-opt.on .vd{color:var(--text)}
+
+/* print */
+#print-head{display:none}
+@media (max-width:700px){
+  .tabs{display:none}
+  .bnav{display:flex}
+  .hrow{padding-bottom:9px}
+  .wrap{padding-bottom:118px}
+}
+@media (max-width:620px){
+  .mrow{grid-template-columns:minmax(0,1fr) auto;gap:6px}
+  .mrow .seg{grid-column:1/-1;grid-row:2;width:100%}
+  .mrow .memo-wrap{grid-row:3}
+  .seg-btn{flex:1;min-width:0;min-height:42px}
+  .memo-toggle{min-height:38px}
+  .tiles{grid-template-columns:repeat(4,1fr)}
+  .tile .v{font-size:17px}
+  .grid2{grid-template-columns:1fr}
+  .m-name{font-size:14.5px}
+}
+@media (min-width:760px){
+  .modal{border-radius:16px}
+  .backdrop{align-items:center;padding:22px}
+  .toast{bottom:26px}
+}
+@media print{
+  body{background:#fff}
+  .app-header,.bnav,.tabs,.no-print,.toast,.backdrop{display:none !important}
+  .wrap{padding:0;max-width:none}
+  .card{border:0;box-shadow:none;padding:0;margin:0}
+  #print-head{display:block;margin-bottom:8px;font-size:14px;font-weight:800}
+  .mrow{grid-template-columns:1fr auto;padding:6px 0;border-bottom:1px solid #ddd}
+  .mrow .seg{grid-column:2;grid-row:1;justify-self:end}
+  .seg-btn{border:1px solid #bbb}
+  .memo-wrap.open{display:block}
+  .memo-toggle{display:none}
+  table{font-size:11px}
+}
+</style>
+</head>
+<body class="booting">
+
+<div class="gate" id="auth-screen">
+  <div class="gate-card">
+    <div class="gate-icon">🙏</div>
+    <h2 class="gate-title" id="gate-title">신우회 기도제목</h2>
+    <p class="gate-sub" id="gate-sub">로그인 상태를 확인하고 있어요…</p>
+    <button type="button" class="btn google gate-btn" id="btn-google">
+      <svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+      <span>Google 계정으로 로그인</span>
+    </button>
+    <button type="button" class="btn ghost gate-btn hidden" id="btn-redirect">리디렉션으로 다시 로그인</button>
+    <button type="button" class="btn ghost gate-btn hidden" id="btn-local">이 기기의 로컬 출석부 열기</button>
+    <div class="gate-note" id="gate-note">
+      <b>🌐 전체 공유</b> 기도제목은 신우들이 함께 보고 기도합니다.<br>
+      <b>🔒 리더에게만</b> 적은 기도제목은 나와 리더만 봅니다.
+    </div>
+    <div class="gate-foot" id="gate-foot">출석·명단 자료는 이 기기에 그대로 남습니다.</div>
+  </div>
+</div>
+
+<div class="roomscreen" id="room-screen">
+  <div class="room-card">
+    <h2>소속 반 선택</h2>
+    <p class="sub">우리 반을 누르면 그 반의 출석부·기도제목으로 들어갑니다.<br>들어간 뒤에는 즐겨찾기에 저장해 두세요.</p>
+    <div class="room-list" id="room-pick-list"></div>
+    <div class="gate-foot" style="text-align:center">반을 잘못 골랐다면 주소에서 <b>?room=</b> 값을 지우면 다시 이 화면이 나옵니다.</div>
+  </div>
+</div>
+
+<header class="app-header">
+  <div class="hrow">
+    <h1 class="app-title" id="app-title">신우회 출석부</h1>
+    <div class="app-sub" id="save-state">자동 저장 준비</div>
+  </div>
+  <div class="roombar" id="room-bar">
+    <span class="room-now" id="room-now"><span class="rt">우리 반</span><span id="room-now-name">-</span></span>
+    <span class="room-switch admin-only">
+      <label class="sr" for="sel-room">반 선택</label>
+      <select id="sel-room" title="조회할 반 선택"></select>
+    </span>
+  </div>
+  <div class="userbar hidden" id="user-bar">
+    <div class="who"><span class="ub-name" id="ub-name"></span><span class="ub-role" id="ub-role">신우</span></div>
+    <button type="button" class="btn sm ghost" id="btn-signout">로그아웃</button>
+  </div>
+  <nav class="tabs" aria-label="화면 선택">
+    <button type="button" class="tab active" data-view="attend">출석 체크</button>
+    <button type="button" class="tab" data-view="prayers">기도제목</button>
+    <button type="button" class="tab" data-view="members">신우 명단</button>
+    <button type="button" class="tab" data-view="stats">통계·기록</button>
+    <button type="button" class="tab" data-view="backup">저장·백업</button>
+  </nav>
+</header>
+
+<main class="wrap">
+
+  <div class="banner no-print hidden" id="global-warn">이 브라우저에서는 자동 저장이 막혀 있습니다. 작업 전에 ‘저장·백업’에서 백업 파일을 내려받고, 작업 후에도 꼭 저장해 두세요.</div>
+  <div class="banner no-print hidden" id="room-mismatch">내 반(<b id="room-mismatch-name"></b>) 링크로 들어가면 그 반을 관리할 수 있습니다. <button type="button" class="btn sm" id="btn-room-mismatch" style="margin-left:6px">내 반으로 가기</button></div>
+
+  <!-- ============ 출석 체크 ============ -->
+  <section id="view-attend" class="view">
+    <div class="notice teacher-only" style="margin-bottom:10px">🧑‍🏫 <b>반 담임 교사</b> 화면입니다. 이 반의 명단·출석·통계·기도제목을 모두 관리할 수 있고, 대표신우를 지정·해제할 수 있습니다. (반별 링크·백업은 총괄 관리자만 볼 수 있습니다)</div>
+    <div class="notice rep-only" style="margin-bottom:10px">🙋 <b>대표신우</b> 화면입니다. 이름·목장·입대일·전역 D-day·생일과 출석 상태를 함께 보고 출석을 체크할 수 있습니다. 명단 편집은 담임 교사가 합니다.</div>
+    <div class="card no-print">
+      <div class="row">
+        <label class="field" style="flex:1 1 150px">
+          <span class="fl">날짜</span>
+          <input type="date" id="in-date">
+        </label>
+        <button type="button" class="btn sm" id="btn-today">오늘</button>
+        <label class="field" style="flex:1 1 130px">
+          <span class="fl">모임</span>
+          <select id="in-meeting"></select>
+        </label>
+        <button type="button" class="btn sm admin-only" id="btn-meet-manage" title="모임 종류 추가·이름변경·삭제">모임 관리</button>
+      </div>
+      <div class="row" style="margin-top:8px">
+        <label class="field" style="flex:1 1 170px">
+          <span class="fl">검색 (이름·소속·직분)</span>
+          <input type="search" id="in-search" placeholder="예: 김성도, 1목장, 집사" autocomplete="off">
+        </label>
+        <label class="field" style="flex:0 1 130px">
+          <span class="fl">소속</span>
+          <select id="sel-group"><option value="">전체</option></select>
+        </label>
+        <button type="button" class="btn sm" id="btn-unmarked" aria-pressed="false" title="아직 체크하지 않은 신우만 보기">미체크만</button>
+      </div>
+      <div class="tiles">
+        <div class="tile"><div class="k">총원</div><div class="v" id="tile-total">0</div></div>
+        <div class="tile a"><div class="k">출석</div><div class="v" id="tile-attend">0</div></div>
+        <div class="tile b"><div class="k">결석</div><div class="v" id="tile-absent">0</div></div>
+        <div class="tile"><div class="k">출석률</div><div class="v" id="tile-rate">-</div></div>
+      </div>
+      <div class="tally-note" id="tally-note"></div>
+      <div class="row no-print" style="margin-top:10px">
+        <button type="button" class="btn primary grow" id="btn-bulk-attend">일괄 출석</button>
+        <button type="button" class="btn grow" id="btn-reset">초기화</button>
+      </div>
+      <div class="row no-print" style="margin-top:6px">
+        <button type="button" class="btn sm grow" id="btn-day-csv">이 날짜 엑셀(CSV)</button>
+        <button type="button" class="btn sm grow" id="btn-print">인쇄</button>
+      </div>
+    </div>
+
+    <div class="card card-tight">
+      <div class="card-title no-print" style="padding:11px 13px 0" id="attn-head">
+        <span>신우 목록</span><span class="cap" id="attn-count"></span>
+      </div>
+      <div id="print-head"></div>
+      <ul class="list" id="attn-list"></ul>
+      <div class="empty hidden" id="attn-empty"></div>
+    </div>
+  </section>
+
+  <!-- ============ 기도제목 ============ -->
+  <section id="view-prayers" class="view hidden">
+    <div class="card hidden" id="pray-mode-card">
+      <div class="cloudbar"><span class="dotlive" id="pray-mode-dot"></span><span id="pray-mode-text">이 기기에만 저장 중</span></div>
+      <div class="tip" id="pray-mode-tip" style="margin-top:6px"></div>
+      <div class="row" id="pray-mode-actions" style="margin-top:9px">
+        <button type="button" class="btn primary sm grow hidden" id="btn-cloud-login">Google 로그인</button>
+      </div>
+    </div>
+    <div class="card hidden" id="migrate-card">
+      <div class="card-title"><span>기존 내 폰 기도제목</span><span class="cap" id="migrate-count"></span></div>
+      <div class="tip" id="migrate-text"></div>
+      <div class="row" style="margin-top:9px">
+        <button type="button" class="btn primary grow" id="btn-migrate">클라우드로 옮기기</button>
+        <button type="button" class="btn sm" id="btn-migrate-hide">나중에</button>
+      </div>
+    </div>
+    <div class="card no-print">
+      <div class="row">
+        <label class="field" style="flex:1 1 170px">
+          <span class="fl">검색 (이름·기도제목·카테고리)</span>
+          <input type="search" id="pray-search" placeholder="예: 김성도, 건강" autocomplete="off">
+        </label>
+        <label class="field" style="flex:0 1 145px">
+          <span class="fl" id="pray-person-label">신우</span>
+          <select id="pray-person"><option value="">전체</option></select>
+        </label>
+        <label class="field" style="flex:0 1 125px">
+          <span class="fl">상태</span>
+          <select id="pray-state">
+            <option value="all">전체</option>
+            <option value="praying">기도 중</option>
+            <option value="answered">응답됨</option>
+          </select>
+        </label>
+      </div>
+      <div class="row" style="margin-top:8px">
+        <button type="button" class="btn primary grow" id="btn-add-prayer">+ 기도제목 추가</button>
+        <button type="button" class="btn sm" id="btn-prayer-csv">엑셀(CSV)</button>
+      </div>
+      <div class="tiles">
+        <div class="tile"><div class="k">전체</div><div class="v" id="ptile-all">0</div></div>
+        <div class="tile c"><div class="k">기도 중</div><div class="v" id="ptile-praying">0</div></div>
+        <div class="tile a"><div class="k">응답됨</div><div class="v" id="ptile-answered">0</div></div>
+        <div class="tile"><div class="k">신우</div><div class="v" id="ptile-people">0</div></div>
+      </div>
+      <div class="tally-note" id="pray-note"></div>
+    </div>
+    <div class="card card-tight">
+      <div class="card-title" style="padding:11px 13px 0">
+        <span>기도제목</span><span class="cap" id="pray-count"></span>
+      </div>
+      <ul class="list" id="pray-list"></ul>
+      <div class="empty hidden" id="pray-empty"></div>
+    </div>
+  </section>
+
+  <!-- ============ 신우 명단 ============ -->
+  <section id="view-members" class="view hidden">
+    <div class="card manage-only" data-lead-card="mem">
+      <div class="card-title"><span>👥 이 반 담임 교사·대표신우</span><span class="cap" data-lead-count>0명</span></div>
+      <div class="tip" data-lead-tip>지금 반의 담임 교사와 대표신우를 지정합니다.</div>
+      <div class="row" data-lead-addrow style="margin-top:9px">
+        <label class="field" style="flex:1 1 200px"><span class="fl">구글 이메일</span><input type="email" data-lead-email placeholder="예: leader@gmail.com" autocomplete="off" autocapitalize="off" spellcheck="false"></label>
+        <label class="field" style="flex:0 1 130px"><span class="fl">역할</span><select data-lead-role><option value="teacher">담임 교사</option><option value="rep">대표신우</option></select></label>
+        <button type="button" class="btn primary" data-lead-add>추가</button>
+      </div>
+      <ul class="list" data-lead-list></ul>
+      <div class="empty hidden" data-lead-empty>아직 지정한 교사·대표신우가 없습니다. 위에 구글 이메일을 넣고 ‘추가’를 눌러 주세요.</div>
+    </div>
+
+    <div class="card no-print">
+      <div class="row">
+        <label class="field" style="flex:1 1 180px">
+          <span class="fl">명단 검색</span>
+          <input type="search" id="mem-search" placeholder="이름·소속·직분 검색" autocomplete="off">
+        </label>
+        <button type="button" class="btn primary" id="btn-add-member">+ 신우 등록</button>
+      </div>
+      <div class="row" style="margin-top:8px">
+        <button type="button" class="btn sm grow" id="btn-bulk">일괄 등록</button>
+        <button type="button" class="btn sm grow" id="btn-sample">샘플 명단 넣기</button>
+        <button type="button" class="btn sm grow hidden" id="btn-sample-clear">샘플 지우기</button>
+        <button type="button" class="btn sm grow" id="btn-member-csv">명단 CSV</button>
+      </div>
+      <div class="row" style="margin-top:8px">
+        <label class="field" style="flex:1 1 170px">
+          <span class="fl">보기</span>
+          <select id="mem-filter">
+            <option value="all">전체</option>
+            <option value="birthday">이번 달 생일</option>
+            <option value="serving">복무 중</option>
+            <option value="discharge-soon">전역 예정 (D-90 이내)</option>
+            <option value="discharged">전역 완료</option>
+          </select>
+        </label>
+      </div>
+    </div>
+    <div class="card card-tight">
+      <div class="card-title" style="padding:11px 13px 0">
+        <span>등록된 신우</span><span class="cap" id="mem-count"></span>
+      </div>
+      <ul class="list" id="mem-list"></ul>
+      <div class="empty hidden" id="mem-empty"></div>
+    </div>
+  </section>
+
+  <!-- ============ 통계·기록 ============ -->
+  <section id="view-stats" class="view hidden">
+    <div class="card no-print">
+      <div class="row">
+        <label class="field" style="flex:1 1 150px">
+          <span class="fl">기간</span>
+          <input type="month" id="stats-month">
+        </label>
+        <button type="button" class="btn sm" id="stats-all" aria-pressed="false">전체 기간</button>
+        <label class="field" style="flex:1 1 150px">
+          <span class="fl">정렬</span>
+          <select id="stats-sort">
+            <option value="rate">출석률 낮은 순</option>
+            <option value="name">이름 순</option>
+            <option value="absent">결석 많은 순</option>
+            <option value="group">소속 순</option>
+          </select>
+        </label>
+      </div>
+      <div class="tiles">
+        <div class="tile"><div class="k">모임 수</div><div class="v" id="stat-sessions">0</div></div>
+        <div class="tile"><div class="k">전체 출석률</div><div class="v" id="stat-rate">-</div></div>
+        <div class="tile b"><div class="k">연속 결석</div><div class="v" id="stat-streak">0</div></div>
+        <div class="tile"><div class="k">등록 인원</div><div class="v" id="stat-members">0</div></div>
+      </div>
+      <div class="tally-note" id="stats-note"></div>
+    </div>
+
+    <div class="warncard hidden" id="stats-warn">
+      <h3>안부를 챙길 신우</h3>
+      <div class="warnlist" id="stats-warn-list"></div>
+      <div class="tip" style="margin-top:7px">최근 두 모임 이상 계속 결석한 신우입니다. (사유 결석은 연속 결석으로 세지 않습니다)</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">
+        <span>개인별 출석 현황</span><span class="cap" id="stats-period-label"></span>
+      </div>
+      <div class="tblwrap">
+        <table>
+          <thead>
+            <tr>
+              <th>이름</th><th>소속</th><th>직분</th>
+              <th class="num">출석</th><th class="num">결석</th><th class="num">사유</th>
+              <th class="num">미기록</th><th class="num">출석률</th>
+              <th>최근 5회</th><th>연속 결석</th>
+            </tr>
+          </thead>
+          <tbody id="stats-tbl-body"></tbody>
+        </table>
+      </div>
+      <div class="empty hidden" id="stats-empty"></div>
+    </div>
+
+    <div class="card no-print">
+      <div class="card-title"><span>내보내기</span><span class="cap">엑셀에서 바로 열립니다</span></div>
+      <div class="row">
+        <button type="button" class="btn sm grow" id="btn-stats-csv-sheet">날짜별 출석표 CSV</button>
+        <button type="button" class="btn sm grow" id="btn-stats-csv-people">개인별 통계 CSV</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span>날짜별 출석 기록</span><span class="cap" id="sess-count"></span></div>
+      <div class="tblwrap">
+        <table>
+          <thead>
+            <tr><th>날짜</th><th>모임</th><th class="num">출석</th><th class="num">결석</th><th class="num">사유</th><th class="num">미기록</th><th class="num">출석률</th><th></th></tr>
+          </thead>
+          <tbody id="sess-body"></tbody>
+        </table>
+      </div>
+      <div class="empty hidden" id="sess-empty">아직 기록된 모임이 없습니다.</div>
+    </div>
+  </section>
+
+  <!-- ============ 저장·백업 ============ -->
+  <section id="view-backup" class="view hidden">
+    <div class="card admin-only" id="room-links-card">
+      <div class="card-title"><span>🔗 반별 전용 링크</span><span class="cap">6개 반</span></div>
+      <div class="tip">각 반 선생님·신우에게 자기 반 링크를 보내면, 그 링크로 들어온 사람은 그 반의 기도제목만 봅니다. 그 반의 담임 교사·대표신우로 지정된 계정은 그 반 화면을 관리할 수 있습니다.</div>
+      <ul class="list" id="room-link-list"></ul>
+    </div>
+
+    <div class="card manage-only" data-lead-card="bk">
+      <div class="card-title"><span>👥 이 반 담임 교사·대표신우</span><span class="cap" data-lead-count>0명</span></div>
+      <div class="tip" data-lead-tip>지금 반의 담임 교사와 대표신우를 지정합니다.</div>
+      <div class="row" data-lead-addrow style="margin-top:9px">
+        <label class="field" style="flex:1 1 200px"><span class="fl">구글 이메일</span><input type="email" data-lead-email placeholder="예: leader@gmail.com" autocomplete="off" autocapitalize="off" spellcheck="false"></label>
+        <label class="field" style="flex:0 1 130px"><span class="fl">역할</span><select data-lead-role><option value="teacher">담임 교사</option><option value="rep">대표신우</option></select></label>
+        <button type="button" class="btn primary" data-lead-add>추가</button>
+      </div>
+      <ul class="list" data-lead-list></ul>
+      <div class="empty hidden" data-lead-empty>아직 지정한 교사·대표신우가 없습니다. 위에 구글 이메일을 넣고 ‘추가’를 눌러 주세요.</div>
+    </div>
+
+    <div class="card admin-only" id="cloud-sync-card">
+      <div class="card-title"><span>☁️ 로컬 출석부·명단 올리기</span><span class="cap" id="cloud-sync-cap">-</span></div>
+      <div class="cloudbar"><span class="dotlive off" id="cloud-sync-dot"></span><span id="cloud-sync-text">확인 중…</span></div>
+      <div class="row" style="margin-top:10px">
+        <button type="button" class="btn primary grow" id="btn-cloud-upload">이 폰 출석부·명단을 <b id="cloud-upload-room">이 반</b>으로 올리기</button>
+      </div>
+      <div class="tip" style="margin-top:8px">이 폰에 있는 명단과 출석 기록을 <b>지금 선택된 반</b>의 클라우드로 올립니다. 올라가는 정보는 이름·목장·직분·입대일·전역일·생일과 출석 상태이며, <b>연락처·비고는 이 폰에만</b> 남습니다. 그 반의 교사·대표신우와 실시간으로 함께 봅니다.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span>저장 상태</span></div>
+      <div class="notice warn hidden" id="storage-warn">
+        이 브라우저에서는 자동 저장이 막혀 있습니다. 작업한 내용을 잃지 않도록 화면을 닫기 전에 아래 <b>JSON 백업</b>으로 파일을 내려받아 두세요.
+      </div>
+      <dl class="kv" style="margin-top:10px">
+        <dt>자동 저장</dt><dd id="bk-save-state">-</dd>
+        <dt>마지막 저장</dt><dd id="bk-updated">-</dd>
+        <dt>등록 신우</dt><dd id="bk-members">0명</dd>
+        <dt>기록된 모임</dt><dd id="bk-sessions">0회</dd>
+        <dt>기도제목</dt><dd id="bk-prayers">0개</dd>
+        <dt>모임 종류</dt><dd id="bk-meetings">-</dd>
+        <dt>클라우드 명단</dt><dd id="bk-cloud">-</dd>
+      </dl>
+      <div class="tip" style="margin-top:9px">이 기기에 반별로 저장됩니다. 위 ☁️ 카드에서 ‘올리기’를 누르면 그 반의 명단·출석이 그 반 교사·대표신우와 실시간으로 공유됩니다. 폰과 PC를 함께 쓰시려면 아래 JSON 백업을 쓰세요.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span>JSON 백업 · 복원</span><span class="cap">폰 ↔ PC 이동용</span></div>
+      <div class="row">
+        <button type="button" class="btn primary grow" id="btn-json-export">백업 파일 내려받기</button>
+        <button type="button" class="btn grow" id="btn-json-import">백업 파일 불러오기</button>
+      </div>
+      <input type="file" id="file-json-import" accept=".json,application/json" class="hidden">
+      <div class="tip" style="margin-top:9px">내려받은 <b>.json</b> 파일을 다른 기기에서 ‘백업 파일 불러오기’로 열면 명단·출석 기록·기도제목이 그대로 옮겨집니다. 예전 버전에서 만든 백업 파일도 그대로 열립니다. 불러오면 현재 데이터는 백업 파일 내용으로 바뀝니다.</div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span>사용 안내</span></div>
+      <ul class="tip" style="padding-left:18px;margin:0">
+        <li><b>출석 체크</b>: 날짜와 모임을 고르고 신우별로 출석·결석·사유를 누르면 바로 저장됩니다. 같은 버튼을 다시 누르면 취소됩니다.</li>
+        <li><b>반(부대)</b>: 이 앱은 6개 반으로 나뉘어 있습니다. 위 🔗 반별 전용 링크를 각 반에 보내면, 그 링크로 들어온 사람은 그 반의 기도제목만 봅니다.</li>
+        <li><b>담임 교사·대표신우</b>: 위 👥 카드에서 그 반의 구글 이메일을 <b>담임 교사</b> 또는 <b>대표신우</b>로 지정합니다. 담임 교사는 자기 반의 출석·명단·통계·기도제목을 관리하고 대표신우를 지정하며, 대표신우는 출석 체크와 기도제목을 봅니다. 누른 출석은 클라우드에 바로 저장되어 서로 실시간으로 보입니다.</li>
+        <li><b>기도제목</b>: ‘기도제목 추가’에서 신우를 고르면 그 신우의 기도제목으로 묶입니다. 명단에 없는 이름도 직접 적을 수 있습니다. 응답을 받으면 ‘응답 체크’를 눌러 감사로 표시하고, ‘전체·기도 중·응답됨’과 신우별로 모아 볼 수 있습니다.</li>
+        <li><b>사유</b>: 출장·당직·휴가 등으로 못 오신 경우. 옆의 ‘메모’에 사유를 적어 두세요. 출석률 계산에서 빠집니다.</li>
+        <li><b>명단</b>: 여러 명을 한 번에 등록할 때는 ‘일괄 등록’에 이름을 줄바꿈으로 붙여넣으면 됩니다.</li>
+        <li><b>입대일·전역일·생일</b>: 신우를 등록·수정할 때 넣어 두면 명단에 <b>전역 D-12</b> 같은 전역 표시와 <b>🎂 생일</b> 표시가 붙습니다. ‘일괄 등록’에서는 ‘날짜 포함’을 골라 <b>이름, 소속, 직분, 입대일, 전역일, 생일</b> 순서로 넣거나, 첫 줄에 열 제목(이름·소속·직분·입대일·전역일·생일)을 적어 붙여넣어도 됩니다. 모두 선택 입력입니다.</li>
+        <li><b>미체크만</b>: 아직 확인하지 않은 신우만 남겨 두고 체크할 수 있습니다. 다시 누르면 전체 명단이 보입니다.</li>
+        <li><b>통계</b>: 월별 또는 전체 기간의 개인별 출석률과 연속 결석을 확인할 수 있습니다.</li>
+        <li><b>인쇄</b>: 출석 화면에서 ‘인쇄’를 누르면 종이 출석부로 출력하거나 PDF로 저장할 수 있습니다.</li>
+        <li><b>엑셀</b>: CSV 파일은 엑셀에서 한글이 깨지지 않도록 만들어집니다.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span>데이터 비우기</span></div>
+      <button type="button" class="btn danger" id="btn-clear-all">모든 데이터 삭제</button>
+      <div class="tip" style="margin-top:8px">명단·출석 기록·기도제목을 이 기기에서 모두 지웁니다. 되돌릴 수 없으니 먼저 백업해 두세요.</div>
+    </div>
+  </section>
+
+</main>
+
+<nav class="bnav" aria-label="화면 선택">
+  <button type="button" data-view="attend" class="active"><span class="ic">✓</span>출석</button>
+  <button type="button" data-view="prayers"><span class="ic">🙏</span>기도</button>
+  <button type="button" data-view="members"><span class="ic">👥</span>명단</button>
+  <button type="button" data-view="stats"><span class="ic">📊</span>통계</button>
+  <button type="button" data-view="backup"><span class="ic">💾</span>백업</button>
+</nav>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<!-- 신우 등록/수정 -->
+<div class="backdrop" id="modal-member" role="dialog" aria-modal="true" aria-labelledby="member-modal-title">
+  <div class="modal">
+    <h2 id="member-modal-title">신우 등록</h2>
+    <p class="sub" id="member-modal-sub">이름은 필수입니다.</p>
+    <form id="member-form" class="mform" autocomplete="off">
+      <label class="field"><span class="fl">이름 *</span><input type="text" id="f-name" maxlength="30" required placeholder="예: 김성도"></label>
+      <label class="field"><span class="fl">소속 / 부서 / 목장</span><input type="text" id="f-group" maxlength="40" list="group-list" placeholder="예: 1목장"></label>
+      <label class="field"><span class="fl">직분 / 구분</span><input type="text" id="f-role" maxlength="30" list="role-list" placeholder="예: 집사"></label>
+      <label class="field"><span class="fl">연락처</span><input type="tel" id="f-phone" maxlength="25" inputmode="tel" placeholder="예: 010-0000-0000"></label>
+      <label class="field"><span class="fl">비고</span><input type="text" id="f-note" maxlength="80" placeholder="예: 새벽 기도 담당"></label>
+      <div class="fsection">군 복무 · 생일 <span>선택 입력</span></div>
+      <div class="grid2">
+        <label class="field"><span class="fl">입대일</span><input type="date" id="f-enlist"></label>
+        <label class="field"><span class="fl">전역일</span><input type="date" id="f-discharge"></label>
+      </div>
+      <label class="field"><span class="fl">생일</span><input type="date" id="f-birthday"></label>
+      <div class="fhint hidden" id="f-date-warn">전역일이 입대일보다 빠릅니다. 날짜를 확인해 주세요.</div>
+      <div class="modal-actions">
+        <button type="button" class="btn ghost" data-close>취소</button>
+        <button type="submit" class="btn primary" id="member-submit">저장</button>
+      </div>
+    </form>
+    <datalist id="group-list"></datalist>
+    <datalist id="role-list"></datalist>
+  </div>
+</div>
+
+<!-- 일괄 등록 -->
+<div class="backdrop" id="modal-bulk" role="dialog" aria-modal="true" aria-labelledby="bulk-title">
+  <div class="modal">
+    <h2 id="bulk-title">일괄 등록</h2>
+    <p class="sub">여러 신우를 한 번에 추가합니다.</p>
+    <div class="seg2" id="bulk-mode-box">
+      <label class="on"><input type="radio" name="bulk-mode" value="names" checked>이름만</label>
+      <label><input type="radio" name="bulk-mode" value="table">소속·직분</label>
+      <label><input type="radio" name="bulk-mode" value="dates">날짜 포함</label>
+    </div>
+    <div class="tip" id="bulk-hint" style="margin:-4px 0 9px"></div>
+    <textarea id="bulk-text" placeholder="김성도&#10;이재훈&#10;박민수&#10;정영식"></textarea>
+    <div class="preview" id="bulk-preview">붙여넣으면 인식된 명단이 여기에 표시됩니다.</div>
+    <div class="pvnames hidden" id="bulk-names"></div>
+    <div class="modal-actions">
+      <button type="button" class="btn ghost" data-close>취소</button>
+      <button type="button" class="btn primary" id="bulk-confirm" disabled>추가</button>
+    </div>
+  </div>
+</div>
+
+<!-- 모임 종류 관리 -->
+<div class="backdrop" id="modal-meetings" role="dialog" aria-modal="true" aria-labelledby="meet-title">
+  <div class="modal">
+    <h2 id="meet-title">모임 종류 관리</h2>
+    <p class="sub">주일예배 외에 수요예배, 소그룹, 새벽기도 등 원하는 모임을 추가하세요.</p>
+    <ul class="mlist" id="meeting-manage-list"></ul>
+    <div class="modal-actions">
+      <button type="button" class="btn ghost" data-close>닫기</button>
+      <button type="button" class="btn primary" id="meeting-add">+ 모임 추가</button>
+    </div>
+  </div>
+</div>
+
+<!-- 기도제목 등록/수정 -->
+<div class="backdrop" id="modal-prayer" role="dialog" aria-modal="true" aria-labelledby="prayer-modal-title">
+  <div class="modal">
+    <h2 id="prayer-modal-title">기도제목 추가</h2>
+    <p class="sub" id="prayer-modal-sub">신우를 고르거나 이름을 직접 적어 주세요.</p>
+    <form id="prayer-form" class="mform" autocomplete="off">
+      <label class="field hidden" id="f-pray-person-wrap"><span class="fl">신우</span><select id="f-pray-person"><option value="">직접 입력</option></select></label>
+      <label class="field"><span class="fl">이름 *</span><input type="text" id="f-pray-name" maxlength="30" placeholder="예: 김성도" list="member-name-list"></label>
+      <label class="field"><span class="fl">기도제목 *</span><textarea id="f-pray-text" maxlength="500" style="min-height:98px" placeholder="예: 아버지 수술이 잘 마무리되도록"></textarea></label>
+      <div class="grid2">
+        <label class="field"><span class="fl">카테고리</span><input type="text" id="f-pray-cat" maxlength="20" list="cat-list" placeholder="예: 건강"></label>
+        <label class="field"><span class="fl">작성일</span><input type="date" id="f-pray-date"></label>
+      </div>
+      <div class="hidden" id="f-pray-vis-wrap">
+        <div class="fl">공개 범위</div>
+        <div class="vis-box" id="f-pray-vis-box">
+          <label class="vis-opt on" id="vis-opt-public">
+            <input type="radio" name="pray-vis" value="public" checked>
+            <span><span class="vt">🌐 전체 공유 (신우들과 함께)</span><span class="vd">신우들이 함께 보고 같이 기도합니다.</span></span>
+          </label>
+          <label class="vis-opt" id="vis-opt-private">
+            <input type="radio" name="pray-vis" value="private">
+            <span><span class="vt">🔒 리더에게만 비공개 (나와 현욱 님만)</span><span class="vd">다른 신우에게는 보이지 않습니다.</span></span>
+          </label>
+        </div>
+      </div>
+      <label class="chk" for="f-pray-answered"><input type="checkbox" id="f-pray-answered"> 응답됨(감사)으로 표시</label>
+      <div class="modal-actions">
+        <button type="button" class="btn ghost" data-close>취소</button>
+        <button type="submit" class="btn primary" id="prayer-submit">저장</button>
+      </div>
+    </form>
+    <datalist id="cat-list"></datalist>
+    <datalist id="member-name-list"></datalist>
+  </div>
+</div>
+
+<!-- 확인 -->
+<div class="backdrop" id="modal-confirm" role="alertdialog" aria-modal="true" aria-labelledby="confirm-title">
+  <div class="modal">
+    <h2 id="confirm-title">확인</h2>
+    <p class="sub" id="confirm-msg" style="margin-top:6px;white-space:pre-line"></p>
+    <div class="modal-actions">
+      <button type="button" class="btn ghost" id="confirm-cancel">취소</button>
+      <button type="button" class="btn primary" id="confirm-ok">확인</button>
+    </div>
+  </div>
+</div>
+
+<!-- 입력 -->
+<div class="backdrop" id="modal-prompt" role="dialog" aria-modal="true" aria-labelledby="prompt-title">
+  <div class="modal">
+    <h2 id="prompt-title">입력</h2>
+    <p class="sub" id="prompt-msg"></p>
+    <input type="text" id="prompt-input" maxlength="30">
+    <div class="modal-actions">
+      <button type="button" class="btn ghost" id="prompt-cancel">취소</button>
+      <button type="button" class="btn primary" id="prompt-ok">확인</button>
+    </div>
+  </div>
+</div>
+
+<!-- Firebase (Google 로그인 · 실시간 공유). CDN이 막혀도 로컬 출석부는 그대로 동작합니다 -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  /* ===================== 기본 설정 ===================== */
+  var STORE_KEY = 'church.sinyuhoe.attendance.v1';
+  var DEFAULT_MEETINGS = ['주일예배', '수요예배', '소그룹'];
+  var WEEKDAYS = ['일', '월', '화', '수', '목', '금', '토'];
+  var STATUS_LABEL = { attend: '출석', absent: '결석', excuse: '사유' };
+
+  var state = null;
+  var storageOK = true;
+  var curDate = '';
+  var curMeeting = '';
+  var searchText = '';
+  var groupFilter = '';
+  var onlyUnmarked = false;
+  var statsMonth = '';
+  var statsSortMode = 'rate';
+  var memSearchText = '';
+  var memFilter = 'all';
+  var praySearchText = '';
+  var prayPerson = '';
+  var prayState = 'all';
+  var editPrayerId = '';
+  var editMemberId = '';
+  var bulkMode = 'names';
+  var bulkModeTouched = false;
+  var bulkParsed = [];
+  var confirmCallback = null;
+  var promptCallback = null;
+  var openMemo = {};
+  var toastTimer = null;
+
+  /* 클라우드(실시간 공유) 상태 */
+  var ADMIN_EMAIL = 'stevenkang126@gmail.com';
+  var FIREBASE_CONFIG = {
+    apiKey: 'AIzaSyDw_KiD04PtZ77pPEsI8LpQAh6zE6wcr1A',
+    authDomain: 'sinyuhoe-prayer.firebaseapp.com',
+    projectId: 'sinyuhoe-prayer',
+    storageBucket: 'sinyuhoe-prayer.firebasestorage.app',
+    messagingSenderId: '939432194243',
+    appId: '1:939432194243:web:633dc3fd23c21deba03276'
+  };
+
+  /* 고정 6개 반(부대). URL ?room=<id> 로 현재 반이 결정된다. */
+  var ROOMS = [
+    { id: '701comm', name: '701통신 · 운영대대', teacher: '이재인 집사' },
+    { id: 'mp', name: '군사경찰 · 특임대', teacher: '박민지 집사님' },
+    { id: 'commhq', name: '통신단 본부', teacher: '박상두 집사님' },
+    { id: 'bonbu', name: '본부대', teacher: '강현욱 집사님' },
+    { id: 'band', name: '군악대', teacher: '마재국 집사님' },
+    { id: '140intel', name: '140정보대대 · 방첩 · 파견부대', teacher: '박규환 집사님' }
+  ];
+  var DEFAULT_ROOM = 'bonbu';
+  var ROOM_KEY = '';              /* 현재 반 id */
+  var roomFromUrl = false;        /* 주소에 유효한 ?room= 이 있었는지 */
+  var ROOM_LINK_BASE = 'https://stevenkang126-star.github.io/-/';
+  var currentView = 'attend';
+  var prayerMode = 'local';          /* 'local' | 'cloud' */
+  var localModeChosen = false;      /* 로그인 없이 이 기기의 출석부를 연 상태 */
+  var migrateCardDismissed = false;
+  var authBusy = false;
+  var CLOUD = {
+    ready: false,          /* firebase 초기화 완료 */
+    sdk: false,            /* SDK 로드 여부 */
+    auth: null,
+    db: null,
+    user: null,
+    isAdmin: false,
+    role: '',            /* '' (로컬) | 'admin' | 'teacher' | 'rep' | 'member' */
+    leaderRooms: [],     /* 이 계정이 교사·대표신우로 지정된 반 */
+    list: [],
+    subs: [],
+    err: '',
+    errShown: false,
+    authError: '',
+    leaders: [],         /* 관리자: leaders 컬렉션 목록 */
+    cloudMembers: null,  /* 클라우드 members 문서 수 (모르면 null) */
+    unsubAtt: null,
+    unsubMembers: null,
+    unsubLeaders: null,
+    attKey: '',
+    dataErr: {}
+  };
+  var LEADERS_COL = 'leaders';
+  var MEMBERS_COL = 'members';
+  var ATTENDANCE_COL = 'attendance';
+
+  /* ===================== 도우미 ===================== */
+  function $(id) { return document.getElementById(id); }
+
+  /* ---- 반(부대) 도우미 ---- */
+  function roomById(id) {
+    for (var i = 0; i < ROOMS.length; i++) if (ROOMS[i].id === id) return ROOMS[i];
+    return null;
+  }
+  function roomName(id) { var r = roomById(id || ROOM_KEY); return r ? r.name : ''; }
+  function roomTeacher(id) { var r = roomById(id || ROOM_KEY); return r ? r.teacher : ''; }
+  function roomLabel(id) { var r = roomById(id || ROOM_KEY); return r ? (r.name + ' · ' + r.teacher) : ''; }
+  function roomLink(id) { return ROOM_LINK_BASE + '?room=' + encodeURIComponent(String(id || '')); }
+  function urlRoomId() {
+    var m = String(window.location.search || '').match(/[?&]room=([^&]*)/);
+    if (!m) return '';
+    var id = '';
+    try { id = decodeURIComponent(m[1]); } catch (e) { id = m[1]; }
+    return roomById(id) ? id : '';
+  }
+  function pad2(n) { return (n < 10 ? '0' : '') + n; }
+  function uid() { return 'm' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
+  function puid() { return 'p' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
+  function nowISO() { return new Date().toISOString(); }
+  function todayISO() {
+    var d = new Date();
+    return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate());
+  }
+  function parseISO(iso) {
+    var p = String(iso).split('-');
+    return new Date(Number(p[0]), Number(p[1]) - 1, Number(p[2]));
+  }
+  function labelDate(iso) {
+    var d = parseISO(iso);
+    return (d.getMonth() + 1) + '월 ' + d.getDate() + '일 (' + WEEKDAYS[d.getDay()] + ')';
+  }
+  function shortDate(iso) {
+    var d = parseISO(iso);
+    return (d.getMonth() + 1) + '/' + pad2(d.getDate());
+  }
+  /* 날짜 입력을 YYYY-MM-DD 로 통일 (빈 값·잘못된 값은 '') */
+  function normDate(v) {
+    var s = String(v == null ? '' : v).trim();
+    if (!s) return '';
+    var m = s.match(/^(\d{4})\D{0,2}(\d{1,2})\D{0,2}(\d{1,2})\D?$/);
+    if (!m) return '';
+    var y = Number(m[1]), mo = Number(m[2]), d = Number(m[3]);
+    if (mo < 1 || mo > 12 || d < 1 || d > 31) return '';
+    var dt = new Date(y, mo - 1, d);
+    if (dt.getFullYear() !== y || dt.getMonth() !== mo - 1 || dt.getDate() !== d) return '';
+    return y + '-' + pad2(mo) + '-' + pad2(d);
+  }
+  function dateLabel(iso) {
+    if (!iso) return '';
+    var d = parseISO(iso);
+    if (isNaN(d.getTime())) return '';
+    return d.getFullYear() + '. ' + (d.getMonth() + 1) + '. ' + d.getDate() + '.';
+  }
+  function mdLabel(iso) {
+    var d = parseISO(iso);
+    if (isNaN(d.getTime())) return '';
+    return (d.getMonth() + 1) + '월 ' + d.getDate() + '일';
+  }
+  /* 오늘(한국 시간 기준 날짜)에서 목표일까지 남은 일수. 지난 날은 음수 */
+  function daysUntil(iso) {
+    var t = parseISO(iso);
+    if (isNaN(t.getTime())) return 0;
+    var n = new Date();
+    var a = Date.UTC(t.getFullYear(), t.getMonth(), t.getDate());
+    var b = Date.UTC(n.getFullYear(), n.getMonth(), n.getDate());
+    return Math.round((a - b) / 86400000);
+  }
+  function dischargeInfo(m) {
+    if (!m || !m.dischargeDate) return null;
+    var n = daysUntil(m.dischargeDate);
+    return { days: n, done: n < 0, today: n === 0, label: n > 0 ? 'D-' + n : (n === 0 ? 'D-DAY' : '전역') };
+  }
+  function birthdayInfo(m) {
+    if (!m || !m.birthday) return null;
+    var d = parseISO(m.birthday);
+    if (isNaN(d.getTime())) return null;
+    var t = new Date();
+    var sameMonth = d.getMonth() === t.getMonth();
+    var isToday = sameMonth && d.getDate() === t.getDate();
+    return { isToday: isToday, sameMonth: sameMonth, text: mdLabel(m.birthday) };
+  }
+  function monthLabel(ym) {
+    if (!ym || ym === 'all') return '전체 기간';
+    var p = ym.split('-');
+    return p[0] + '년 ' + Number(p[1]) + '월';
+  }
+  function escapeHtml(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      if (c === '&') return '&amp;';
+      if (c === '<') return '&lt;';
+      if (c === '>') return '&gt;';
+      if (c === '"') return '&quot;';
+      return '&#39;';
+    });
+  }
+  function safeName(s) { return String(s || '').replace(/[\\/:*?"<>|]/g, '-').replace(/\s+/g, ' ').trim(); }
+  function fmtRate(rate) { return (rate === null || rate === undefined) ? '-' : rate + '%'; }
+  function fmtTime(iso) {
+    if (!iso) return '-';
+    var d = new Date(iso);
+    if (isNaN(d.getTime())) return '-';
+    return d.getFullYear() + '. ' + (d.getMonth() + 1) + '. ' + d.getDate() + '. ' + pad2(d.getHours()) + ':' + pad2(d.getMinutes());
+  }
+
+  function toast(msg) {
+    var t = $('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    if (toastTimer) clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { t.classList.remove('show'); }, 2600);
+  }
+
+  /* ===================== 저장 ===================== */
+  function emptyState() {
+    return {
+      version: 2,
+      members: [],
+      meetings: DEFAULT_MEETINGS.slice(),
+      records: {},
+      prayers: [],
+      meta: { createdAt: nowISO(), updatedAt: nowISO(), migratedPrayers: [], cloudSyncedAt: '' }
+    };
+  }
+
+  function normalizeState(obj) {
+    var s = emptyState();
+    if (!obj || typeof obj !== 'object') return s;
+
+    if (Array.isArray(obj.members)) {
+      var seenIds = {};
+      obj.members.forEach(function (m) {
+        if (!m || typeof m !== 'object') return;
+        var name = String(m.name || '').trim();
+        if (!name) return;
+        var id = m.id ? String(m.id) : uid();
+        if (seenIds[id]) id = uid();
+        seenIds[id] = true;
+        s.members.push({
+          id: id,
+          name: name,
+          group: String(m.group || '').trim(),
+          role: String(m.role || '').trim(),
+          phone: String(m.phone || '').trim(),
+          note: String(m.note || '').trim(),
+          enlistDate: normDate(m.enlistDate),
+          dischargeDate: normDate(m.dischargeDate),
+          birthday: normDate(m.birthday)
+        });
+      });
+    }
+
+    if (Array.isArray(obj.meetings)) {
+      var ms = [];
+      obj.meetings.forEach(function (x) {
+        var v = String(x || '').trim();
+        if (v && ms.indexOf(v) < 0) ms.push(v);
+      });
+      if (ms.length) s.meetings = ms;
+    }
+
+    if (obj.records && typeof obj.records === 'object') {
+      Object.keys(obj.records).forEach(function (k) {
+        var idx = k.indexOf('|');
+        if (idx < 0) return;
+        var rec = obj.records[k];
+        if (!rec || typeof rec !== 'object') return;
+        var out = {};
+        Object.keys(rec).forEach(function (id) {
+          var r = rec[id];
+          if (!r || typeof r !== 'object') return;
+          var st = r.status || '';
+          if (st !== 'attend' && st !== 'absent' && st !== 'excuse') st = '';
+          var memo = String(r.memo || '');
+          if (!st && !memo) return;
+          out[id] = { status: st, memo: memo };
+        });
+        if (Object.keys(out).length) s.records[k] = out;
+      });
+    }
+
+    if (obj.meta && typeof obj.meta === 'object') {
+      s.meta = {
+        createdAt: obj.meta.createdAt || nowISO(),
+        updatedAt: obj.meta.updatedAt || nowISO(),
+        migratedPrayers: Array.isArray(obj.meta.migratedPrayers) ? obj.meta.migratedPrayers.map(function (x) { return String(x); }) : [],
+        cloudSyncedAt: obj.meta.cloudSyncedAt ? String(obj.meta.cloudSyncedAt) : ''
+      };
+    }
+
+    /* 기도제목: 이 항목이 없는 예전 백업 파일도 그대로 열린다 */
+    if (Array.isArray(obj.prayers)) {
+      var seenP = {};
+      var memberIds = {};
+      s.members.forEach(function (m) { memberIds[m.id] = true; });
+      obj.prayers.forEach(function (p) {
+        if (!p || typeof p !== 'object') return;
+        var text = String(p.text || p.content || '').trim();
+        if (!text) return;
+        var id = p.id ? String(p.id) : puid();
+        if (seenP[id]) id = puid();
+        seenP[id] = true;
+        var mid = p.memberId ? String(p.memberId) : '';
+        if (mid && !memberIds[mid]) mid = '';   /* 지워진 신우면 이름만 남긴다 */
+        var answered = !!p.answered;
+        s.prayers.push({
+          id: id,
+          memberId: mid,
+          name: String(p.name || '').trim(),
+          text: text,
+          category: String(p.category || '').trim(),
+          createdAt: normDate(p.createdAt) || todayISO(),
+          answered: answered,
+          answeredAt: answered ? (normDate(p.answeredAt) || normDate(p.createdAt) || todayISO()) : '',
+          updatedAt: p.updatedAt ? String(p.updatedAt) : ''
+        });
+      });
+    }
+    return s;
+  }
+
+  /* 이 기기의 자료도 반별로 나누어 둔다 (반끼리 섞이지 않게) */
+  function storeKey() { return STORE_KEY + (ROOM_KEY ? '.room.' + ROOM_KEY : ''); }
+
+  function loadState() {
+    var raw = null;
+    var legacy = null;
+    try {
+      raw = window.localStorage.getItem(storeKey());
+      /* v3까지는 반 구분이 없었다. 그 자료는 총괄 관리자의 반(본부대)으로 이어받는다. */
+      if (!raw && ROOM_KEY === DEFAULT_ROOM) legacy = window.localStorage.getItem(STORE_KEY);
+    } catch (e) {
+      storageOK = false;
+    }
+    if (!raw && legacy) raw = legacy;
+    if (!raw) { state = emptyState(); return; }
+    try {
+      state = normalizeState(JSON.parse(raw));
+    } catch (e) {
+      state = emptyState();
+    }
+  }
+
+  function save() {
+    state.meta.updatedAt = nowISO();
+    if (!storageOK) { renderSaveState(); return false; }
+    try {
+      window.localStorage.setItem(storeKey(), JSON.stringify(state));
+    } catch (e) {
+      storageOK = false;
+      renderSaveState();
+      return false;
+    }
+    renderSaveState();
+    return true;
+  }
+
+  function renderSaveState() {
+    var el = $('save-state');
+    if (!el) return;
+    if (CLOUD.role === 'member') {
+      el.textContent = CLOUD.err ? '연결 오류 · 다시 시도 중' : '실시간 공유 중';
+      return;
+    }
+    if (CLOUD.role === 'teacher') {
+      el.textContent = CLOUD.err ? '연결 오류 · 다시 시도 중' : '반 담임 교사 · 실시간 공유 중';
+      return;
+    }
+    if (CLOUD.role === 'rep') {
+      el.textContent = CLOUD.err ? '연결 오류 · 다시 시도 중' : '대표신우 · 출석 실시간 공유 중';
+      return;
+    }
+    if (storageOK) {
+      el.textContent = '자동 저장 ' + fmtTime(state.meta.updatedAt).replace(/^\d+\. \d+\. \d+\. /, '');
+    } else {
+      el.textContent = '자동 저장 안 됨 · 백업 필요';
+    }
+    var warn = $('storage-warn');
+    if (storageOK) warn.classList.add('hidden');
+    else warn.classList.remove('hidden');
+    var banner = $('global-warn');
+    if (storageOK) banner.classList.add('hidden');
+    else banner.classList.remove('hidden');
+  }
+
+  /* ===================== 세션(날짜+모임) ===================== */
+  function sessionKey(date, meeting) { return date + '|' + meeting; }
+  function currentKey() { return sessionKey(curDate, curMeeting); }
+  function meetingOrder(name) {
+    var i = state.meetings.indexOf(name);
+    return i < 0 ? 99 : i;
+  }
+  function sessionList(month) {
+    var out = [];
+    Object.keys(state.records).forEach(function (k) {
+      var idx = k.indexOf('|');
+      if (idx < 0) return;
+      var date = k.slice(0, idx);
+      var meeting = k.slice(idx + 1);
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return;
+      if (month && month !== 'all' && date.slice(0, 7) !== month) return;
+      var recs = state.records[k];
+      if (!recs || !Object.keys(recs).length) return;
+      out.push({ key: k, date: date, meeting: meeting, count: Object.keys(recs).length });
+    });
+    out.sort(function (a, b) {
+      if (a.date !== b.date) return a.date < b.date ? -1 : 1;
+      return meetingOrder(a.meeting) - meetingOrder(b.meeting);
+    });
+    return out;
+  }
+  function ensureSession() {
+    var k = currentKey();
+    if (!state.records[k]) state.records[k] = {};
+    return state.records[k];
+  }
+  function pruneAndSave() {
+    var k = currentKey();
+    var s = state.records[k];
+    if (s && !Object.keys(s).length) delete state.records[k];
+    save();
+  }
+  function findMember(id) {
+    for (var i = 0; i < state.members.length; i++) {
+      if (state.members[i].id === id) return state.members[i];
+    }
+    return null;
+  }
+  function memberCount() { return state.members.length; }
+
+  /* ===================== 집계 ===================== */
+  function tallyOf(recs, members) {
+    var t = { total: members.length, attend: 0, absent: 0, excuse: 0, none: 0, rate: null };
+    members.forEach(function (m) {
+      var r = recs[m.id];
+      var st = r ? r.status : '';
+      if (st === 'attend') t.attend++;
+      else if (st === 'absent') t.absent++;
+      else if (st === 'excuse') t.excuse++;
+      else t.none++;
+    });
+    var base = t.attend + t.absent;
+    t.rate = base ? Math.round((t.attend / base) * 1000) / 10 : null;
+    return t;
+  }
+
+  /* ===================== CSV / 파일 ===================== */
+  function csvCell(v) {
+    var s = String(v == null ? '' : v);
+    if (/[",\n\r]/.test(s)) return '"' + s.replace(/"/g, '""') + '"';
+    return s;
+  }
+  function toCSV(rows) {
+    return '\uFEFF' + rows.map(function (r) {
+      return r.map(csvCell).join(',');
+    }).join('\r\n') + '\r\n';
+  }
+  function download(filename, text, mime) {
+    try {
+      var blob = new Blob([text], { type: mime || 'text/csv;charset=utf-8' });
+      var nav = window.navigator;
+      if (nav && nav.msSaveBlob) { nav.msSaveBlob(blob, filename); return; }
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      a.rel = 'noopener';
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(function () {
+        try { document.body.removeChild(a); } catch (e) {}
+        URL.revokeObjectURL(url);
+      }, 1500);
+      toast('파일을 내려받았습니다: ' + filename);
+    } catch (e) {
+      toast('파일을 만들지 못했습니다. 브라우저를 바꿔 시도해 주세요.');
+    }
+  }
+  function csvStatus(st) {
+    if (st === 'attend') return '출석';
+    if (st === 'absent') return '결석';
+    if (st === 'excuse') return '사유';
+    return '미체크';
+  }
+
+  /* ===================== 모달 ===================== */
+  function openModal(id) {
+    $(id).classList.add('open');
+    document.body.classList.add('locked');
+  }
+  function closeModal(id) {
+    $(id).classList.remove('open');
+    var anyOpen = document.querySelector('.backdrop.open');
+    if (!anyOpen) document.body.classList.remove('locked');
+  }
+  function closeAllModals() {
+    Array.prototype.forEach.call(document.querySelectorAll('.backdrop.open'), function (b) {
+      b.classList.remove('open');
+    });
+    document.body.classList.remove('locked');
+  }
+  function confirmModal(title, message, okLabel, cb, danger) {
+    $('confirm-title').textContent = title;
+    $('confirm-msg').textContent = message;
+    var ok = $('confirm-ok');
+    ok.textContent = okLabel || '확인';
+    ok.className = 'btn ' + (danger ? 'danger-solid' : 'primary');
+    confirmCallback = cb;
+    openModal('modal-confirm');
+  }
+  function promptModal(title, message, value, cb) {
+    $('prompt-title').textContent = title;
+    $('prompt-msg').textContent = message || '';
+    var inp = $('prompt-input');
+    inp.value = value || '';
+    promptCallback = cb;
+    openModal('modal-prompt');
+    setTimeout(function () { try { inp.focus(); inp.select(); } catch (e) {} }, 60);
+  }
+
+  /* ===================== 화면 전환 ===================== */
+  function viewAllowed(view) {
+    var role = CLOUD.role;
+    if (!role || role === 'admin') return true;
+    if (role === 'teacher') return view !== 'backup';
+    if (role === 'rep') return view === 'attend' || view === 'prayers';
+    return view === 'prayers';
+  }
+
+  function defaultView() {
+    return CLOUD.role === 'member' ? 'prayers' : 'attend';
+  }
+
+  function switchView(view) {
+    if (!viewAllowed(view)) view = defaultView();
+    currentView = view;
+    var views = ['attend', 'prayers', 'members', 'stats', 'backup'];
+    views.forEach(function (v) {
+      var sec = $('view-' + v);
+      if (!sec) return;
+      if (v === view) sec.classList.remove('hidden');
+      else sec.classList.add('hidden');
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('[data-view]'), function (btn) {
+      if (btn.getAttribute('data-view') === view) btn.classList.add('active');
+      else btn.classList.remove('active');
+    });
+    if (view === 'attend') renderAttend();
+    if (view === 'prayers') renderPrayers();
+    if (view === 'members') renderMembers();
+    if (view === 'stats') renderStats();
+    if (view === 'backup') renderBackup();
+    window.scrollTo(0, 0);
+  }
+
+  /* ===================== 출석 화면 ===================== */
+  function groupOptions() {
+    var set = [];
+    state.members.forEach(function (m) {
+      if (m.group && set.indexOf(m.group) < 0) set.push(m.group);
+    });
+    set.sort(function (a, b) { return a.localeCompare(b, 'ko'); });
+    return set;
+  }
+  function filteredMembers() {
+    var q = searchText.trim().toLowerCase();
+    return state.members.filter(function (m) {
+      if (groupFilter && m.group !== groupFilter) return false;
+      if (!q) return true;
+      var hay = (m.name + ' ' + m.group + ' ' + m.role + ' ' + m.phone + ' ' + m.note).toLowerCase();
+      return hay.indexOf(q) >= 0;
+    });
+  }
+
+  function visibleMembers() {
+    var list = filteredMembers();
+    if (!onlyUnmarked) return list;
+    var recs = state.records[currentKey()] || {};
+    return list.filter(function (m) {
+      var r = recs[m.id];
+      return !(r && r.status);
+    });
+  }
+
+  function renderMeetingSelect() {
+    var sel = $('in-meeting');
+    var html = '';
+    state.meetings.forEach(function (name) {
+      html += '<option value="' + escapeHtml(name) + '">' + escapeHtml(name) + '</option>';
+    });
+    sel.innerHTML = html;
+    if (state.meetings.indexOf(curMeeting) < 0) curMeeting = state.meetings[0] || '주일예배';
+    sel.value = curMeeting;
+  }
+  function renderGroupSelect() {
+    var sel = $('sel-group');
+    var opts = groupOptions();
+    var html = '<option value="">전체</option>';
+    opts.forEach(function (g) {
+      html += '<option value="' + escapeHtml(g) + '">' + escapeHtml(g) + '</option>';
+    });
+    sel.innerHTML = html;
+    if (groupFilter && opts.indexOf(groupFilter) < 0) groupFilter = '';
+    sel.value = groupFilter;
+  }
+
+  var MEMO_ICON = '메모';
+
+  function milMetaHtml(m) {
+    var out = [];
+    /* 대표 인원 화면에서도 입대일·전역 D-day·생일을 그대로 보여 줍니다 */
+    if ((CLOUD.role === 'teacher' || CLOUD.role === 'rep') && m.enlistDate) {
+      out.push('<span class="mil-inline">입대 ' + dateLabel(m.enlistDate) + '</span>');
+    }
+    var di = dischargeInfo(m);
+    if (di) {
+      out.push('<span class="dd-inline">' + (di.done ? '전역' : '전역 ' + di.label) + '</span>');
+    }
+    var bi = birthdayInfo(m);
+    if (bi && bi.sameMonth) {
+      out.push('<span class="ba-inline">🎂 ' + (bi.isToday ? '오늘 생일' : '이번 달 생일') + '</span>');
+    }
+    return out.join(' · ');
+  }
+
+  function rowHtml(m, rec) {
+    var st = rec ? rec.status : '';
+    var memo = rec ? rec.memo : '';
+    var isOpen = !!memo || st === 'excuse' || !!openMemo[m.id];
+    var meta = [];
+    if (m.group) meta.push(escapeHtml(m.group));
+    if (m.role) meta.push(escapeHtml(m.role));
+    var mil = milMetaHtml(m);
+    if (mil) meta.push(mil);
+    var html = '';
+    html += '<li class="mrow' + (st ? ' st-' + st : '') + '" data-id="' + escapeHtml(m.id) + '">';
+    html += '<div class="m-main"><div class="m-name">' + escapeHtml(m.name) + '</div>';
+    if (meta.length) html += '<div class="m-meta">' + meta.join(' · ') + '</div>';
+    html += '</div>';
+    html += '<div class="seg" role="group" aria-label="' + escapeHtml(m.name) + ' 출석 상태">';
+    ['attend', 'absent', 'excuse'].forEach(function (k) {
+      html += '<button type="button" class="seg-btn' + (st === k ? ' on ' + k : '') + '" data-act="status" data-status="' + k + '">' + STATUS_LABEL[k] + '</button>';
+    });
+    html += '</div>';
+    html += '<button type="button" class="memo-toggle' + (memo ? ' has' : '') + '" data-act="memo" aria-expanded="' + (isOpen ? 'true' : 'false') + '" aria-label="메모">' + MEMO_ICON + '</button>';
+    html += '<div class="memo-wrap' + (isOpen ? ' open' : '') + '">';
+    html += '<input class="memo-input" data-act="memo-input" type="text" maxlength="80" placeholder="사유·메모 (예: 출장, 당직, 휴가)" value="' + escapeHtml(memo) + '">';
+    html += '</div>';
+    html += '</li>';
+    return html;
+  }
+
+  function renderAttendEmpty() {
+    var box = $('attn-empty');
+    if (state.members.length === 0) {
+      box.classList.remove('hidden');
+      if (CLOUD.role === 'teacher') {
+        box.innerHTML = '<strong>아직 이 반 명단이 없습니다</strong>아래에서 신우를 등록하면 이 반 교사·대표신우와 함께 봅니다.'
+          + '<div class="btns"><button type="button" class="btn primary sm" data-empty-act="add">신우 등록</button>'
+          + '<button type="button" class="btn sm" data-empty-act="bulk">일괄 등록</button></div>';
+        return true;
+      }
+      box.innerHTML = '<strong>등록된 신우가 없습니다</strong>명단을 먼저 등록하면 한 번 누르는 것으로 출석을 체크할 수 있습니다.'
+        + '<div class="btns"><button type="button" class="btn primary sm" data-empty-act="add">신우 등록</button>'
+        + '<button type="button" class="btn sm" data-empty-act="bulk">일괄 등록</button>'
+        + '<button type="button" class="btn sm" data-empty-act="sample">샘플 명단 넣기</button></div>';
+      return true;
+    }
+    if (filteredMembers().length === 0) {
+      box.classList.remove('hidden');
+      box.innerHTML = '<strong>조건에 맞는 신우가 없습니다</strong>검색어나 소속 필터를 바꿔 보세요.';
+      return true;
+    }
+    if (onlyUnmarked && visibleMembers().length === 0) {
+      box.classList.remove('hidden');
+      box.innerHTML = '<strong>모두 체크했습니다</strong>표시된 신우의 출석 상태가 모두 입력되었습니다. ‘미체크만’을 다시 누르면 전체 명단이 보입니다.';
+      return true;
+    }
+    box.classList.add('hidden');
+    box.innerHTML = '';
+    return false;
+  }
+
+  function renderTally() {
+    var list = filteredMembers();
+    var recs = state.records[currentKey()] || {};
+    var t = tallyOf(recs, list);
+    $('tile-total').textContent = String(t.total);
+    $('tile-attend').textContent = String(t.attend);
+    $('tile-absent').textContent = String(t.absent);
+    $('tile-rate').textContent = fmtRate(t.rate);
+    var note = [];
+    note.push('<span class="chip">사유 ' + t.excuse + '</span>');
+    if (t.none) note.push('<span class="chip">미체크 ' + t.none + '</span>');
+    if (state.members.length !== list.length) {
+      note.push('<span class="chip">전체 ' + state.members.length + '명 중 ' + list.length + '명 표시</span>');
+    }
+    note.push('<span>출석률 = 출석 ÷ (출석+결석)</span>');
+    $('tally-note').innerHTML = note.join('');
+  }
+
+  function renderAttend() {
+    $('in-date').value = curDate;
+    renderMeetingSelect();
+    renderGroupSelect();
+    var si = $('in-search');
+    if (si !== document.activeElement) si.value = searchText;
+
+    $('print-head').innerHTML = '신우회 출석부 · ' + escapeHtml(labelDate(curDate)) + ' · ' + escapeHtml(curMeeting)
+      + ' <span style="font-weight:600;font-size:12px;color:#555"> (총 ' + memberCount() + '명)</span>';
+
+    var list = visibleMembers();
+    var recs = state.records[currentKey()] || {};
+    var html = '';
+    list.forEach(function (m) { html += rowHtml(m, recs[m.id]); });
+    $('attn-list').innerHTML = html;
+    $('attn-count').textContent = list.length + '명';
+    var um = $('btn-unmarked');
+    um.setAttribute('aria-pressed', onlyUnmarked ? 'true' : 'false');
+    um.classList.toggle('primary', onlyUnmarked);
+    renderAttendEmpty();
+    renderTally();
+  }
+
+  function refreshRow(li, id) {
+    var rec = (state.records[currentKey()] || {})[id];
+    var m = findMember(id);
+    if (!m) return;
+    var wrap = li.querySelector('.memo-wrap');
+    var memoOpen = wrap ? wrap.classList.contains('open') : false;
+    var memoVal = wrap ? (wrap.querySelector('.memo-input') || {}).value || '' : '';
+    var recForRender = rec ? { status: rec.status, memo: rec.memo } : null;
+    if (memoOpen && !(recForRender && recForRender.memo)) {
+      recForRender = recForRender || { status: '', memo: '' };
+      recForRender.memo = memoVal;
+    }
+    var tmp = document.createElement('div');
+    tmp.innerHTML = rowHtml(m, recForRender);
+    var fresh = tmp.firstChild;
+    if (li.parentNode) li.parentNode.replaceChild(fresh, li);
+    return fresh;
+  }
+
+  function setStatus(id, st) {
+    var s = ensureSession();
+    var prev = s[id];
+    var memo = prev ? (prev.memo || '') : '';
+    if (!st && !memo) delete s[id];
+    else s[id] = { status: st, memo: memo };
+    pruneAndSave();
+    pushAttendanceRecord(id, st, memo);
+  }
+
+  function onAttendClick(e) {
+    var emptyBtn = e.target.closest('button[data-empty-act]');
+    if (emptyBtn) {
+      var act = emptyBtn.getAttribute('data-empty-act');
+      if (act === 'add') openMemberModal('');
+      else if (act === 'bulk') { switchView('members'); openBulkModal(); }
+      else if (act === 'sample') insertSample();
+      return;
+    }
+    var btn = e.target.closest('button[data-act]');
+    if (!btn) return;
+    var li = btn.closest('.mrow');
+    if (!li) return;
+    var id = li.getAttribute('data-id');
+    var action = btn.getAttribute('data-act');
+
+    if (action === 'status') {
+      var st = btn.getAttribute('data-status');
+      var recs = state.records[currentKey()] || {};
+      var rec = recs[id];
+      var cur = rec ? rec.status : '';
+      var nextStatus = (cur === st) ? '' : st;
+      setStatus(id, nextStatus);
+      if (onlyUnmarked && nextStatus) {
+        if (li.parentNode) li.parentNode.removeChild(li);
+        $('attn-count').textContent = visibleMembers().length + '명';
+        renderAttendEmpty();
+      } else {
+        var fresh = refreshRow(li, id);
+        if (fresh && nextStatus === 'excuse') {
+          var inp = fresh.querySelector('.memo-input');
+          if (inp) { inp.focus(); }
+        }
+      }
+      renderTally();
+    } else if (action === 'memo') {
+      var wrap = li.querySelector('.memo-wrap');
+      if (!wrap) return;
+      var isOpen = wrap.classList.toggle('open');
+      openMemo[id] = isOpen;
+      btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      if (isOpen) {
+        var inp2 = wrap.querySelector('.memo-input');
+        if (inp2) inp2.focus();
+      }
+    }
+  }
+
+  function onAttendInput(e) {
+    var inp = e.target.closest('input[data-act="memo-input"]');
+    if (!inp) return;
+    var li = inp.closest('.mrow');
+    if (!li) return;
+    var id = li.getAttribute('data-id');
+    var s = ensureSession();
+    var rec = s[id] || { status: '', memo: '' };
+    rec.memo = inp.value;
+    if (!rec.status && !rec.memo.trim()) delete s[id];
+    else s[id] = rec;
+    var toggle = li.querySelector('.memo-toggle');
+    if (toggle) {
+      if (rec.memo) toggle.classList.add('has');
+      else toggle.classList.remove('has');
+    }
+    pruneAndSave();
+    pushAttendanceMemoSoon(id);
+  }
+
+  function bulkAttend() {
+    var list = visibleMembers();
+    if (!list.length) {
+      toast(state.members.length ? '조건에 맞는 신우가 없습니다.' : '먼저 명단을 등록해 주세요.');
+      return;
+    }
+    confirmModal('일괄 출석', '표시된 ' + list.length + '명을 모두 ‘출석’으로 바꿀까요?', '출석 처리', function () {
+      var s = ensureSession();
+      list.forEach(function (m) {
+        var prev = s[m.id];
+        s[m.id] = { status: 'attend', memo: prev ? (prev.memo || '') : '' };
+      });
+      save();
+      pushAttendanceSession();
+      renderAttend();
+      toast(list.length + '명을 출석으로 표시했습니다.');
+    }, false);
+  }
+
+  function resetSession() {
+    var recs = state.records[currentKey()] || {};
+    var n = Object.keys(recs).length;
+    if (!n) { toast('이 날짜에는 기록이 없습니다.'); return; }
+    confirmModal('출석 초기화', labelDate(curDate) + ' · ' + curMeeting + '\n기록 ' + n + '건을 모두 지울까요?', '초기화', function () {
+      delete state.records[currentKey()];
+      save();
+      pushAttendanceReset();
+      renderAttend();
+      toast('이 날짜의 출석 기록을 지웠습니다.');
+    }, true);
+  }
+
+  function exportDayCSV() {
+    if (!state.members.length) { toast('먼저 명단을 등록해 주세요.'); return; }
+    var recs = state.records[currentKey()] || {};
+    var rows = [['이름', '소속', '직분', '연락처', '상태', '메모']];
+    filteredMembers().forEach(function (m) {
+      var r = recs[m.id];
+      rows.push([m.name, m.group, m.role, m.phone, r ? csvStatus(r.status) : '미체크', r ? r.memo : '']);
+    });
+    var fn = '신우회_' + curDate + '_' + safeName(curMeeting) + '_출석.csv';
+    download(fn, toCSV(rows));
+  }
+
+  /* ===================== 명단 화면 ===================== */
+  function renderDatalists() {
+    var groups = groupOptions();
+    var roles = [];
+    state.members.forEach(function (m) {
+      if (m.role && roles.indexOf(m.role) < 0) roles.push(m.role);
+    });
+    roles.sort(function (a, b) { return a.localeCompare(b, 'ko'); });
+    $('group-list').innerHTML = groups.map(function (g) {
+      return '<option value="' + escapeHtml(g) + '"></option>';
+    }).join('');
+    $('role-list').innerHTML = roles.map(function (r) {
+      return '<option value="' + escapeHtml(r) + '"></option>';
+    }).join('');
+  }
+
+  function matchesMemFilter(m) {
+    if (memFilter === 'birthday') {
+      var bi = birthdayInfo(m);
+      return !!(bi && bi.sameMonth);
+    }
+    if (memFilter === 'serving') {
+      if (!m.dischargeDate) return !!m.enlistDate;
+      return daysUntil(m.dischargeDate) >= 0;
+    }
+    if (memFilter === 'discharge-soon') {
+      if (!m.dischargeDate) return false;
+      var n = daysUntil(m.dischargeDate);
+      return n >= 0 && n <= 90;
+    }
+    if (memFilter === 'discharged') {
+      if (!m.dischargeDate) return false;
+      return daysUntil(m.dischargeDate) < 0;
+    }
+    return true;
+  }
+
+  function memberDateBadges(m) {
+    var out = [];
+    if (m.enlistDate) out.push('<span class="badge mil">입대 ' + dateLabel(m.enlistDate) + '</span>');
+    if (m.dischargeDate) {
+      var di = dischargeInfo(m);
+      var cls = di.done ? 'mil done' : (di.today ? 'mil dday' : 'mil');
+      out.push('<span class="badge ' + cls + '">전역 ' + dateLabel(m.dischargeDate) + ' · ' + di.label + '</span>');
+    }
+    if (m.birthday) {
+      var bi = birthdayInfo(m);
+      var cls2 = bi && bi.sameMonth ? 'bday on' : 'bday';
+      var tail = bi && bi.isToday ? ' · 오늘' : (bi && bi.sameMonth ? ' · 이번 달' : '');
+      out.push('<span class="badge ' + cls2 + '">🎂 ' + mdLabel(m.birthday) + tail + '</span>');
+    }
+    return out.join('');
+  }
+
+  function renderMembers() {
+    var q = memSearchText.trim().toLowerCase();
+    var list = state.members.filter(function (m) {
+      if (!matchesMemFilter(m)) return false;
+      if (!q) return true;
+      return (m.name + ' ' + m.group + ' ' + m.role + ' ' + m.phone + ' ' + m.note).toLowerCase().indexOf(q) >= 0;
+    });
+    list = list.slice().sort(function (a, b) {
+      var ga = a.group || '힣', gb = b.group || '힣';
+      if (ga !== gb) return ga.localeCompare(gb, 'ko');
+      return a.name.localeCompare(b.name, 'ko');
+    });
+
+    var html = '';
+    list.forEach(function (m) {
+      var badges = [];
+      if (m.group) badges.push('<span class="badge">' + escapeHtml(m.group) + '</span>');
+      if (m.role) badges.push('<span class="badge">' + escapeHtml(m.role) + '</span>');
+      var dateBadges = memberDateBadges(m);
+      html += '<li class="memrow" data-id="' + escapeHtml(m.id) + '">';
+      html += '<div class="m-main"><div class="m-name">' + escapeHtml(m.name) + '</div>';
+      if (m.phone || m.note) {
+        var sub = [];
+        if (m.phone) sub.push(escapeHtml(m.phone));
+        if (m.note) sub.push(escapeHtml(m.note));
+        html += '<div class="m-meta">' + sub.join(' · ') + '</div>';
+      }
+      if (badges.length) html += '<div class="badges">' + badges.join('') + '</div>';
+      if (dateBadges) html += '<div class="badges dates">' + dateBadges + '</div>';
+      html += '</div>';
+      html += '<div class="mem-actions">'
+        + '<button type="button" class="btn sm" data-mem-act="edit">수정</button>'
+        + '<button type="button" class="btn sm danger" data-mem-act="del">삭제</button>'
+        + '</div>';
+      html += '</li>';
+    });
+    $('mem-list').innerHTML = html;
+    $('mem-count').textContent = list.length + '명' + (list.length !== state.members.length ? ' / 전체 ' + state.members.length + '명' : '');
+    if ($('mem-filter').value !== memFilter) $('mem-filter').value = memFilter;
+
+    var empty = $('mem-empty');
+    if (!list.length) {
+      empty.classList.remove('hidden');
+      empty.innerHTML = state.members.length
+        ? ((memFilter !== 'all' && !memSearchText.trim())
+          ? '<strong>조건에 맞는 신우가 없습니다</strong>‘보기’를 ‘전체’로 바꾸면 모든 신우가 보입니다.'
+          : '<strong>검색 결과가 없습니다</strong>다른 이름이나 소속으로 찾아보세요.')
+        : '<strong>아직 등록된 신우가 없습니다</strong>‘+ 신우 등록’으로 한 명씩, ‘일괄 등록’으로 여러 명을 한 번에 추가할 수 있습니다.'
+          + '<div class="btns"><button type="button" class="btn primary sm" data-empty-act="add">신우 등록</button>'
+          + '<button type="button" class="btn sm" data-empty-act="sample">샘플 명단 넣기</button></div>';
+    } else {
+      empty.classList.add('hidden');
+      empty.innerHTML = '';
+    }
+    renderDatalists();
+    var sc = $('btn-sample-clear');
+    var scCount = sampleMembers().length;
+    if (scCount) {
+      sc.classList.remove('hidden');
+      sc.textContent = '샘플 지우기 (' + scCount + ')';
+    } else {
+      sc.classList.add('hidden');
+    }
+  }
+
+  function openMemberModal(id) {
+    if (!canEditMembers()) { toast('명단은 총괄 관리자와 담임 교사만 편집할 수 있습니다.'); return; }
+    editMemberId = id || '';
+    var m = id ? findMember(id) : null;
+    $('member-modal-title').textContent = m ? '신우 정보 수정' : '신우 등록';
+    $('member-modal-sub').textContent = m ? '내용을 고친 뒤 저장을 눌러 주세요.' : '이름은 필수입니다. 나머지는 나중에 채워도 됩니다.';
+    $('member-submit').textContent = m ? '수정 저장' : '등록';
+    $('f-name').value = m ? m.name : '';
+    $('f-group').value = m ? m.group : (groupFilter || '');
+    $('f-role').value = m ? m.role : '';
+    $('f-phone').value = m ? m.phone : '';
+    $('f-note').value = m ? m.note : '';
+    $('f-enlist').value = m ? (m.enlistDate || '') : '';
+    $('f-discharge').value = m ? (m.dischargeDate || '') : '';
+    $('f-birthday').value = m ? (m.birthday || '') : '';
+    updateDateWarn();
+    openModal('modal-member');
+    setTimeout(function () { try { $('f-name').focus(); } catch (e) {} }, 60);
+  }
+
+  function updateDateWarn() {
+    var a = $('f-enlist').value;
+    var b = $('f-discharge').value;
+    var warn = $('f-date-warn');
+    if (a && b && b < a) warn.classList.remove('hidden');
+    else warn.classList.add('hidden');
+  }
+
+  function submitMember() {
+    var name = $('f-name').value.trim();
+    if (!name) { toast('이름을 입력해 주세요.'); $('f-name').focus(); return; }
+    var data = {
+      name: name,
+      group: $('f-group').value.trim(),
+      role: $('f-role').value.trim(),
+      phone: $('f-phone').value.trim(),
+      note: $('f-note').value.trim(),
+      enlistDate: normDate($('f-enlist').value),
+      dischargeDate: normDate($('f-discharge').value),
+      birthday: normDate($('f-birthday').value)
+    };
+    var dupe = state.members.filter(function (m) {
+      return m.name === name && m.id !== editMemberId;
+    });
+    var applyMember = function (m) {
+      m.name = data.name; m.group = data.group; m.role = data.role; m.phone = data.phone; m.note = data.note;
+      m.enlistDate = data.enlistDate; m.dischargeDate = data.dischargeDate; m.birthday = data.birthday;
+    };
+    var proceed = function () {
+      if (editMemberId) {
+        var m = findMember(editMemberId);
+        if (m) applyMember(m);
+        save(); closeModal('modal-member'); renderAll();
+        syncMembersToCloud();
+        toast('수정했습니다.');
+      } else {
+        data.id = uid();
+        state.members.push(data);
+        save(); closeModal('modal-member'); renderAll();
+        syncMembersToCloud();
+        toast(data.name + ' 님을 등록했습니다.');
+      }
+      editMemberId = '';
+    };
+    if (dupe.length && !editMemberId) {
+      confirmModal('같은 이름', '이미 ‘' + name + '’ 이름이 명단에 있습니다.\n그래도 추가할까요?', '추가', proceed, false);
+    } else {
+      proceed();
+    }
+  }
+
+  function removeMembers(ids) {
+    var set = {};
+    ids.forEach(function (id) { set[id] = true; });
+    /* 지우는 신우의 기도제목은 이름만 남겨 보존한다 */
+    state.prayers.forEach(function (p) {
+      if (p.memberId && set[p.memberId]) {
+        var m = findMember(p.memberId);
+        if (!p.name && m) p.name = m.name;
+        p.memberId = '';
+      }
+    });
+    state.members = state.members.filter(function (m) { return !set[m.id]; });
+    Object.keys(state.records).forEach(function (k) {
+      Object.keys(state.records[k]).forEach(function (id) {
+        if (set[id]) delete state.records[k][id];
+      });
+      if (!Object.keys(state.records[k]).length) delete state.records[k];
+    });
+  }
+
+  function deleteMember(id) {
+    if (!canEditMembers()) { toast('명단은 총괄 관리자와 담임 교사만 편집할 수 있습니다.'); return; }
+    var m = findMember(id);
+    if (!m) return;
+    var used = 0;
+    Object.keys(state.records).forEach(function (k) {
+      if (state.records[k][id]) used++;
+    });
+    var pused = state.prayers.filter(function (p) { return p.memberId === id; }).length;
+    confirmModal('신우 삭제', m.name + ' 님을 명단에서 지웁니다.'
+      + (used ? '\n이 신우의 출석 기록 ' + used + '건도 함께 지워집니다.' : '')
+      + (pused ? '\n기도제목 ' + pused + '개는 이름만 남겨 그대로 보존됩니다.' : '')
+      + '\n되돌릴 수 없습니다.', '삭제', function () {
+      removeMembers([id]);
+      save(); renderAll();
+      syncMembersToCloud();
+      toast(m.name + ' 님을 삭제했습니다.');
+    }, true);
+  }
+
+  function sampleMembers() {
+    return state.members.filter(function (m) { return (m.note || '') === '샘플'; });
+  }
+
+  function clearSamples() {
+    var list = sampleMembers();
+    if (!list.length) { toast('샘플로 표시된 신우가 없습니다.'); return; }
+    confirmModal('샘플 명단 지우기', '샘플로 표시된 신우 ' + list.length + '명을 명단에서 지웁니다.\n이들의 출석 기록도 함께 지워집니다.', '지우기', function () {
+      removeMembers(list.map(function (m) { return m.id; }));
+      save(); renderAll();
+      syncMembersToCloud();
+      toast('샘플 신우 ' + list.length + '명을 지웠습니다.');
+    }, true);
+  }
+
+  var SAMPLES = [
+    { name: '김성도', group: '1목장', role: '집사', phone: '010-0000-0001', enlistDate: '2025-03-04', dischargeDate: '2026-12-03', birthday: '1998-12-03' },
+    { name: '이재훈', group: '1목장', role: '성도', phone: '010-0000-0002', birthday: '1997-11-08' },
+    { name: '박민수', group: '2목장', role: '권사', phone: '010-0000-0003', enlistDate: '2024-09-02', dischargeDate: '2026-06-01', birthday: '1985-04-17' },
+    { name: '정영식', group: '2목장', role: '집사', phone: '010-0000-0004', enlistDate: '2025-05-12', dischargeDate: '2027-02-11', birthday: '1999-07-21' },
+    { name: '최동욱', group: '3목장', role: '성도', phone: '010-0000-0005', birthday: '1996-11-25' },
+    { name: '한상우', group: '3목장', role: '집사', phone: '010-0000-0006', enlistDate: '2026-01-05', dischargeDate: '2027-10-04', birthday: '2000-02-14' },
+    { name: '오세훈', group: '1목장', role: '성도', phone: '010-0000-0007', birthday: '1999-11-21' },
+    { name: '윤태영', group: '2목장', role: '장로', phone: '010-0000-0008', birthday: '1972-09-30' },
+    { name: '장현우', group: '3목장', role: '성도', phone: '010-0000-0009', enlistDate: '2025-11-18', dischargeDate: '2027-05-17' },
+    { name: '서준호', group: '3목장', role: '성도', phone: '010-0000-0010', birthday: '1995-11-02' },
+    { name: '권도현', group: '1목장', role: '총무', phone: '010-0000-0011', enlistDate: '2024-04-01', dischargeDate: '2025-12-31', birthday: '1997-05-09' },
+    { name: '문경수', group: '2목장', role: '회장', phone: '010-0000-0012', birthday: '1980-03-12' }
+  ];
+
+  function insertSample() {
+    if (!canEditMembers()) { toast('명단은 총괄 관리자와 담임 교사만 편집할 수 있습니다.'); return; }
+    var run = function () {
+      var added = 0;
+      SAMPLES.forEach(function (row) {
+        var exists = state.members.some(function (m) { return m.name === row.name; });
+        if (exists) return;
+        state.members.push({
+          id: uid(),
+          name: row.name,
+          group: row.group || '',
+          role: row.role || '',
+          phone: row.phone || '',
+          note: '샘플',
+          enlistDate: normDate(row.enlistDate),
+          dischargeDate: normDate(row.dischargeDate),
+          birthday: normDate(row.birthday)
+        });
+        added++;
+      });
+      save(); renderAll();
+      syncMembersToCloud();
+      toast(added ? '샘플 신우 ' + added + '명을 넣었습니다. 이름을 눌러 확인해 보세요.' : '샘플 명단은 이미 들어 있습니다.');
+    };
+    if (state.members.length) {
+      confirmModal('샘플 명단', '샘플 신우 ' + SAMPLES.length + '명(예시 이름)을 명단에 추가할까요?\n실제 명단으로 바꾸려면 나중에 수정·삭제하시면 됩니다.', '추가', run, false);
+    } else {
+      run();
+    }
+  }
+
+  /* ---- 일괄 등록 ---- */
+  var BULK_HEADERS = {
+    name: ['이름', '성명', 'name'],
+    group: ['소속', '목장', '부서', 'group'],
+    role: ['직분', '구분', '직책', 'role'],
+    phone: ['연락처', '전화', '전화번호', '휴대폰', 'phone'],
+    note: ['비고', '메모', 'note', 'memo'],
+    enlistDate: ['입대일', '입대', '입대날짜', 'enlistdate'],
+    dischargeDate: ['전역일', '전역', '전역날짜', 'dischargedate'],
+    birthday: ['생일', '생년월일', '생일날짜', 'birthday']
+  };
+  var BULK_DATE_KEYS = ['enlistDate', 'dischargeDate', 'birthday'];
+  var BULK_MODE_HINT = {
+    names: '한 줄에 한 명씩 이름만 넣습니다. 쉼표로 여러 명을 한 줄에 넣어도 됩니다.',
+    table: '순서: 이름, 소속, 직분, 연락처, 비고 (쉼표 또는 탭). 이름만 넣어도 됩니다.',
+    dates: '순서: 이름, 소속, 직분, 입대일, 전역일, 생일, 비고 (쉼표 또는 탭). 날짜는 2025-03-04 형식이고 비워도 됩니다.'
+  };
+
+  function splitBulkLine(s) {
+    if (s.indexOf('\t') >= 0) return s.split('\t').map(function (p) { return p.trim(); });
+    return s.split(',').map(function (p) { return p.trim(); });
+  }
+  function bulkHeaderKey(cell) {
+    var v = String(cell || '').replace(/\s+/g, '').toLowerCase();
+    if (!v) return '';
+    var keys = Object.keys(BULK_HEADERS);
+    for (var i = 0; i < keys.length; i++) {
+      if (BULK_HEADERS[keys[i]].indexOf(v) >= 0) return keys[i];
+    }
+    return '';
+  }
+  function parseBulkHeader(line) {
+    var cells = splitBulkLine(line);
+    if (cells.length < 2) return null;
+    var map = {};
+    var hasName = false, hasDate = false;
+    for (var i = 0; i < cells.length; i++) {
+      var k = bulkHeaderKey(cells[i]);
+      if (!k) return null;
+      if (map[k] !== undefined) continue;
+      map[k] = i;
+      if (k === 'name') hasName = true;
+      if (BULK_DATE_KEYS.indexOf(k) >= 0) hasDate = true;
+    }
+    if (!hasName) return null;
+    return { map: map, hasDate: hasDate };
+  }
+
+  function detectBulkMode(text) {
+    var lines = String(text || '').split(/\r?\n/).map(function (l) { return l.trim(); }).filter(Boolean);
+    if (!lines.length) return 'names';
+    var head = parseBulkHeader(lines[0]);
+    if (head) return head.hasDate ? 'dates' : 'table';
+    if (lines.length < 2) {
+      /* 한 줄만: 이름,이름 처럼 두 칸이면 이름 목록, 세 칸 이상이면 표로 본다 */
+      if (splitBulkLine(lines[0]).length < 3) return 'names';
+    } else {
+      var counts = lines.map(function (l) { return splitBulkLine(l).length; });
+      var allMulti = counts.every(function (c) { return c >= 2; });
+      if (!allMulti) return 'names';
+    }
+    var hasDateCell = lines.some(function (l) {
+      return splitBulkLine(l).slice(3).some(function (x) { return !!normDate(x); });
+    });
+    return hasDateCell ? 'dates' : 'table';
+  }
+
+  function syncBulkModeUI() {
+    Array.prototype.forEach.call(document.querySelectorAll('#bulk-mode-box label'), function (l) {
+      var inp = l.querySelector('input');
+      var on = !!(inp && inp.value === bulkMode);
+      l.classList.toggle('on', on);
+      if (inp) inp.checked = on;
+    });
+    var hint = $('bulk-hint');
+    if (hint) hint.textContent = BULK_MODE_HINT[bulkMode] || '';
+  }
+
+  function emptyBulkRow() {
+    return { name: '', group: '', role: '', phone: '', note: '', enlistDate: '', dischargeDate: '', birthday: '' };
+  }
+
+  function parseBulk(text) {
+    var res = { rows: [], badDates: 0, header: null };
+    var lines = String(text || '').split(/\r?\n/).map(function (l) { return l.trim(); }).filter(Boolean);
+    if (!lines.length) return res;
+    if (bulkMode !== 'names') {
+      res.header = parseBulkHeader(lines[0]);
+      if (res.header) lines = lines.slice(1);
+    }
+    lines.forEach(function (line) {
+      if (bulkMode === 'names' && !res.header) {
+        line.split(/[,;\t]+/).forEach(function (part) {
+          var n = part.trim();
+          if (n) { var r0 = emptyBulkRow(); r0.name = n; res.rows.push(r0); }
+        });
+        return;
+      }
+      var cells = splitBulkLine(line);
+      var row = emptyBulkRow();
+      if (res.header) {
+        Object.keys(res.header.map).forEach(function (k) {
+          var cell = cells[res.header.map[k]];
+          if (cell === undefined) return;
+          if (BULK_DATE_KEYS.indexOf(k) >= 0) {
+            row[k] = normDate(cell);
+            if (!row[k] && String(cell).trim()) res.badDates++;
+          } else {
+            row[k] = String(cell).trim();
+          }
+        });
+      } else if (bulkMode === 'dates') {
+        row.name = cells[0] || '';
+        row.group = cells[1] || '';
+        row.role = cells[2] || '';
+        BULK_DATE_KEYS.forEach(function (k, i) {
+          var cell = cells[3 + i];
+          if (cell === undefined) return;
+          row[k] = normDate(cell);
+          if (!row[k] && String(cell).trim()) res.badDates++;
+        });
+        row.note = cells.slice(6).join(' ').trim();
+      } else {
+        row.name = cells[0] || '';
+        row.group = cells[1] || '';
+        row.role = cells[2] || '';
+        row.phone = cells[3] || '';
+        row.note = cells.slice(4).join(' ').trim();
+      }
+      if (!row.name) return;
+      res.rows.push(row);
+    });
+    return res;
+  }
+
+  function renderBulkPreview() {
+    if (!bulkModeTouched) {
+      var detected = detectBulkMode($('bulk-text').value);
+      if (detected !== bulkMode) {
+        bulkMode = detected;
+        syncBulkModeUI();
+      }
+    }
+    var parsed = parseBulk($('bulk-text').value);
+    bulkParsed = parsed.rows;
+    var names = bulkParsed.map(function (p) { return p.name; });
+    var dup = names.filter(function (n, i) {
+      return names.indexOf(n) !== i || state.members.some(function (m) { return m.name === n; });
+    });
+    var box = $('bulk-preview');
+    var nameBox = $('bulk-names');
+    if (!bulkParsed.length) {
+      box.innerHTML = '붙여넣으면 인식된 명단이 여기에 표시됩니다.';
+      nameBox.classList.add('hidden');
+      nameBox.textContent = '';
+      $('bulk-confirm').disabled = true;
+      $('bulk-confirm').textContent = '추가';
+      return;
+    }
+    var msg = '인식된 인원 <b>' + bulkParsed.length + '명</b>';
+    if (dup.length) msg += ' · 이미 있는 이름 ' + dup.length + '명';
+    if (parsed.header) {
+      msg += '<br>첫 줄의 열 제목을 보고 칸을 맞췄습니다';
+      if (parsed.badDates) msg += ' · 날짜 형식이 맞지 않아 비운 칸 ' + parsed.badDates + '개';
+    } else if (bulkMode === 'dates') {
+      msg += '<br>형식: 이름, 소속, 직분, 입대일, 전역일, 생일, 비고 (쉼표 또는 탭)';
+      if (!bulkModeTouched) msg += ' — 붙여넣은 내용에 날짜가 보여 자동으로 맞췄습니다.';
+      if (parsed.badDates) msg += ' · 날짜 형식이 맞지 않아 비운 칸 ' + parsed.badDates + '개';
+    } else if (bulkMode === 'table') {
+      msg += '<br>형식: 이름, 소속, 직분, 연락처, 비고 (쉼표 또는 탭)';
+      if (!bulkModeTouched) msg += ' — 붙여넣은 내용이 표 형식이어서 자동으로 맞췄습니다. 이름만 넣으시려면 위에서 ‘이름만’을 선택하세요.';
+    }
+    box.innerHTML = msg;
+    var preview = bulkParsed.slice(0, 40).map(function (p, i) {
+      var extra = [p.group, p.role].filter(Boolean).join(' · ');
+      var dates = [];
+      if (p.enlistDate) dates.push('입대 ' + p.enlistDate);
+      if (p.dischargeDate) dates.push('전역 ' + p.dischargeDate);
+      if (p.birthday) dates.push('생일 ' + p.birthday);
+      return (i + 1) + '. ' + p.name + (extra ? ' (' + extra + ')' : '') + (dates.length ? ' · ' + dates.join(', ') : '');
+    }).join('\n');
+    nameBox.textContent = preview + (bulkParsed.length > 40 ? '\n… 외 ' + (bulkParsed.length - 40) + '명' : '');
+    nameBox.classList.remove('hidden');
+    $('bulk-confirm').disabled = false;
+    $('bulk-confirm').textContent = bulkParsed.length + '명 추가';
+  }
+
+  function openBulkModal() {
+    if (!canEditMembers()) { toast('명단은 총괄 관리자와 담임 교사만 편집할 수 있습니다.'); return; }
+    bulkMode = 'names';
+    bulkModeTouched = false;
+    $('bulk-text').value = '';
+    syncBulkModeUI();
+    renderBulkPreview();
+    openModal('modal-bulk');
+    setTimeout(function () { try { $('bulk-text').focus(); } catch (e) {} }, 60);
+  }
+
+  function commitBulk() {
+    if (!bulkParsed.length) return;
+    var added = 0;
+    bulkParsed.forEach(function (p) {
+      state.members.push({
+        id: uid(),
+        name: p.name,
+        group: p.group,
+        role: p.role,
+        phone: p.phone,
+        note: p.note,
+        enlistDate: p.enlistDate || '',
+        dischargeDate: p.dischargeDate || '',
+        birthday: p.birthday || ''
+      });
+      added++;
+    });
+    save();
+    closeModal('modal-bulk');
+    renderAll();
+    syncMembersToCloud();
+    toast(added + '명을 등록했습니다.');
+  }
+
+  /* ===================== 모임 종류 관리 ===================== */
+  function renderMeetingManage() {
+    var html = '';
+    state.meetings.forEach(function (name, i) {
+      var cnt = 0;
+      Object.keys(state.records).forEach(function (k) {
+        if (k.slice(k.indexOf('|') + 1) === name) cnt++;
+      });
+      html += '<li><span class="nm">' + escapeHtml(name) + '</span>';
+      html += '<span class="ct">기록 ' + cnt + '회</span>';
+      html += '<button type="button" class="btn sm" data-meet-act="rename" data-name="' + escapeHtml(name) + '">이름변경</button>';
+      if (state.meetings.length > 1) {
+        html += '<button type="button" class="btn sm danger" data-meet-act="del" data-name="' + escapeHtml(name) + '">삭제</button>';
+      }
+      html += '</li>';
+    });
+    $('meeting-manage-list').innerHTML = html;
+  }
+
+  function addMeeting() {
+    promptModal('모임 추가', '예: 새벽기도, 금요기도회, 소그룹', '', function (val) {
+      var name = String(val || '').trim();
+      if (!name) { toast('모임 이름을 입력해 주세요.'); return; }
+      if (state.meetings.indexOf(name) >= 0) { toast('이미 있는 모임입니다.'); return; }
+      state.meetings.push(name);
+      curMeeting = name;
+      save();
+      renderMeetingManage();
+      renderAttend();
+      toast(name + ' 모임을 추가했습니다.');
+    });
+  }
+
+  function renameMeeting(oldName) {
+    promptModal('모임 이름 변경', '‘' + oldName + '’의 새 이름', oldName, function (val) {
+      var name = String(val || '').trim();
+      if (!name) { toast('이름을 입력해 주세요.'); return; }
+      if (name === oldName) return;
+      if (state.meetings.indexOf(name) >= 0) { toast('이미 있는 모임입니다.'); return; }
+      state.meetings = state.meetings.map(function (x) { return x === oldName ? name : x; });
+      var next = {};
+      Object.keys(state.records).forEach(function (k) {
+        var idx = k.indexOf('|');
+        var date = k.slice(0, idx);
+        var meet = k.slice(idx + 1);
+        next[meet === oldName ? sessionKey(date, name) : k] = state.records[k];
+      });
+      state.records = next;
+      if (curMeeting === oldName) curMeeting = name;
+      save();
+      renderMeetingManage();
+      renderAttend();
+      toast('모임 이름을 바꿨습니다.');
+    });
+  }
+
+  function deleteMeeting(name) {
+    var cnt = 0;
+    Object.keys(state.records).forEach(function (k) {
+      if (k.slice(k.indexOf('|') + 1) === name) cnt++;
+    });
+    confirmModal('모임 삭제', '‘' + name + '’ 모임을 목록에서 지웁니다.'
+      + (cnt ? '\n이 모임의 출석 기록 ' + cnt + '회분도 함께 지워집니다.' : '')
+      + '\n되돌릴 수 없습니다.', '삭제', function () {
+      state.meetings = state.meetings.filter(function (x) { return x !== name; });
+      Object.keys(state.records).forEach(function (k) {
+        if (k.slice(k.indexOf('|') + 1) === name) delete state.records[k];
+      });
+      if (curMeeting === name) curMeeting = state.meetings[0] || '주일예배';
+      save();
+      renderMeetingManage();
+      renderAttend();
+      toast('모임을 삭제했습니다.');
+    }, true);
+  }
+
+  /* ===================== 통계 ===================== */
+  function streakOf(id) {
+    var all = sessionList('all').slice().reverse();
+    var streak = 0;
+    for (var i = 0; i < all.length; i++) {
+      var r = state.records[all[i].key][id];
+      if (!r || !r.status) continue;
+      if (r.status === 'absent') streak++;
+      else break;
+    }
+    return streak;
+  }
+
+  function lastDots(id, n) {
+    var all = sessionList('all').slice().reverse();
+    var out = [];
+    for (var i = 0; i < all.length && out.length < n; i++) {
+      var r = state.records[all[i].key][id];
+      if (!r || !r.status) continue;
+      out.push(r.status);
+    }
+    return out.reverse();
+  }
+
+  function statsRows(month) {
+    var sessions = sessionList(month);
+    return state.members.map(function (m) {
+      var a = 0, b = 0, e = 0, none = 0;
+      sessions.forEach(function (s) {
+        var r = state.records[s.key][m.id];
+        if (!r || !r.status) none++;
+        else if (r.status === 'attend') a++;
+        else if (r.status === 'absent') b++;
+        else e++;
+      });
+      var base = a + b;
+      return {
+        m: m,
+        attend: a, absent: b, excuse: e, none: none,
+        rate: base ? Math.round((a / base) * 1000) / 10 : null,
+        streak: streakOf(m.id),
+        dots: lastDots(m.id, 5)
+      };
+    });
+  }
+
+  function sortRows(rows) {
+    var r = rows.slice();
+    if (statsSortMode === 'name') {
+      r.sort(function (x, y) { return x.m.name.localeCompare(y.m.name, 'ko'); });
+    } else if (statsSortMode === 'absent') {
+      r.sort(function (x, y) { return y.absent - x.absent || x.m.name.localeCompare(y.m.name, 'ko'); });
+    } else if (statsSortMode === 'group') {
+      r.sort(function (x, y) {
+        var gx = x.m.group || '힣', gy = y.m.group || '힣';
+        if (gx !== gy) return gx.localeCompare(gy, 'ko');
+        return x.m.name.localeCompare(y.m.name, 'ko');
+      });
+    } else {
+      r.sort(function (x, y) {
+        var rx = (x.rate === null) ? 999 : x.rate;
+        var ry = (y.rate === null) ? 999 : y.rate;
+        if (rx !== ry) return rx - ry;
+        return y.absent - x.absent;
+      });
+    }
+    return r;
+  }
+
+  function renderStats() {
+    var month = statsMonth;
+    $('stats-month').value = (month === 'all') ? '' : month;
+    $('stats-all').setAttribute('aria-pressed', month === 'all' ? 'true' : 'false');
+    $('stats-all').classList.toggle('primary', month === 'all');
+    $('stats-sort').value = statsSortMode;
+
+    var sessions = sessionList(month);
+    var rows = statsRows(month);
+    var totals = { attend: 0, absent: 0, excuse: 0, none: 0 };
+    rows.forEach(function (r) {
+      totals.attend += r.attend; totals.absent += r.absent; totals.excuse += r.excuse; totals.none += r.none;
+    });
+    var base = totals.attend + totals.absent;
+    var overall = base ? Math.round((totals.attend / base) * 1000) / 10 : null;
+    var streakPeople = rows.filter(function (r) { return r.streak >= 2; });
+
+    $('stat-sessions').textContent = String(sessions.length);
+    $('stat-rate').textContent = fmtRate(overall);
+    $('stat-streak').textContent = String(streakPeople.length);
+    $('stat-members').textContent = String(state.members.length);
+    $('stats-period-label').textContent = monthLabel(month);
+    $('stats-note').innerHTML = '<span class="chip">출석 ' + totals.attend + '</span>'
+      + '<span class="chip">결석 ' + totals.absent + '</span>'
+      + '<span class="chip">사유 ' + totals.excuse + '</span>'
+      + '<span class="chip">미기록 ' + totals.none + '</span>'
+      + '<span>출석률 = 출석 ÷ (출석+결석)</span>';
+
+    var warn = $('stats-warn');
+    if (streakPeople.length) {
+      warn.classList.remove('hidden');
+      $('stats-warn-list').innerHTML = streakPeople.slice().sort(function (a, b) { return b.streak - a.streak; })
+        .map(function (r) {
+          return '<span class="warnitem">' + escapeHtml(r.m.name) + ' <b>' + r.streak + '회 연속</b></span>';
+        }).join('');
+    } else {
+      warn.classList.add('hidden');
+      $('stats-warn-list').innerHTML = '';
+    }
+
+    var sorted = sortRows(rows);
+    var body = '';
+    sorted.forEach(function (r) {
+      var dots = r.dots.map(function (st) {
+        return '<span class="dot ' + st + '" title="' + STATUS_LABEL[st] + '"></span>';
+      }).join('');
+      if (!dots) dots = '<span style="color:var(--muted);font-size:11px">기록 없음</span>';
+      body += '<tr class="' + (r.streak >= 2 ? 'streak' : '') + '">';
+      body += '<td><b>' + escapeHtml(r.m.name) + '</b></td>';
+      body += '<td>' + escapeHtml(r.m.group || '-') + '</td>';
+      body += '<td>' + escapeHtml(r.m.role || '-') + '</td>';
+      body += '<td class="num">' + r.attend + '</td>';
+      body += '<td class="num">' + r.absent + '</td>';
+      body += '<td class="num">' + r.excuse + '</td>';
+      body += '<td class="num">' + r.none + '</td>';
+      body += '<td class="num"><span class="ratecell">' + fmtRate(r.rate);
+      if (r.rate !== null) body += '<span class="ratebar"><i style="width:' + Math.max(0, Math.min(100, r.rate)) + '%"></i></span>';
+      body += '</span></td>';
+      body += '<td>' + dots + '</td>';
+      body += '<td>' + (r.streak >= 2 ? '<span class="streakflag">' + r.streak + '회 연속</span>' : (r.streak === 1 ? '1회' : '-')) + '</td>';
+      body += '</tr>';
+    });
+    $('stats-tbl-body').innerHTML = body;
+
+    var stEmpty = $('stats-empty');
+    if (!state.members.length) {
+      stEmpty.classList.remove('hidden');
+      stEmpty.innerHTML = '<strong>아직 명단이 없습니다</strong>신우 명단을 등록하면 개인별 출석률이 계산됩니다.';
+    } else {
+      stEmpty.classList.add('hidden');
+      stEmpty.innerHTML = '';
+    }
+
+    /* 날짜별 기록 */
+    var sessBody = '';
+    sessions.slice().reverse().forEach(function (s) {
+      var recs = state.records[s.key];
+      var t = tallyOf(recs, state.members);
+      sessBody += '<tr>';
+      sessBody += '<td>' + escapeHtml(labelDate(s.date)) + '</td>';
+      sessBody += '<td>' + escapeHtml(s.meeting) + '</td>';
+      sessBody += '<td class="num">' + t.attend + '</td>';
+      sessBody += '<td class="num">' + t.absent + '</td>';
+      sessBody += '<td class="num">' + t.excuse + '</td>';
+      sessBody += '<td class="num">' + t.none + '</td>';
+      sessBody += '<td class="num">' + fmtRate(t.rate) + '</td>';
+      sessBody += '<td><button type="button" class="btn sm no-print" data-sess-act="open" data-date="' + escapeHtml(s.date) + '" data-meeting="' + escapeHtml(s.meeting) + '">열기</button> '
+        + '<button type="button" class="btn sm danger no-print" data-sess-act="del" data-date="' + escapeHtml(s.date) + '" data-meeting="' + escapeHtml(s.meeting) + '">삭제</button></td>';
+      sessBody += '</tr>';
+    });
+    $('sess-body').innerHTML = sessBody;
+    $('sess-count').textContent = sessions.length + '회';
+    if (sessions.length) $('sess-empty').classList.add('hidden');
+    else $('sess-empty').classList.remove('hidden');
+  }
+
+  function exportSheetCSV() {
+    var sessions = sessionList(statsMonth);
+    if (!sessions.length) { toast('해당 기간에 기록이 없습니다.'); return; }
+    var head = ['이름', '소속', '직분'];
+    sessions.forEach(function (s) {
+      head.push(shortDate(s.date) + ' ' + s.meeting);
+    });
+    head = head.concat(['출석', '결석', '사유', '출석률']);
+    var rows = [head];
+    state.members.forEach(function (m) {
+      var row = [m.name, m.group, m.role];
+      var a = 0, b = 0, e = 0;
+      sessions.forEach(function (s) {
+        var r = state.records[s.key][m.id];
+        if (!r || !r.status) row.push('');
+        else if (r.status === 'attend') { row.push('출석'); a++; }
+        else if (r.status === 'absent') { row.push('결석'); b++; }
+        else { row.push('사유'); e++; }
+      });
+      var base = a + b;
+      row.push(a, b, e, base ? (Math.round((a / base) * 1000) / 10) + '%' : '-');
+      rows.push(row);
+    });
+    var tag = (statsMonth === 'all') ? '전체' : statsMonth;
+    download('신우회_출석표_' + safeName(tag) + '.csv', toCSV(rows));
+  }
+
+  function exportPeopleCSV() {
+    var rows = statsRows(statsMonth);
+    if (!state.members.length) { toast('먼저 명단을 등록해 주세요.'); return; }
+    var out = [['기간', '이름', '소속', '직분', '출석', '결석', '사유', '미기록', '출석률', '연속 결석', '입대일', '전역일', '생일']];
+    var label = monthLabel(statsMonth);
+    sortRows(rows).forEach(function (r) {
+      out.push([label, r.m.name, r.m.group, r.m.role, r.attend, r.absent, r.excuse, r.none,
+        r.rate === null ? '-' : r.rate + '%', r.streak ? r.streak + '회' : '-',
+        r.m.enlistDate || '', r.m.dischargeDate || '', r.m.birthday || '']);
+    });
+    var tag = (statsMonth === 'all') ? '전체' : statsMonth;
+    download('신우회_개인별통계_' + safeName(tag) + '.csv', toCSV(out));
+  }
+
+  function exportMemberCSV() {
+    if (!state.members.length) { toast('명단이 비어 있습니다.'); return; }
+    var rows = [['이름', '소속', '직분', '연락처', '비고', '입대일', '전역일', '생일']];
+    state.members.forEach(function (m) {
+      rows.push([m.name, m.group, m.role, m.phone, m.note, m.enlistDate || '', m.dischargeDate || '', m.birthday || '']);
+    });
+    download('신우회_명단.csv', toCSV(rows));
+  }
+
+  /* ===================== 백업 ===================== */
+  function renderBackup() {
+    var sessions = sessionList('all');
+    $('bk-save-state').textContent = storageOK ? '켜짐 (이 브라우저에 저장)' : '꺼짐 (브라우저가 저장을 막았습니다)';
+    $('bk-updated').textContent = fmtTime(state.meta.updatedAt);
+    $('bk-members').textContent = state.members.length + '명';
+    $('bk-sessions').textContent = sessions.length + '회';
+    $('bk-prayers').textContent = state.prayers.length + '개'
+      + (prayerMode === 'cloud' ? ' · 클라우드 ' + CLOUD.list.length + '개' : '');
+    $('bk-meetings').textContent = state.meetings.join(', ') || '-';
+    if (storageOK) $('storage-warn').classList.add('hidden');
+    else $('storage-warn').classList.remove('hidden');
+    renderCloudStatus();
+    renderLeaderList();
+  }
+
+  function exportJSON() {
+    var payload = {
+      app: '신우회 출석부',
+      version: 2,
+      exportedAt: nowISO(),
+      data: state
+    };
+    var d = new Date();
+    var fn = '신우회_출석부_백업_' + d.getFullYear() + pad2(d.getMonth() + 1) + pad2(d.getDate()) + '_' + pad2(d.getHours()) + pad2(d.getMinutes()) + '.json';
+    download(fn, JSON.stringify(payload, null, 2), 'application/json;charset=utf-8');
+  }
+
+  function importJSONFile(file) {
+    var reader = new FileReader();
+    reader.onload = function () {
+      var obj = null;
+      try { obj = JSON.parse(String(reader.result || '')); } catch (e) { obj = null; }
+      if (!obj) { toast('JSON 파일을 읽을 수 없습니다.'); return; }
+      var payload = (obj && obj.data && typeof obj.data === 'object') ? obj.data : obj;
+      if (!payload || !Array.isArray(payload.members)) { toast('신우회 출석부 백업 파일이 아닙니다.'); return; }
+      var next = normalizeState(payload);
+      confirmModal('백업 복원',
+        '현재 데이터(신우 ' + state.members.length + '명, 기록 ' + Object.keys(state.records).length + '개, 기도제목 ' + state.prayers.length + '개)를\n'
+        + '백업 파일(신우 ' + next.members.length + '명, 기록 ' + Object.keys(next.records).length + '개, 기도제목 ' + next.prayers.length + '개)로 바꿉니다.\n'
+        + '되돌릴 수 없으니 지금 데이터를 먼저 백업해 두세요.',
+        '복원', function () {
+          state = next;
+          if (state.meetings.indexOf(curMeeting) < 0) curMeeting = state.meetings[0] || '주일예배';
+          save();
+          renderAll();
+          syncMembersToCloud();
+          toast('백업을 복원했습니다.');
+        }, true);
+    };
+    reader.onerror = function () { toast('파일을 읽지 못했습니다.'); };
+    reader.readAsText(file, 'utf-8');
+  }
+
+  function clearAllData() {
+    confirmModal('모든 데이터 삭제', '명단 ' + state.members.length + '명과 출석 기록 ' + Object.keys(state.records).length + '개, 기도제목 ' + state.prayers.length + '개를 이 기기에서 모두 지웁니다.\n되돌릴 수 없습니다.', '모두 삭제', function () {
+      confirmModal('마지막 확인', '정말 삭제할까요? 백업 파일이 없다면 복구할 수 없습니다.', '삭제', function () {
+        state = emptyState();
+        curMeeting = state.meetings[0];
+        try { window.localStorage.removeItem(storeKey()); } catch (e) {}
+        save();
+        renderAll();
+        syncMembersToCloud();
+        toast('모든 데이터를 지웠습니다.');
+      }, true);
+    }, true);
+  }
+
+  /* ===================== 클라우드 연결 (Google 로그인 · 실시간 공유) ===================== */
+  function cloudSdk() {
+    return typeof window.firebase !== 'undefined' && window.firebase &&
+      typeof window.firebase.initializeApp === 'function';
+  }
+  function cloudReady() { return !!(CLOUD.auth && CLOUD.db); }
+  function cloudDisplayName() {
+    var u = CLOUD.user;
+    if (!u) return '';
+    var n = String(u.displayName || '').trim();
+    if (!n && u.email) n = String(u.email).split('@')[0];
+    return n || '신우';
+  }
+  function hasLocalData() {
+    return !!(state && (state.members.length || state.prayers.length || Object.keys(state.records).length));
+  }
+  function isAdminEmail(email) { return String(email || '').toLowerCase() === ADMIN_EMAIL; }
+  /* 로그인하지 않은 로컬 모드도 관리자와 같은 권한을 가진다 (기존 동작 유지) */
+  function isAdminRole() { return !CLOUD.role || CLOUD.role === 'admin'; }
+  function isTeacherRole() { return !CLOUD.role || CLOUD.role === 'teacher'; }
+  function isRoomLeaderRole() { return CLOUD.role === 'teacher' || CLOUD.role === 'rep'; }
+  /* 교사·대표신우 관리 카드: 교사와 총괄만. 대표신우는 교사·총괄만 지정/해제 */
+  function canManageLeaders() { return !CLOUD.role || CLOUD.role === 'admin' || CLOUD.role === 'teacher'; }
+  function cloudEmail() { return String((CLOUD.user && CLOUD.user.email) || '').toLowerCase(); }
+  /* 반별 서브컬렉션: rooms/{roomId}/{leaders|members|attendance|prayers} */
+  function roomCol(name) { return CLOUD.db.collection('rooms').doc(ROOM_KEY).collection(name); }
+  function roomDocRef(name, id) { return roomCol(name).doc(id); }
+  function cloudDateKey(date, meeting) { return String(date || '') + '_' + String(meeting || ''); }
+  function cloudDataError(kind, err) {
+    var code = (err && err.code) || 'error';
+    if (window.console) console.warn('cloud ' + kind + ' failed', code, err && err.message);
+    if (CLOUD.dataErr[kind]) return;
+    CLOUD.dataErr[kind] = true;
+    if (kind === 'attendance' || kind === 'attendance-write') {
+      toast(code === 'permission-denied' ? '출석 공유 권한이 없습니다. 관리자에게 대표 인원 등록을 요청해 주세요.' : '출석을 클라우드에 연결하지 못했습니다.');
+    } else if (kind === 'members') {
+      toast(code === 'permission-denied' ? '명단을 불러올 권한이 없습니다.' : '명단을 클라우드에서 불러오지 못했습니다.');
+    } else if (kind === 'leaders') {
+      toast('대표 인원 목록을 불러오지 못했습니다.');
+    } else if (kind === 'member-sync') {
+      toast('클라우드로 올리지 못했습니다. (' + code + ')');
+    }
+  }
+
+  function applyRoleUI() {
+    var role = CLOUD.role;
+    var body = document.body.classList;
+    body.toggle('is-admin', role === 'admin');
+    body.toggle('is-teacher', role === 'teacher');
+    body.toggle('is-rep', role === 'rep');
+    body.toggle('is-leader', role === 'teacher' || role === 'rep');
+    body.toggle('is-member', role === 'member');
+    body.toggle('member-mode', role === 'member');
+    var isMember = role === 'member';
+    $('app-title').textContent = isMember ? '신우회 기도제목' : '신우회 출석부';
+    document.title = (isMember ? '신우회 기도제목' : '신우회 출석부') + (ROOM_KEY ? ' · ' + roomName() : '');
+    renderRoomBar();
+    renderRoomPicker();
+    renderRoomMismatch();
+  }
+
+  /* 상단 현재 반 + 총괄 관리자용 반 전환 드롭다운 */
+  function renderRoomBar() {
+    var nowName = $('room-now-name');
+    if (nowName) nowName.textContent = roomLabel() || '-';
+    var sel = $('sel-room');
+    if (!sel) return;
+    if (!sel.options.length) {
+      sel.innerHTML = ROOMS.map(function (r) {
+        return '<option value="' + escapeHtml(r.id) + '">' + escapeHtml(r.name) + ' · ' + escapeHtml(r.teacher) + '</option>';
+      }).join('');
+    }
+    sel.value = ROOM_KEY;
+  }
+
+  /* 주소에 ?room= 없이 들어온 일반 신우·타 반 교사: 소속 반 선택 */
+  function needsRoomPick() {
+    return !!CLOUD.user && CLOUD.role !== 'admin' && !roomFromUrl;
+  }
+
+  function renderRoomPicker() {
+    var box = $('room-pick-list');
+    if (box && !box.children.length) {
+      box.innerHTML = ROOMS.map(function (r) {
+        return '<button type="button" class="room-pick" data-pick-room="' + escapeHtml(r.id) + '">'
+          + '<span><span class="rn">' + escapeHtml(r.name) + '</span><span class="rt2">' + escapeHtml(r.teacher) + '</span></span>'
+          + '<span class="go">\u203a</span></button>';
+      }).join('');
+    }
+    document.body.classList.toggle('pick-room', needsRoomPick());
+  }
+
+  /* 이 계정이 다른 반의 교사·대표신우라면 그 반 링크를 안내 */
+  function renderRoomMismatch() {
+    var el = $('room-mismatch');
+    if (!el) return;
+    var other = null;
+    (CLOUD.leaderRooms || []).forEach(function (h) { if (!other && h.id !== ROOM_KEY) other = h; });
+    if (!other || CLOUD.role === 'admin') { el.classList.add('hidden'); return; }
+    $('room-mismatch-name').textContent = roomName(other.id);
+    el.setAttribute('data-room', other.id);
+    el.classList.remove('hidden');
+  }
+
+  /* 로그인한 계정의 역할: 총괄 관리자 → 이 반의 담임 교사 → 이 반의 대표신우 → 일반 신우 */
+  function resolveRole(user) {
+    if (isAdminEmail(user && user.email)) return Promise.resolve({ role: 'admin', rooms: [] });
+    if (!cloudReady()) return Promise.resolve({ role: 'member', rooms: [] });
+    var email = cloudEmail();
+    if (!email) return Promise.resolve({ role: 'member', rooms: [] });
+    var jobs = ROOMS.map(function (r) {
+      return CLOUD.db.collection('rooms').doc(r.id).collection(LEADERS_COL).doc(email).get()
+        .then(function (snap) {
+          if (!snap || !snap.exists) return null;
+          var d = snap.data() || {};
+          /* v3에서 만든 교사 문서에는 role이 없다 → 담임 교사로 본다 */
+          return { id: r.id, role: (d.role === 'rep' ? 'rep' : 'teacher') };
+        })
+        .catch(function (err) {
+          if (window.console) console.warn('leader check failed', r.id, (err && err.code) || '', err && err.message);
+          return null;
+        });
+    });
+    return Promise.all(jobs).then(function (hits) {
+      var list = hits.filter(function (h) { return !!h; });
+      CLOUD.leaderRooms = list;
+      var mine = null;
+      list.forEach(function (h) { if (h.id === ROOM_KEY) mine = h; });
+      return { role: mine ? mine.role : 'member', rooms: list };
+    });
+  }
+
+  function authMessage(err) {
+    var code = (err && err.code) || '';
+    var map = {
+      'auth/popup-blocked': '로그인 창이 차단되었습니다. ‘리디렉션으로 다시 로그인’을 눌러 주세요.',
+      'auth/popup-closed-by-user': '로그인 창이 닫혔습니다. 다시 시도해 주세요.',
+      'auth/cancelled-popup-request': '로그인 창이 여러 번 열렸습니다. 다시 시도해 주세요.',
+      'auth/operation-not-supported-in-this-environment': '이 브라우저에서는 팝업 로그인이 안 됩니다. ‘리디렉션으로 다시 로그인’을 눌러 주세요.',
+      'auth/unauthorized-domain': '이 주소가 Firebase 로그인 허용 도메인에 없습니다. 관리자에게 알려 주세요.',
+      'auth/network-request-failed': '네트워크에 연결되지 않았습니다. 잠시 뒤 다시 시도해 주세요.',
+      'auth/invalid-api-key': 'Firebase 설정(API 키)을 확인해 주세요.',
+      'auth/configuration-not-found': 'Firebase에서 Google 로그인이 켜져 있지 않습니다.',
+      'auth/account-exists-with-different-credential': '다른 방식으로 가입된 계정입니다.',
+      'auth/internal-error': '로그인 처리 중 문제가 생겼습니다. 잠시 뒤 다시 시도해 주세요.'
+    };
+    if (map[code]) return map[code];
+    if (code) return '로그인하지 못했습니다. (' + code + ')';
+    return '로그인하지 못했습니다. 잠시 뒤 다시 시도해 주세요.';
+  }
+
+  function startAuth() {
+    if (cloudSdk()) { initCloud(); return; }
+    var tries = 0;
+    (function wait() {
+      if (cloudSdk()) { initCloud(); return; }
+      if (tries++ >= 30) { gateSignedOut('offline'); return; }
+      setTimeout(wait, 100);
+    })();
+  }
+
+  function initCloud() {
+    if (CLOUD.ready) return;
+    CLOUD.sdk = true;
+    try {
+      if (!window.firebase.apps || !window.firebase.apps.length) window.firebase.initializeApp(FIREBASE_CONFIG);
+      CLOUD.auth = window.firebase.auth();
+      CLOUD.db = window.firebase.firestore();
+      CLOUD.ready = true;
+    } catch (e) {
+      CLOUD.ready = false;
+      gateSignedOut('offline');
+      return;
+    }
+    if (window.firebase.firestore && window.firebase.firestore.setLogLevel) {
+      try { window.firebase.firestore.setLogLevel('error'); } catch (e) {}
+    }
+    CLOUD.auth.getRedirectResult().catch(function (err) {
+      var code = (err && err.code) || '';
+      if (code && code !== 'auth/no-auth-event' && code !== 'auth/popup-closed-by-user') {
+        CLOUD.authError = authMessage(err);
+      }
+    });
+    CLOUD.auth.onAuthStateChanged(function (user) {
+      if (user) enterCloud(user);
+      else leaveCloud();
+    });
+    setTimeout(function () {
+      if (document.body.classList.contains('booting')) gateSignedOut('');
+    }, 8000);
+  }
+
+  function enterCloud(user) {
+    var wasSignedIn = !!CLOUD.user && CLOUD.user.uid === user.uid;
+    CLOUD.user = user;
+    CLOUD.isAdmin = isAdminEmail(user.email);
+    CLOUD.role = CLOUD.isAdmin ? 'admin' : 'member';   /* 교사·대표신우는 확인 뒤 승격 */
+    CLOUD.authError = '';
+    CLOUD.dataErr = {};
+    prayerMode = 'cloud';
+    localModeChosen = false;
+    document.body.classList.remove('booting', 'signed-out');
+    applyRoleUI();
+    updateUserBar();
+    subscribePrayers();
+    subscribeCloudData();
+    renderAll();
+    switchView(CLOUD.isAdmin ? 'attend' : 'prayers');
+    if (!CLOUD.isAdmin && !wasSignedIn) toast('로그인했습니다. 기도제목을 나눠 주세요.');
+    resolveRole(user).then(function (res) {
+      if (!CLOUD.user || CLOUD.user.uid !== user.uid) return;
+      var role = (res && res.role) || 'member';
+      var changed = CLOUD.role !== role;
+      CLOUD.role = role;
+      CLOUD.isAdmin = role === 'admin';
+      CLOUD.leaderRooms = (res && res.rooms) || [];
+      applyRoleUI();
+      updateUserBar();
+      if (changed) {
+        subscribeCloudData();
+        renderAll();
+        if (role === 'teacher') {
+          switchView('attend');
+          toast(roomName() + ' 반 담임 교사로 로그인했습니다.');
+        } else if (role === 'rep') {
+          switchView('attend');
+          toast(roomName() + ' 반 대표신우로 로그인했습니다.');
+        } else if (role === 'member') {
+          switchView('prayers');
+        }
+      }
+    });
+  }
+
+  function leaveCloud() {
+    unsubPrayers();
+    CLOUD.user = null;
+    CLOUD.isAdmin = false;
+    CLOUD.role = '';
+    CLOUD.leaderRooms = [];
+    CLOUD.list = [];
+    CLOUD.leaders = [];
+    CLOUD.cloudMembers = null;
+    CLOUD.err = '';
+    CLOUD.errShown = false;
+    CLOUD.attKey = '';
+    CLOUD.dataErr = {};
+    prayerMode = 'local';
+    applyRoleUI();
+    updateUserBar();
+    if (localModeChosen) {
+      document.body.classList.remove('booting', 'signed-out');
+      renderAll();
+    } else {
+      gateSignedOut('');
+    }
+  }
+
+  function gateSignedOut(kind) {
+    document.body.classList.remove('booting', 'member-mode');
+    document.body.classList.add('signed-out');
+    document.title = '신우회 기도제목';
+    $('gate-title').textContent = '신우회 기도제목';
+    $('gate-sub').textContent = 'Google 계정으로 로그인하면 함께 나눌 수 있어요';
+    var btn = $('btn-google');
+    btn.classList.remove('hidden');
+    btn.disabled = !cloudReady();
+    $('btn-local').classList.toggle('hidden', !hasLocalData());
+    $('btn-redirect').classList.add('hidden');
+    var foot = $('gate-foot');
+    foot.classList.remove('err');
+    if (CLOUD.authError) {
+      foot.classList.add('err');
+      foot.textContent = CLOUD.authError;
+    } else if (kind === 'offline' || !cloudReady()) {
+      foot.textContent = '지금은 로그인 서버에 연결하지 못했습니다. 인터넷에 연결되면 Google 로그인을 쓸 수 있습니다.'
+        + (hasLocalData() ? ' 이 기기의 출석부는 그대로 열 수 있어요.' : '');
+    } else {
+      foot.textContent = '출석·명단 자료는 이 기기에 그대로 남습니다.';
+    }
+  }
+
+  function updateUserBar() {
+    var bar = $('user-bar');
+    if (!CLOUD.user) { bar.classList.add('hidden'); return; }
+    bar.classList.remove('hidden');
+    $('ub-name').textContent = cloudDisplayName();
+    var role = CLOUD.role;
+    var el = $('ub-role');
+    var label = role === 'admin' ? '관리자' : (role === 'teacher' ? '반 담임 교사' : (role === 'rep' ? '대표신우' : '신우'));
+    el.textContent = label;
+    el.className = 'ub-role' + (role === 'teacher' ? ' teacher' : (role === 'rep' ? ' rep' : ''));
+    el.classList.remove('hidden');
+  }
+
+  function signInGoogle() {
+    if (!cloudReady()) { toast('인터넷 연결을 확인한 뒤 다시 시도해 주세요.'); return; }
+    if (authBusy) return;
+    authBusy = true;
+    $('btn-google').disabled = true;
+    $('btn-redirect').classList.add('hidden');
+    $('gate-foot').classList.remove('err');
+    var provider = new window.firebase.auth.GoogleAuthProvider();
+    provider.setCustomParameters({ prompt: 'select_account' });
+    CLOUD.auth.signInWithPopup(provider).then(function () {
+      authBusy = false;
+      $('btn-google').disabled = false;
+    }).catch(function (err) {
+      authBusy = false;
+      $('btn-google').disabled = false;
+      handleSignInError(err);
+    });
+  }
+
+  function handleSignInError(err) {
+    var code = (err && err.code) || '';
+    var foot = $('gate-foot');
+    foot.classList.add('err');
+    foot.textContent = authMessage(err);
+    if (window.console) console.warn('sign-in failed', code, err && err.message);
+    if (code === 'auth/popup-blocked' || code === 'auth/operation-not-supported-in-this-environment') {
+      signInRedirect();
+      return;
+    }
+    if (code === 'auth/unauthorized-domain' || code === 'auth/configuration-not-found' || code === 'auth/invalid-api-key') {
+      return;
+    }
+    $('btn-redirect').classList.remove('hidden');
+  }
+
+  function signInRedirect() {
+    if (!cloudReady()) return;
+    var provider = new window.firebase.auth.GoogleAuthProvider();
+    provider.setCustomParameters({ prompt: 'select_account' });
+    CLOUD.auth.signInWithRedirect(provider).catch(function (err) {
+      var foot = $('gate-foot');
+      foot.classList.add('err');
+      foot.textContent = authMessage(err);
+    });
+  }
+
+  function signOutUser() {
+    confirmModal('로그아웃', '로그아웃하면 공유 기도제목은 이 화면에서 사라집니다.\n이 기기에 저장된 출석·명단 자료는 그대로 남습니다.', '로그아웃', function () {
+      if (!CLOUD.auth) return;
+      CLOUD.auth.signOut().catch(function () { toast('로그아웃하지 못했습니다.'); });
+    });
+  }
+
+  function enterLocalMode() {
+    localModeChosen = true;
+    prayerMode = 'local';
+    document.body.classList.remove('booting', 'signed-out', 'member-mode');
+    $('app-title').textContent = '신우회 출석부';
+    document.title = '신우회 출석부';
+    renderAll();
+    switchView('attend');
+    toast('이 기기의 출석부를 열었습니다.');
+  }
+
+  /* 총괄 관리자: 반 전환 (로그인·주소 유지, 그 반 자료로 다시 연결) */
+  function enterRoom(roomId) {
+    if (!roomById(roomId) || roomId === ROOM_KEY) return;
+    save();
+    ROOM_KEY = roomId;
+    roomFromUrl = true;
+    try {
+      if (window.history && history.replaceState) history.replaceState(null, '', '?room=' + encodeURIComponent(roomId));
+    } catch (e) {}
+    unsubPrayers();
+    loadState();
+    if (state.meetings.indexOf(curMeeting) < 0) curMeeting = state.meetings[0] || '주일예배';
+    statsMonth = todayISO().slice(0, 7);
+    openMemo = {}; searchText = ''; groupFilter = ''; onlyUnmarked = false;
+    memSearchText = ''; memFilter = 'all'; praySearchText = ''; prayPerson = ''; prayState = 'all';
+    CLOUD.list = []; CLOUD.leaders = []; CLOUD.cloudMembers = null; CLOUD.attKey = '';
+    CLOUD.err = ''; CLOUD.errShown = false; CLOUD.dataErr = {};
+    applyRoleUI();
+    renderAll();
+    if (CLOUD.user) { subscribePrayers(); subscribeCloudData(); }
+    switchView(viewAllowed(currentView) ? currentView : defaultView());
+    toast('\u2018' + roomName() + '\u2019 \ubc18\uc73c\ub85c \uc804\ud658\ud588\uc2b5\ub2c8\ub2e4.');
+  }
+
+  function unsubPrayers() {
+    CLOUD.subs.forEach(function (fn) { try { fn(); } catch (e) {} });
+    CLOUD.subs = [];
+    stopAttendance();
+    if (CLOUD.unsubMembers) { try { CLOUD.unsubMembers(); } catch (e) {} CLOUD.unsubMembers = null; }
+    if (CLOUD.unsubLeaders) { try { CLOUD.unsubLeaders(); } catch (e) {} CLOUD.unsubLeaders = null; }
+  }
+
+  /* ===================== 클라우드 명단·출석 (반별 공유) ===================== */
+  /* 출석 체크: 총괄 관리자 · 반 담임 교사 · 반 대표신우 */
+  function canShareAttendance() {
+    return cloudReady() && !!CLOUD.user && !!ROOM_KEY &&
+      (CLOUD.role === 'admin' || CLOUD.role === 'teacher' || CLOUD.role === 'rep');
+  }
+
+  /* 명단 편집: 총괄 관리자 · 반 담임 교사 (대표신우는 읽기만) */
+  function canEditMembers() { return !CLOUD.role || CLOUD.role === 'admin' || CLOUD.role === 'teacher'; }
+
+  function subscribeCloudData() {
+    if (!cloudReady() || !CLOUD.user || !ROOM_KEY) return;
+    var role = CLOUD.role;
+    if (role === 'admin' || role === 'teacher') subscribeLeaders();
+    if (role === 'admin' || role === 'teacher' || role === 'rep') {
+      subscribeAttendance();
+      subscribeMembers();
+    }
+  }
+
+  function stopAttendance() {
+    if (CLOUD.unsubAtt) { try { CLOUD.unsubAtt(); } catch (e) {} CLOUD.unsubAtt = null; }
+    CLOUD.attKey = '';
+  }
+
+  /* 현재 날짜·모임의 출석 문서를 실시간 구독 */
+  function subscribeAttendance() {
+    stopAttendance();
+    if (!canShareAttendance()) return;
+    var key = cloudDateKey(curDate, curMeeting);
+    CLOUD.attKey = key;
+    CLOUD.unsubAtt = roomDocRef(ATTENDANCE_COL, key).onSnapshot(function (snap) {
+      var d = (snap && snap.exists) ? (snap.data() || {}) : {};
+      applyCloudRecords(d.records || {});
+    }, function (err) { cloudDataError('attendance', err); });
+  }
+
+  function applyCloudRecords(records) {
+    var k = currentKey();
+    var local = state.records[k] || {};
+    var changed = false;
+    var activeId = '';
+    var ae = document.activeElement;
+    if (ae && ae.classList && ae.classList.contains('memo-input')) {
+      var li = ae.closest ? ae.closest('.mrow') : null;
+      if (li) activeId = li.getAttribute('data-id') || '';
+    }
+    Object.keys(records || {}).forEach(function (id) {
+      var r = records[id];
+      if (!r || typeof r !== 'object') return;
+      if (id === activeId) return;   /* 지금 메모를 쓰는 신우는 덮어쓰지 않는다 */
+      var st = (r.status === 'attend' || r.status === 'absent' || r.status === 'excuse') ? r.status : '';
+      var note = String(r.note || '');
+      var prev = local[id];
+      if (!st && !note) {
+        if (prev) { delete local[id]; changed = true; }
+        return;
+      }
+      if (!prev || prev.status !== st || prev.memo !== note) {
+        local[id] = { status: st, memo: note };
+        changed = true;
+      }
+    });
+    if (Object.keys(local).length) state.records[k] = local;
+    else delete state.records[k];
+    if (changed) {
+      save();
+      var sec = $('view-attend');
+      if (sec && !sec.classList.contains('hidden')) renderAttend();
+    }
+  }
+
+  /* 출석 버튼 → Firestore (다른 대표 인원 폰에 즉시 반영) */
+  function pushAttendanceRecord(id, status, memo) {
+    if (!canShareAttendance()) return;
+    var key = cloudDateKey(curDate, curMeeting);
+    var payload = { date: curDate, meeting: curMeeting, updatedAt: nowISO(), updatedBy: cloudEmail(), room: ROOM_KEY, records: {} };
+    payload.records[id] = { status: status || '', note: memo || '', updatedBy: cloudEmail(), updatedAt: nowISO() };
+    roomDocRef(ATTENDANCE_COL, key).set(payload, { merge: true })
+      .catch(function (err) { cloudDataError('attendance-write', err); });
+  }
+
+  var memoPushTimers = {};
+  function pushAttendanceMemoSoon(id) {
+    if (!canShareAttendance()) return;
+    if (memoPushTimers[id]) clearTimeout(memoPushTimers[id]);
+    memoPushTimers[id] = setTimeout(function () {
+      memoPushTimers[id] = null;
+      var rec = (state.records[currentKey()] || {})[id];
+      pushAttendanceRecord(id, rec ? rec.status : '', rec ? rec.memo : '');
+    }, 700);
+  }
+
+  function pushAttendanceSession() {
+    if (!canShareAttendance()) return;
+    var recs = state.records[currentKey()] || {};
+    var records = {};
+    Object.keys(recs).forEach(function (id) {
+      records[id] = { status: recs[id].status || '', note: recs[id].memo || '', updatedBy: cloudEmail(), updatedAt: nowISO() };
+    });
+    roomDocRef(ATTENDANCE_COL, cloudDateKey(curDate, curMeeting)).set({
+      date: curDate, meeting: curMeeting, records: records, updatedAt: nowISO(), updatedBy: cloudEmail(), room: ROOM_KEY
+    }, { merge: true }).catch(function (err) { cloudDataError('attendance-write', err); });
+  }
+
+  function pushAttendanceReset() {
+    if (!canShareAttendance()) return;
+    roomDocRef(ATTENDANCE_COL, cloudDateKey(curDate, curMeeting)).delete()
+      .catch(function (err) { cloudDataError('attendance-write', err); });
+  }
+
+  function mapCloudMember(doc) {
+    var d = doc.data() || {};
+    return {
+      id: doc.id,
+      name: String(d.name || '').trim(),
+      group: String(d.group || '').trim(),
+      role: String(d.role || '').trim(),
+      phone: '',
+      note: '',
+      enlistDate: normDate(d.enlistDate),
+      dischargeDate: normDate(d.dischargeDate),
+      birthday: normDate(d.birthday),
+      order: (typeof d.order === 'number') ? d.order : 0
+    };
+  }
+
+  /* 이 반 명단: 클라우드 명단을 그대로 받아 온다. 클라우드가 비어 있으면 이 폰 명단을 유지한다. */
+  function subscribeMembers() {
+    if (CLOUD.unsubMembers) { try { CLOUD.unsubMembers(); } catch (e) {} CLOUD.unsubMembers = null; }
+    if (!ROOM_KEY) return;
+    CLOUD.unsubMembers = roomCol(MEMBERS_COL).onSnapshot(function (snap) {
+      var list = snap.docs.map(mapCloudMember).filter(function (m) { return !!m.name; });
+      list.sort(function (a, b) {
+        if (a.order !== b.order) return a.order - b.order;
+        var ga = a.group || '힣', gb = b.group || '힣';
+        if (ga !== gb) return ga.localeCompare(gb, 'ko');
+        return a.name.localeCompare(b.name, 'ko');
+      });
+      CLOUD.cloudMembers = list.length;
+      if (!list.length) { renderCloudStatus(); return; }
+      /* 연락처·비고는 이 폰에만 있으므로 클라우드 값에 덮어쓰지 않고 살려 둔다 */
+      var localById = {};
+      state.members.forEach(function (m) { localById[m.id] = m; });
+      list.forEach(function (m) {
+        var l = localById[m.id];
+        if (l) { m.phone = l.phone || ''; m.note = l.note || ''; }
+      });
+      state.members = list;
+      save();
+      renderAll();
+    }, function (err) { cloudDataError('members', err); });
+  }
+
+  function subscribeLeaders() {
+    if (CLOUD.unsubLeaders) { try { CLOUD.unsubLeaders(); } catch (e) {} CLOUD.unsubLeaders = null; }
+    if (!ROOM_KEY) return;
+    CLOUD.unsubLeaders = roomCol(LEADERS_COL).onSnapshot(function (snap) {
+      CLOUD.leaders = snap.docs.map(function (d) {
+        var v = d.data() || {};
+        return { email: d.id, role: (v.role === 'rep' ? 'rep' : 'teacher'), addedAt: v.addedAt ? String(v.addedAt) : '' };
+      }).sort(function (a, b) {
+        if (a.role !== b.role) return a.role === 'teacher' ? -1 : 1;
+        return a.email < b.email ? -1 : (a.email > b.email ? 1 : 0);
+      });
+      renderLeaderList();
+    }, function (err) { cloudDataError('leaders', err); });
+  }
+
+  function leadRoleLabel(role) { return role === 'rep' ? '대표신우' : '담임 교사'; }
+
+  /* 저장·백업 탭과 명단 탭의 ‘교사·대표신우’ 카드를 함께 갱신 */
+  function renderLeaderList() {
+    var list = CLOUD.leaders || [];
+    var admin = CLOUD.role === 'admin' || !CLOUD.role;
+    var teacher = CLOUD.role === 'teacher';
+    Array.prototype.forEach.call(document.querySelectorAll('[data-lead-card]'), function (box) {
+      var roleSel = box.querySelector('[data-lead-role]');
+      if (roleSel) {
+        var tOpt = roleSel.querySelector('option[value="teacher"]');
+        if (tOpt) tOpt.disabled = !admin;
+        if (!admin && roleSel.value !== 'rep') roleSel.value = 'rep';
+      }
+      var tip = box.querySelector('[data-lead-tip]');
+      if (tip) {
+        tip.innerHTML = '지금 반: <b>' + escapeHtml(roomLabel()) + '</b><br>'
+          + (admin
+            ? '담임 교사는 이 반의 출석·명단·통계·기도제목을 관리하고 대표신우를 지정합니다. 대표신우는 출석 체크와 기도제목을 봅니다.'
+            : '담임 교사는 대표신우만 지정·해제할 수 있습니다. (담임 교사 변경은 총괄 관리자만)');
+      }
+      var ul = box.querySelector('[data-lead-list]');
+      if (ul) {
+        ul.innerHTML = list.map(function (l) {
+          var canDel = admin || (teacher && l.role === 'rep');
+          return '<li class="leadrow" data-email="' + escapeHtml(l.email) + '">'
+            + '<div class="em">' + escapeHtml(l.email) + ' <span class="badge">' + leadRoleLabel(l.role) + '</span></div>'
+            + (l.addedAt ? '<div class="when">' + escapeHtml(fmtTime(l.addedAt).replace(/^\d+\.\s*/, '')) + '</div>' : '')
+            + (canDel ? '<button type="button" class="btn sm danger" data-lead-act="del">삭제</button>' : '')
+            + '</li>';
+        }).join('');
+      }
+      var cnt = box.querySelector('[data-lead-count]');
+      if (cnt) cnt.textContent = list.length + '명';
+      var empty = box.querySelector('[data-lead-empty]');
+      if (empty) empty.classList.toggle('hidden', !!list.length);
+    });
+  }
+
+  function refreshCloudStatus() {
+    renderCloudStatus();
+    if (!cloudReady() || !CLOUD.user || !ROOM_KEY) return;
+    if (!(CLOUD.role === 'admin' || CLOUD.role === 'teacher' || CLOUD.role === 'rep')) return;
+    roomCol(MEMBERS_COL).get().then(function (snap) {
+      CLOUD.cloudMembers = snap.size;
+      renderCloudStatus();
+      renderBackup();
+    }).catch(function (err) {
+      cloudDataError('members', err);
+      renderCloudStatus();
+    });
+  }
+
+  function renderCloudStatus() {
+    var text = $('cloud-sync-text');
+    if (!text) return;
+    var n = CLOUD.cloudMembers;
+    var last = state.meta && state.meta.cloudSyncedAt ? fmtTime(state.meta.cloudSyncedAt) : '';
+    if (n === null || n === undefined) {
+      text.textContent = '클라우드 상태를 확인하는 중이거나 확인하지 못했습니다.';
+    } else if (!n) {
+      text.textContent = '아직 ‘' + roomName() + '’ 클라우드에 명단이 없습니다. 아래 버튼으로 이 폰의 명단을 올려 주세요.';
+    } else {
+      text.textContent = '‘' + roomName() + '’ 클라우드 명단 ' + n + '명 · 이 반 교사·대표신우와 실시간 공유 중' + (last ? ' (마지막 올림 ' + last + ')' : '');
+    }
+    $('cloud-sync-dot').classList.toggle('off', !n);
+    $('cloud-sync-cap').textContent = (n === null || n === undefined) ? '-' : n + '명';
+    var roomTag = $('cloud-upload-room');
+    if (roomTag) roomTag.textContent = roomName();
+    var bk = $('bk-cloud');
+    if (bk) bk.textContent = ((n === null || n === undefined) ? '확인 중' : n + '명') + ((last && n) ? ' · 올림 ' + last : '');
+  }
+
+  function memberCloudData(m, order) {
+    return {
+      name: m.name,
+      group: m.group || '',
+      role: m.role || '',
+      enlistDate: m.enlistDate || '',
+      dischargeDate: m.dischargeDate || '',
+      birthday: m.birthday || '',
+      order: order,
+      active: true,
+      updatedAt: nowISO()
+    };
+  }
+
+  /* 총괄 관리자·반 담임 교사: 이 폰의 명단을 ‘이 반’의 클라우드 명단에 맞춘다 (추가·수정·삭제 반영) */
+  function syncMembersToCloud() {
+    if (!cloudReady() || !CLOUD.user || !ROOM_KEY || !canEditMembers()) return Promise.resolve(false);
+    var col = roomCol(MEMBERS_COL);
+    var batch = CLOUD.db.batch();
+    var ids = {};
+    state.members.forEach(function (m, i) {
+      ids[m.id] = true;
+      batch.set(col.doc(m.id), memberCloudData(m, i), { merge: true });
+    });
+    return col.get().then(function (snap) {
+      snap.docs.forEach(function (d) { if (!ids[d.id]) batch.delete(d.ref); });
+      return batch.commit();
+    }).then(function () {
+      state.meta.cloudSyncedAt = nowISO();
+      save();
+      CLOUD.cloudMembers = state.members.length;
+      renderCloudStatus();
+      return true;
+    }).catch(function (err) { cloudDataError('member-sync', err); return false; });
+  }
+
+  function uploadLocalToCloud() {
+    if (!cloudReady() || !CLOUD.user || CLOUD.role !== 'admin') {
+      toast('총괄 관리자 계정으로 로그인해야 올릴 수 있습니다.');
+      return;
+    }
+    if (!ROOM_KEY) { toast('먼저 반을 선택해 주세요.'); return; }
+    var members = state.members.slice();
+    var sessions = Object.keys(state.records);
+    if (!members.length && !sessions.length) { toast('이 폰에 올릴 명단이나 출석 기록이 없습니다.'); return; }
+    confirmModal('‘' + roomName() + '’ 반으로 올리기',
+      '이 폰의 신우 ' + members.length + '명과 출석 기록 ' + sessions.length + '개 모임을 ‘' + roomName() + '’ 반 클라우드에 올립니다.\n'
+      + '이름·목장·직분·입대일·전역일·생일과 출석 상태가 올라가고, 연락처·비고는 이 폰에만 남습니다.\n'
+      + '이 반의 담임 교사·대표신우가 로그인하면 이 명단과 출석이 보입니다.',
+      '올리기', function () {
+        var col = roomCol(MEMBERS_COL);
+        var attCol = roomCol(ATTENDANCE_COL);
+        var batch = CLOUD.db.batch();
+        members.forEach(function (m, i) {
+          batch.set(col.doc(m.id), memberCloudData(m, i), { merge: true });
+        });
+        sessions.forEach(function (k) {
+          var idx = k.indexOf('|');
+          if (idx < 0) return;
+          var date = k.slice(0, idx), meeting = k.slice(idx + 1);
+          var recs = {};
+          Object.keys(state.records[k] || {}).forEach(function (id) {
+            var r = state.records[k][id] || {};
+            recs[id] = { status: r.status || '', note: r.memo || '', updatedBy: cloudEmail(), updatedAt: nowISO() };
+          });
+          if (!Object.keys(recs).length) return;
+          batch.set(attCol.doc(cloudDateKey(date, meeting)), {
+            date: date, meeting: meeting, room: ROOM_KEY, records: recs, updatedAt: nowISO(), updatedBy: cloudEmail()
+          }, { merge: true });
+        });
+        batch.commit().then(function () {
+          state.meta.cloudSyncedAt = nowISO();
+          save();
+          CLOUD.cloudMembers = members.length;
+          renderCloudStatus();
+          renderBackup();
+          subscribeAttendance();
+          toast('‘' + roomName() + '’ 반에 올렸습니다. 신우 ' + members.length + '명 · 모임 ' + sessions.length + '개');
+        }).catch(function (err) {
+          cloudDataError('member-sync', err);
+          toast('올리지 못했습니다. (' + ((err && err.code) || 'error') + ')');
+        });
+      }, false);
+  }
+
+  /* 반 담임 교사·대표신우 지정 (rooms/{roomId}/leaders/{email}) */
+  function addLeader(box) {
+    if (!canManageLeaders()) { toast('담임 교사 또는 총괄 관리자만 지정할 수 있습니다.'); return; }
+    if (!cloudReady() || !CLOUD.user || !ROOM_KEY) { toast('로그인이 필요합니다.'); return; }
+    if (!box) return;
+    var inp = box.querySelector('[data-lead-email]');
+    var sel = box.querySelector('[data-lead-role]');
+    var btn = box.querySelector('[data-lead-add]');
+    if (!inp) return;
+    var email = String(inp.value || '').trim().toLowerCase();
+    var admin = CLOUD.role === 'admin' || !CLOUD.role;
+    var role = (sel && sel.value === 'teacher' && admin) ? 'teacher' : 'rep';
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) { toast('올바른 구글 이메일을 넣어 주세요.'); return; }
+    if (email === ADMIN_EMAIL) { toast('관리자 계정은 이미 모든 권한을 가집니다.'); return; }
+    var existing = null;
+    (CLOUD.leaders || []).forEach(function (l) { if (l.email === email) existing = l; });
+    if (existing && existing.role === role) {
+      toast('이미 ' + roomName() + ' 반 ' + leadRoleLabel(role) + '로 지정되어 있습니다.');
+      return;
+    }
+    if (!admin && existing && existing.role === 'teacher') {
+      toast('담임 교사는 총괄 관리자만 바꿀 수 있습니다.');
+      return;
+    }
+    if (btn) btn.disabled = true;
+    roomDocRef(LEADERS_COL, email).set({ email: email, role: role, addedBy: cloudEmail(), addedAt: nowISO() }, { merge: true })
+      .then(function () {
+        if (btn) btn.disabled = false;
+        inp.value = '';
+        toast(email + ' 님을 ‘' + roomName() + '’ 반 ' + leadRoleLabel(role) + '로 지정했습니다.');
+      }).catch(function (err) {
+        if (btn) btn.disabled = false;
+        toast('지정하지 못했습니다. (' + ((err && err.code) || 'error') + ')');
+      });
+  }
+
+  function removeLeader(email) {
+    if (!canManageLeaders()) { toast('담임 교사 또는 총괄 관리자만 바꿀 수 있습니다.'); return; }
+    var target = null;
+    (CLOUD.leaders || []).forEach(function (l) { if (l.email === email) target = l; });
+    if (!target) return;
+    var admin = CLOUD.role === 'admin' || !CLOUD.role;
+    if (!admin && target.role !== 'rep') { toast('담임 교사는 총괄 관리자만 바꿀 수 있습니다.'); return; }
+    confirmModal(leadRoleLabel(target.role) + ' 해제',
+      email + ' 님의 ‘' + roomName() + '’ 반 ' + leadRoleLabel(target.role) + ' 권한을 뺄까요?\n'
+      + (target.role === 'rep' ? '이 계정은 그 반의 기도제목 화면만 보게 됩니다.' : '이 계정은 그 반의 기도제목 화면만 보게 됩니다.'),
+      '해제', function () {
+        roomDocRef(LEADERS_COL, email).delete()
+          .then(function () { toast(email + ' 님을 ' + leadRoleLabel(target.role) + '에서 뺐습니다.'); })
+          .catch(function (err) { toast('삭제하지 못했습니다. (' + ((err && err.code) || 'error') + ')'); });
+      }, true);
+  }
+
+  /* ===================== 반별 전용 링크 ===================== */
+  function renderRoomLinks() {
+    var ul = $('room-link-list');
+    if (!ul) return;
+    ul.innerHTML = ROOMS.map(function (r) {
+      var url = roomLink(r.id);
+      return '<li class="linkrow" data-room="' + escapeHtml(r.id) + '">'
+        + '<div class="rn">' + escapeHtml(r.name) + ' <span class="badge">' + escapeHtml(r.teacher) + '</span></div>'
+        + '<button type="button" class="btn sm" data-link-act="copy">복사</button>'
+        + '<div class="ru">' + escapeHtml(url) + '</div></li>';
+    }).join('');
+  }
+
+  function copyText(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(text);
+    return new Promise(function (resolve, reject) {
+      try {
+        var ta = document.createElement('textarea');
+        ta.value = text;
+        ta.setAttribute('readonly', 'readonly');
+        ta.style.position = 'fixed';
+        ta.style.top = '0';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        ta.setSelectionRange(0, text.length);
+        var ok = document.execCommand('copy');
+        document.body.removeChild(ta);
+        if (ok) resolve(); else reject(new Error('copy failed'));
+      } catch (e) { reject(e); }
+    });
+  }
+
+  function subscribePrayers() {
+    unsubPrayers();
+    if (!cloudReady() || !CLOUD.user) return;
+    var col = roomCol('prayers');
+    var onErr = function (err) {
+      CLOUD.err = (err && err.code) ? err.code : 'error';
+      renderPrayers();
+      renderSaveState();
+      if (!CLOUD.errShown) {
+        CLOUD.errShown = true;
+        toast(CLOUD.err === 'permission-denied' ? '기도제목을 불러올 권한이 없습니다.' : '기도제목을 불러오지 못했습니다.');
+      }
+      if (window.console) console.warn('prayer snapshot failed', CLOUD.err, err && err.message);
+    };
+    if (CLOUD.isAdmin) {
+      CLOUD.subs.push(col.onSnapshot(function (snap) {
+        CLOUD.list = snap.docs.map(mapCloudDoc);
+        cloudChanged();
+      }, onErr));
+    } else {
+      /* 보안 규칙상 일반 신우는 전체 컬렉션을 구독할 수 없습니다.
+         공개 글과 내 글을 따로 구독해 합칩니다. */
+      var pub = [], mine = [];
+      var emit = function () {
+        var byId = {};
+        pub.forEach(function (p) { byId[p.id] = p; });
+        mine.forEach(function (p) { byId[p.id] = p; });
+        CLOUD.list = Object.keys(byId).map(function (k) { return byId[k]; });
+        cloudChanged();
+      };
+      CLOUD.subs.push(col.where('visibility', '==', 'public').onSnapshot(function (snap) {
+        pub = snap.docs.map(mapCloudDoc);
+        emit();
+      }, onErr));
+      CLOUD.subs.push(col.where('authorUid', '==', CLOUD.user.uid).onSnapshot(function (snap) {
+        mine = snap.docs.map(mapCloudDoc);
+        emit();
+      }, onErr));
+    }
+  }
+
+  function cloudChanged() {
+    CLOUD.err = '';
+    if (document.body.classList.contains('member-mode')) renderSaveState();
+    renderPrayers();
+  }
+
+  function isoShort(v) {
+    if (!v) return '';
+    if (typeof v === 'string') return normDate(v) || String(v).slice(0, 10);
+    if (typeof v.toDate === 'function') { try { return normDate(v.toDate().toISOString().slice(0, 10)); } catch (e) { return ''; } }
+    if (v.seconds) return normDate(new Date(v.seconds * 1000).toISOString().slice(0, 10));
+    return '';
+  }
+
+  function mapCloudDoc(doc) {
+    var d = doc.data() || {};
+    return {
+      id: doc.id,
+      memberId: '',
+      name: String(d.authorName || d.authorEmail || '신우'),
+      text: String(d.content || ''),
+      category: String(d.category || ''),
+      createdAt: isoShort(d.createdAt),
+      answered: !!d.answered,
+      answeredAt: d.answered ? isoShort(d.answeredAt) : '',
+      updatedAt: (typeof d.updatedAt === 'string') ? d.updatedAt : '',
+      authorUid: String(d.authorUid || ''),
+      authorName: String(d.authorName || ''),
+      authorEmail: String(d.authorEmail || ''),
+      visibility: d.visibility === 'private' ? 'private' : 'public'
+    };
+  }
+
+  function prayerWriteError(err) {
+    var code = (err && err.code) || '';
+    if (window.console) console.warn('prayer write failed', code, err && err.message);
+    if (code === 'permission-denied') toast('권한이 없습니다. 내가 쓴 기도제목만 고칠 수 있어요.');
+    else if (code === 'unavailable' || code === 'network-request-failed' || code === 'failed-precondition') toast('인터넷 연결이 끊겨 저장하지 못했습니다. 잠시 뒤 다시 시도해 주세요.');
+    else toast('저장하지 못했습니다. 잠시 뒤 다시 시도해 주세요.');
+  }
+
+  /* ===================== 기도제목 ===================== */
+  var PRAYER_CATEGORIES = ['건강', '가족', '군 생활', '학업·진로', '신앙', '감사', '기타'];
+
+  function allPrayers() { return prayerMode === 'cloud' ? CLOUD.list : state.prayers; }
+
+  function findPrayer(id) {
+    var list = allPrayers();
+    for (var i = 0; i < list.length; i++) {
+      if (list[i].id === id) return list[i];
+    }
+    return null;
+  }
+  function prayerMember(p) { return p && p.memberId ? findMember(p.memberId) : null; }
+  function prayerName(p) {
+    var m = prayerMember(p);
+    return m ? m.name : (p.name || p.authorName || '이름 없음');
+  }
+  function prayerPersonKey(p) { return p.memberId ? ('m:' + p.memberId) : ('n:' + prayerName(p)); }
+  function prayerVisibility(p) { return p.visibility === 'private' ? 'private' : 'public'; }
+  function isMyPrayer(p) {
+    if (prayerMode !== 'cloud') return true;
+    if (!CLOUD.user) return false;
+    return p.authorUid === CLOUD.user.uid;
+  }
+  function canEditPrayer(p) {
+    if (prayerMode !== 'cloud') return true;
+    return isMyPrayer(p) || CLOUD.isAdmin;
+  }
+  function prayerDateLabel(iso) {
+    if (!iso) return '';
+    var d = parseISO(iso);
+    if (isNaN(d.getTime())) return '';
+    var y = d.getFullYear() !== new Date().getFullYear() ? d.getFullYear() + '년 ' : '';
+    return y + (d.getMonth() + 1) + '월 ' + d.getDate() + '일';
+  }
+
+  /* 필터에 쓸 사람 목록:
+     - 공유 모드: 글을 쓴 사람 이름
+     - 로컬 모드: 등록 신우 + 이름만 적은 기도제목의 이름 */
+  function prayerPeople() {
+    var out = [];
+    var list = allPrayers();
+    if (prayerMode === 'cloud') {
+      var names = [];
+      list.forEach(function (p) {
+        var n = prayerName(p);
+        if (n && names.indexOf(n) < 0) names.push(n);
+      });
+      names.sort(function (a, b) { return a.localeCompare(b, 'ko'); });
+      names.forEach(function (n) {
+        var cnt = 0;
+        list.forEach(function (p) { if (prayerName(p) === n) cnt++; });
+        out.push({ key: 'n:' + n, label: n, count: cnt });
+      });
+      return out;
+    }
+    state.members.forEach(function (m) {
+      var cnt = 0;
+      state.prayers.forEach(function (p) { if (p.memberId === m.id) cnt++; });
+      if (!cnt) return;
+      out.push({ key: 'm:' + m.id, label: m.name + (m.group ? ' · ' + m.group : ''), count: cnt });
+    });
+    out.sort(function (a, b) { return a.label.localeCompare(b.label, 'ko'); });
+    var names2 = [];
+    state.prayers.forEach(function (p) {
+      if (!p.memberId && p.name && names2.indexOf(p.name) < 0) names2.push(p.name);
+    });
+    names2.sort(function (a, b) { return a.localeCompare(b, 'ko'); });
+    names2.forEach(function (n) {
+      var cnt = 0;
+      state.prayers.forEach(function (p) { if (!p.memberId && p.name === n) cnt++; });
+      out.push({ key: 'n:' + n, label: n + ' (직접 입력)', count: cnt });
+    });
+    return out;
+  }
+
+  function renderPrayerPersonOptions() {
+    var sel = $('pray-person');
+    var people = prayerPeople();
+    var html = '<option value="">전체</option>';
+    people.forEach(function (pp) {
+      html += '<option value="' + escapeHtml(pp.key) + '">' + escapeHtml(pp.label) + ' (' + pp.count + ')</option>';
+    });
+    sel.innerHTML = html;
+    var keep = false;
+    people.forEach(function (pp) { if (pp.key === prayPerson) keep = true; });
+    if (!keep) prayPerson = '';
+    sel.value = prayPerson;
+    var lbl = $('pray-person-label');
+    if (lbl) lbl.textContent = prayerMode === 'cloud' ? '작성자' : '신우';
+
+    var psel = $('f-pray-person');
+    var pcur = psel.value;
+    var ph = '<option value="">직접 입력</option>';
+    var sorted = state.members.slice().sort(function (a, b) { return a.name.localeCompare(b.name, 'ko'); });
+    sorted.forEach(function (m) {
+      ph += '<option value="' + escapeHtml(m.id) + '">' + escapeHtml(m.name) + (m.group ? ' (' + escapeHtml(m.group) + ')' : '') + '</option>';
+    });
+    psel.innerHTML = ph;
+    psel.value = (pcur && findMember(pcur)) ? pcur : '';
+
+    $('member-name-list').innerHTML = sorted.map(function (m) {
+      return '<option value="' + escapeHtml(m.name) + '"></option>';
+    }).join('');
+
+    var cats = PRAYER_CATEGORIES.slice();
+    allPrayers().forEach(function (p) {
+      if (p.category && cats.indexOf(p.category) < 0) cats.push(p.category);
+    });
+    $('cat-list').innerHTML = cats.map(function (c) {
+      return '<option value="' + escapeHtml(c) + '"></option>';
+    }).join('');
+  }
+
+  function prayerSort(list) {
+    return list.slice().sort(function (a, b) {
+      if (!!a.answered !== !!b.answered) return a.answered ? 1 : -1;
+      if (a.createdAt !== b.createdAt) return a.createdAt < b.createdAt ? 1 : -1;
+      var ua = a.updatedAt || '', ub = b.updatedAt || '';
+      if (ua !== ub) return ua < ub ? 1 : -1;
+      return 0;
+    });
+  }
+
+  function prayerRowHtml(p) {
+    var m = prayerMember(p);
+    var isPrivate = prayerVisibility(p) === 'private';
+    var mine = isMyPrayer(p);
+    var badges = '';
+    if (m && m.group) badges += '<span class="badge">' + escapeHtml(m.group) + '</span>';
+    if (prayerMode !== 'cloud' && !m) badges += '<span class="badge">직접 입력</span>';
+    if (p.category) badges += '<span class="badge cat">' + escapeHtml(p.category) + '</span>';
+    if (isPrivate) badges += '<span class="badge lock">🔒 ' + (mine ? '나·리더만 열람' : '비공개') + '</span>';
+    if (prayerMode === 'cloud' && mine) badges += '<span class="badge">내 글</span>';
+    if (p.answered) badges += '<span class="badge ok">응답됨' + (p.answeredAt ? ' · ' + escapeHtml(mdLabel(p.answeredAt)) : '') + '</span>';
+    var html = '';
+    html += '<li class="prow' + (p.answered ? ' answered' : '') + (isPrivate ? ' private' : '') + '" data-id="' + escapeHtml(p.id) + '">';
+    html += '<div class="p-head"><span class="p-name">' + escapeHtml(prayerName(p)) + '</span>' + badges;
+    html += '<span class="p-date">' + escapeHtml(prayerDateLabel(p.createdAt)) + '</span></div>';
+    html += '<div class="p-text">' + escapeHtml(p.text) + '</div>';
+    if (canEditPrayer(p)) {
+      html += '<div class="p-actions">';
+      html += '<button type="button" class="btn sm' + (p.answered ? ' ok' : '') + '" data-pray-act="toggle">' + (p.answered ? '✓ 응답됨' : '응답 체크') + '</button>';
+      html += '<button type="button" class="btn sm" data-pray-act="edit">수정</button>';
+      html += '<button type="button" class="btn sm danger" data-pray-act="del">삭제</button>';
+      html += '</div>';
+    }
+    html += '</li>';
+    return html;
+  }
+
+  function pendingLocalPrayers() {
+    var done = (state.meta && state.meta.migratedPrayers) || [];
+    return state.prayers.filter(function (p) { return done.indexOf(p.id) < 0; });
+  }
+
+  function renderPrayModeCards() {
+    var card = $('pray-mode-card');
+    var mig = $('migrate-card');
+    if (!card) return;
+    card.classList.remove('hidden');
+    var dot = $('pray-mode-dot');
+    if (prayerMode === 'cloud') {
+      dot.classList.toggle('off', !!CLOUD.err);
+      $('pray-mode-text').textContent = CLOUD.err ? '불러오지 못했습니다' : '실시간으로 함께 나누는 중';
+      $('pray-mode-tip').innerHTML = CLOUD.err
+        ? '기도제목을 불러오지 못했습니다. (' + escapeHtml(CLOUD.err) + ') 네트워크와 로그인 상태를 확인해 주세요.'
+        : (CLOUD.isAdmin
+          ? '전체 공유 기도제목과 모든 신우의 비공개 기도제목을 함께 보고 관리합니다.'
+          : '전체 공유 기도제목과 내가 쓴 비공개 기도제목이 바로 보입니다.');
+      $('btn-cloud-login').classList.add('hidden');
+    } else {
+      dot.classList.add('off');
+      $('pray-mode-text').textContent = '이 기기에만 저장 중';
+      $('pray-mode-tip').innerHTML = (state.prayers.length ? '기도제목 ' + state.prayers.length + '개가 이 폰에만 저장돼 있습니다. ' : '')
+        + 'Google 계정으로 로그인하면 신우들과 실시간으로 나눌 수 있어요.';
+      $('btn-cloud-login').classList.toggle('hidden', !cloudReady());
+    }
+    var pend = pendingLocalPrayers();
+    if (prayerMode === 'cloud' && CLOUD.isAdmin && pend.length && !migrateCardDismissed) {
+      mig.classList.remove('hidden');
+      $('migrate-count').textContent = pend.length + '개';
+      $('migrate-text').innerHTML = '이 폰(브라우저)에 저장돼 있던 기도제목 <b>' + pend.length + '개</b>를 클라우드로 옮기면 신우들과 함께 볼 수 있습니다. 옮긴 글은 <b>전체 공유</b>로 올라가고, 이 폰의 원본은 그대로 남습니다.';
+    } else {
+      mig.classList.add('hidden');
+    }
+  }
+
+  function renderPrayers() {
+    renderPrayerPersonOptions();
+    var addBtn = $('btn-add-prayer');
+    if (addBtn) addBtn.textContent = prayerMode === 'cloud' ? '+ 기도제목 나누기' : '+ 기도제목 추가';
+    var all = allPrayers();
+    var answered = 0;
+    all.forEach(function (p) { if (p.answered) answered++; });
+    $('ptile-all').textContent = String(all.length);
+    $('ptile-praying').textContent = String(all.length - answered);
+    $('ptile-answered').textContent = String(answered);
+    $('ptile-people').textContent = String(prayerPeople().length);
+
+    var q = praySearchText.trim().toLowerCase();
+    var list = all.filter(function (p) {
+      if (prayPerson && prayerPersonKey(p) !== prayPerson) return false;
+      if (prayState === 'praying' && p.answered) return false;
+      if (prayState === 'answered' && !p.answered) return false;
+      if (!q) return true;
+      var m = prayerMember(p);
+      var hay = (prayerName(p) + ' ' + (m && m.group ? m.group : '') + ' ' + (p.category || '') + ' ' + p.text).toLowerCase();
+      return hay.indexOf(q) >= 0;
+    });
+    list = prayerSort(list);
+    var html = '';
+    list.forEach(function (p) { html += prayerRowHtml(p); });
+    $('pray-list').innerHTML = html;
+    $('pray-count').textContent = list.length + '개' + (list.length !== all.length ? ' / 전체 ' + all.length + '개' : '');
+
+    var note = [];
+    note.push('<span class="chip">응답률 ' + (all.length ? Math.round((answered / all.length) * 100) : 0) + '%</span>');
+    if (prayState === 'praying') note.push('<span class="chip">기도 중만 보기</span>');
+    if (prayState === 'answered') note.push('<span class="chip">응답됨만 보기</span>');
+    if (prayerMode === 'cloud') note.push('<span>신우들과 실시간으로 나누는 기도제목입니다</span>');
+    else note.push('<span>기도 중인 제목이 위에 오고, 기도제목은 이 기기에만 저장됩니다</span>');
+    $('pray-note').innerHTML = note.join('');
+
+    renderPrayModeCards();
+
+    var box = $('pray-empty');
+    if (!list.length) {
+      box.classList.remove('hidden');
+      if (!all.length) {
+        box.innerHTML = prayerMode === 'cloud'
+          ? '<strong>아직 나눈 기도제목이 없습니다</strong>첫 기도제목을 적어 신우들과 함께 나눠 보세요.'
+            + '<div class="btns"><button type="button" class="btn primary sm" data-pray-empty="add">기도제목 나누기</button></div>'
+          : '<strong>아직 기도제목이 없습니다</strong>신우별 기도제목을 적어 두고, 응답을 받으면 체크해 두세요.'
+            + '<div class="btns"><button type="button" class="btn primary sm" data-pray-empty="add">기도제목 추가</button>'
+            + (state.members.length ? '' : '<button type="button" class="btn sm" data-pray-empty="members">신우 명단 등록</button>')
+            + '</div>';
+      } else {
+        box.innerHTML = '<strong>조건에 맞는 기도제목이 없습니다</strong>검색어나 작성자·상태 필터를 바꿔 보세요.';
+      }
+    } else {
+      box.classList.add('hidden');
+      box.innerHTML = '';
+    }
+  }
+
+  function syncPrayerNameField() {
+    var mid = $('f-pray-person').value;
+    var m = mid ? findMember(mid) : null;
+    var inp = $('f-pray-name');
+    if (m) { inp.value = m.name; inp.readOnly = true; }
+    else { inp.readOnly = false; }
+  }
+
+  function setPrayerVis(vis) {
+    var v = vis === 'private' ? 'private' : 'public';
+    var box = $('f-pray-vis-box');
+    if (!box) return;
+    Array.prototype.forEach.call(box.querySelectorAll('input[name="pray-vis"]'), function (r) {
+      r.checked = (r.value === v);
+    });
+    $('vis-opt-public').classList.toggle('on', v === 'public');
+    $('vis-opt-private').classList.toggle('on', v === 'private');
+  }
+  function getPrayerVis() {
+    var r = document.querySelector('#f-pray-vis-box input[name="pray-vis"]:checked');
+    return (r && r.value === 'private') ? 'private' : 'public';
+  }
+
+  function openPrayerModal(id) {
+    editPrayerId = id || '';
+    var p = id ? findPrayer(id) : null;
+    var cloud = prayerMode === 'cloud';
+    $('prayer-modal-title').textContent = p ? '기도제목 수정' : (cloud ? '기도제목 나누기' : '기도제목 추가');
+    $('prayer-modal-sub').textContent = p
+      ? '내용을 고친 뒤 저장을 눌러 주세요.'
+      : (cloud ? '전체 공유하면 신우들이 함께 보고 기도합니다.' : '신우를 고르거나 이름을 직접 적어 주세요.');
+    $('prayer-submit').textContent = p ? '수정 저장' : '저장';
+    $('f-pray-person-wrap').classList.toggle('hidden', cloud);
+    $('f-pray-vis-wrap').classList.toggle('hidden', !cloud);
+    renderPrayerPersonOptions();
+    var psel = $('f-pray-person');
+    var preMember = '';
+    var preName = '';
+    if (p) {
+      preMember = p.memberId || '';
+      preName = p.name || (p.memberId ? prayerName(p) : '');
+    } else if (cloud) {
+      preName = cloudDisplayName();
+    } else if (prayPerson) {
+      if (prayPerson.indexOf('m:') === 0) preMember = prayPerson.slice(2);
+      else preName = prayPerson.slice(2);
+    }
+    psel.value = preMember && findMember(preMember) ? preMember : '';
+    $('f-pray-name').value = p ? prayerName(p) : preName;
+    $('f-pray-text').value = p ? p.text : '';
+    $('f-pray-cat').value = p ? (p.category || '') : '';
+    $('f-pray-date').value = p ? (p.createdAt || todayISO()) : todayISO();
+    $('f-pray-answered').checked = p ? !!p.answered : false;
+    setPrayerVis(p ? prayerVisibility(p) : 'public');
+    syncPrayerNameField();
+    openModal('modal-prayer');
+    setTimeout(function () { try { $('f-pray-text').focus(); } catch (e) {} }, 60);
+  }
+
+  function submitPrayer() {
+    var text = $('f-pray-text').value.trim();
+    var cloud = prayerMode === 'cloud';
+    var mid = cloud ? '' : $('f-pray-person').value;
+    var m = mid ? findMember(mid) : null;
+    var name = m ? m.name : $('f-pray-name').value.trim();
+    if (cloud && !name) name = cloudDisplayName();
+    if (!name) { toast('이름을 입력하거나 신우를 골라 주세요.'); $('f-pray-name').focus(); return; }
+    if (!text) { toast('기도제목을 적어 주세요.'); $('f-pray-text').focus(); return; }
+    var cat = $('f-pray-cat').value.trim();
+    var created = normDate($('f-pray-date').value) || todayISO();
+    var checked = $('f-pray-answered').checked;
+
+    if (cloud) {
+      if (!CLOUD.user || !cloudReady()) { toast('로그인이 필요합니다.'); return; }
+      var wasEdit = !!editPrayerId;
+      var target = editPrayerId;
+      var base = {
+        authorUid: CLOUD.user.uid,
+        authorName: name,
+        authorEmail: CLOUD.user.email || '',
+        visibility: getPrayerVis(),
+        content: text,
+        category: cat,
+        answered: checked,
+        answeredAt: checked ? (wasEdit ? (findPrayer(target) && findPrayer(target).answeredAt) || todayISO() : todayISO()) : null,
+        createdAt: created,
+        updatedAt: nowISO()
+      };
+      var btn = $('prayer-submit');
+      btn.disabled = true;
+      var job = wasEdit
+        ? roomDocRef('prayers', target).update(base)
+        : roomCol('prayers').add(base);
+      job.then(function () {
+        btn.disabled = false;
+        editPrayerId = '';
+        closeModal('modal-prayer');
+        toast(wasEdit ? '기도제목을 수정했습니다.' : name + ' 님의 기도제목을 올렸습니다.');
+      }).catch(function (err) {
+        btn.disabled = false;
+        prayerWriteError(err);
+      });
+      return;
+    }
+
+    if (!m) {
+      var hit = state.members.filter(function (x) { return x.name === name; })[0];
+      if (hit) m = hit;
+    }
+    if (editPrayerId) {
+      var p = findPrayer(editPrayerId);
+      if (p) {
+        if (checked && !p.answered) p.answeredAt = todayISO();
+        if (!checked) p.answeredAt = '';
+        p.memberId = m ? m.id : '';
+        p.name = name;
+        p.text = text;
+        p.category = cat;
+        p.createdAt = created;
+        p.answered = checked;
+        p.updatedAt = nowISO();
+        save();
+        closeModal('modal-prayer');
+        editPrayerId = '';
+        renderPrayers();
+        renderBackup();
+        toast('기도제목을 수정했습니다.');
+      }
+    } else {
+      state.prayers.push({
+        id: puid(),
+        memberId: m ? m.id : '',
+        name: name,
+        text: text,
+        category: cat,
+        createdAt: created,
+        answered: checked,
+        answeredAt: checked ? todayISO() : '',
+        updatedAt: nowISO()
+      });
+      save();
+      closeModal('modal-prayer');
+      renderPrayers();
+      renderBackup();
+      toast(name + ' 님의 기도제목을 추가했습니다.');
+    }
+  }
+
+  function togglePrayerAnswered(id) {
+    var p = findPrayer(id);
+    if (!p) return;
+    if (!canEditPrayer(p)) { toast('내가 쓴 기도제목만 바꿀 수 있습니다.'); return; }
+    if (prayerMode === 'cloud') {
+      var next = !p.answered;
+      roomDocRef('prayers', id).update({
+        answered: next,
+        answeredAt: next ? (p.answeredAt || todayISO()) : null,
+        updatedAt: nowISO()
+      }).then(function () {
+        toast(next ? '응답 감사로 표시했습니다.' : '다시 기도 중으로 옮겼습니다.');
+      }).catch(prayerWriteError);
+      return;
+    }
+    p.answered = !p.answered;
+    p.answeredAt = p.answered ? todayISO() : '';
+    p.updatedAt = nowISO();
+    save();
+    renderPrayers();
+    renderBackup();
+    toast(p.answered ? '응답 감사로 표시했습니다.' : '다시 기도 중으로 옮겼습니다.');
+  }
+
+  function deletePrayer(id) {
+    var p = findPrayer(id);
+    if (!p) return;
+    if (!canEditPrayer(p)) { toast('내가 쓴 기도제목만 지울 수 있습니다.'); return; }
+    var preview = p.text.length > 46 ? p.text.slice(0, 46) + '…' : p.text;
+    var cloud = prayerMode === 'cloud';
+    confirmModal('기도제목 삭제', prayerName(p) + ' 님의 기도제목을 지웁니다.\n‘' + preview + '’\n되돌릴 수 없습니다.', '삭제', function () {
+      if (cloud) {
+        roomDocRef('prayers', id).delete().then(function () {
+          toast('기도제목을 삭제했습니다.');
+        }).catch(prayerWriteError);
+        return;
+      }
+      state.prayers = state.prayers.filter(function (x) { return x.id !== id; });
+      save();
+      renderPrayers();
+      renderBackup();
+      toast('기도제목을 삭제했습니다.');
+    }, true);
+  }
+
+  function onPrayListClick(e) {
+    var btn = e.target.closest('button[data-pray-act]');
+    if (!btn) return;
+    var li = btn.closest('.prow');
+    if (!li) return;
+    var id = li.getAttribute('data-id');
+    var act = btn.getAttribute('data-pray-act');
+    if (act === 'toggle') togglePrayerAnswered(id);
+    else if (act === 'edit') openPrayerModal(id);
+    else deletePrayer(id);
+  }
+
+  function exportPrayerCSV() {
+    var list = allPrayers();
+    if (!list.length) { toast('내보낼 기도제목이 없습니다.'); return; }
+    var rows = [['이름', '소속', '카테고리', '기도제목', '작성일', '상태', '응답일', '공개범위']];
+    prayerSort(list).forEach(function (p) {
+      var m = prayerMember(p);
+      rows.push([prayerName(p), m ? m.group : '', p.category || '', p.text, p.createdAt,
+        p.answered ? '응답됨' : '기도 중', p.answeredAt || '',
+        prayerMode === 'cloud' ? (prayerVisibility(p) === 'private' ? '리더에게만' : '전체 공유') : '']);
+    });
+    download('신우회_기도제목.csv', toCSV(rows));
+  }
+
+  function migrateLocalPrayers() {
+    if (!cloudReady() || !CLOUD.user) { toast('로그인이 필요합니다.'); return; }
+    var pend = pendingLocalPrayers();
+    if (!pend.length) { toast('옮길 기도제목이 없습니다.'); return; }
+    confirmModal('클라우드로 옮기기',
+      '이 폰에만 있던 기도제목 ' + pend.length + '개를 클라우드로 올립니다.\n'
+      + '올린 글은 ‘전체 공유’로 신우들과 함께 보게 됩니다.\n'
+      + '이 폰의 원본은 그대로 남습니다.',
+      '옮기기', function () {
+        var batch = CLOUD.db.batch();
+        pend.forEach(function (p) {
+          var ref = roomCol('prayers').doc();
+          batch.set(ref, {
+            authorUid: CLOUD.user.uid,
+            authorName: prayerName(p),
+            authorEmail: CLOUD.user.email || '',
+            visibility: 'public',
+            content: p.text,
+            category: p.category || '',
+            answered: !!p.answered,
+            answeredAt: p.answered ? (normDate(p.answeredAt) || normDate(p.createdAt) || todayISO()) : null,
+            createdAt: normDate(p.createdAt) || todayISO(),
+            updatedAt: nowISO()
+          });
+        });
+        batch.commit().then(function () {
+          var done = (state.meta.migratedPrayers || []).slice();
+          pend.forEach(function (p) { if (done.indexOf(p.id) < 0) done.push(p.id); });
+          state.meta.migratedPrayers = done;
+          save();
+          renderPrayers();
+          renderBackup();
+          toast(pend.length + '개를 클라우드로 옮겼습니다.');
+        }).catch(prayerWriteError);
+      });
+  }
+
+  function bindAuthEvents() {
+    $('btn-google').addEventListener('click', signInGoogle);
+    $('btn-redirect').addEventListener('click', signInRedirect);
+    $('btn-local').addEventListener('click', enterLocalMode);
+    $('btn-signout').addEventListener('click', signOutUser);
+    $('btn-cloud-login').addEventListener('click', signInGoogle);
+    $('btn-migrate').addEventListener('click', migrateLocalPrayers);
+    $('btn-migrate-hide').addEventListener('click', function () {
+      migrateCardDismissed = true;
+      $('migrate-card').classList.add('hidden');
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('#f-pray-vis-box input[name="pray-vis"]'), function (r) {
+      r.addEventListener('change', function () { setPrayerVis(r.value); });
+    });
+  }
+
+  /* ===================== 전체 렌더 ===================== */
+  function renderAll() {
+    if (state.meetings.indexOf(curMeeting) < 0) curMeeting = state.meetings[0] || '주일예배';
+    if (!curDate) curDate = todayISO();
+    renderRoomBar();
+    renderRoomLinks();
+    renderSaveState();
+    renderAttend();
+    renderPrayers();
+    renderMembers();
+    renderStats();
+    renderBackup();
+    renderMeetingManage();
+  }
+
+  /* ===================== 이벤트 연결 ===================== */
+  function bindEvents() {
+    Array.prototype.forEach.call(document.querySelectorAll('[data-view]'), function (btn) {
+      btn.addEventListener('click', function () {
+        switchView(btn.getAttribute('data-view'));
+      });
+    });
+
+    $('in-date').addEventListener('change', function () {
+      curDate = $('in-date').value || todayISO();
+      openMemo = {};
+      renderAttend();
+      subscribeAttendance();
+    });
+    $('in-meeting').addEventListener('change', function () {
+      curMeeting = $('in-meeting').value;
+      openMemo = {};
+      renderAttend();
+      subscribeAttendance();
+    });
+    $('btn-today').addEventListener('click', function () {
+      curDate = todayISO();
+      openMemo = {};
+      renderAttend();
+      subscribeAttendance();
+    });
+    $('sel-group').addEventListener('change', function () {
+      groupFilter = $('sel-group').value;
+      renderAttend();
+    });
+    $('in-search').addEventListener('input', function () {
+      searchText = $('in-search').value;
+      renderAttend();
+    });
+    $('btn-unmarked').addEventListener('click', function () {
+      onlyUnmarked = !onlyUnmarked;
+      renderAttend();
+    });
+
+    $('attn-list').addEventListener('click', onAttendClick);
+    $('attn-list').addEventListener('input', onAttendInput);
+    $('attn-empty').addEventListener('click', onAttendClick);
+    $('btn-bulk-attend').addEventListener('click', bulkAttend);
+    $('btn-reset').addEventListener('click', resetSession);
+    $('btn-day-csv').addEventListener('click', exportDayCSV);
+    $('btn-print').addEventListener('click', function () { window.print(); });
+    $('btn-meet-manage').addEventListener('click', function () {
+      renderMeetingManage();
+      openModal('modal-meetings');
+    });
+
+    /* 기도제목 */
+    $('btn-add-prayer').addEventListener('click', function () { openPrayerModal(''); });
+    $('pray-search').addEventListener('input', function () {
+      praySearchText = $('pray-search').value;
+      renderPrayers();
+    });
+    $('pray-person').addEventListener('change', function () {
+      prayPerson = $('pray-person').value;
+      renderPrayers();
+    });
+    $('pray-state').addEventListener('change', function () {
+      prayState = $('pray-state').value;
+      renderPrayers();
+    });
+    $('btn-prayer-csv').addEventListener('click', exportPrayerCSV);
+    $('pray-list').addEventListener('click', onPrayListClick);
+    $('pray-empty').addEventListener('click', function (e) {
+      var btn = e.target.closest('button[data-pray-empty]');
+      if (!btn) return;
+      if (btn.getAttribute('data-pray-empty') === 'add') openPrayerModal('');
+      else switchView('members');
+    });
+    $('f-pray-person').addEventListener('change', syncPrayerNameField);
+    $('prayer-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      submitPrayer();
+    });
+
+    /* 명단 */
+    $('mem-search').addEventListener('input', function () {
+      memSearchText = $('mem-search').value;
+      renderMembers();
+    });
+    $('mem-filter').addEventListener('change', function () {
+      memFilter = $('mem-filter').value;
+      renderMembers();
+    });
+    $('btn-add-member').addEventListener('click', function () { openMemberModal(''); });
+    $('btn-bulk').addEventListener('click', openBulkModal);
+    $('btn-sample').addEventListener('click', insertSample);
+    $('btn-sample-clear').addEventListener('click', clearSamples);
+    $('btn-member-csv').addEventListener('click', exportMemberCSV);
+    $('mem-list').addEventListener('click', function (e) {
+      var btn = e.target.closest('button[data-mem-act]');
+      if (!btn) return;
+      var li = btn.closest('.memrow');
+      if (!li) return;
+      var id = li.getAttribute('data-id');
+      if (btn.getAttribute('data-mem-act') === 'edit') openMemberModal(id);
+      else deleteMember(id);
+    });
+    $('mem-empty').addEventListener('click', function (e) {
+      var btn = e.target.closest('button[data-empty-act]');
+      if (!btn) return;
+      if (btn.getAttribute('data-empty-act') === 'add') openMemberModal('');
+      else insertSample();
+    });
+    $('member-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      submitMember();
+    });
+    $('f-enlist').addEventListener('change', updateDateWarn);
+    $('f-discharge').addEventListener('change', updateDateWarn);
+    $('f-enlist').addEventListener('input', updateDateWarn);
+    $('f-discharge').addEventListener('input', updateDateWarn);
+
+    /* 일괄 등록 */
+    $('bulk-text').addEventListener('input', renderBulkPreview);
+    Array.prototype.forEach.call(document.querySelectorAll('#bulk-mode-box input'), function (inp) {
+      inp.addEventListener('change', function () {
+        bulkMode = inp.value;
+        bulkModeTouched = true;
+        syncBulkModeUI();
+        renderBulkPreview();
+      });
+    });
+    $('bulk-confirm').addEventListener('click', commitBulk);
+
+    /* 모임 관리 */
+    $('meeting-add').addEventListener('click', addMeeting);
+    $('meeting-manage-list').addEventListener('click', function (e) {
+      var btn = e.target.closest('button[data-meet-act]');
+      if (!btn) return;
+      var name = btn.getAttribute('data-name');
+      if (btn.getAttribute('data-meet-act') === 'rename') renameMeeting(name);
+      else deleteMeeting(name);
+    });
+
+    /* 통계 */
+    $('stats-month').addEventListener('change', function () {
+      var v = $('stats-month').value;
+      if (v) { statsMonth = v; renderStats(); }
+    });
+    $('stats-all').addEventListener('click', function () {
+      statsMonth = (statsMonth === 'all') ? (todayISO().slice(0, 7)) : 'all';
+      renderStats();
+    });
+    $('stats-sort').addEventListener('change', function () {
+      statsSortMode = $('stats-sort').value;
+      renderStats();
+    });
+    $('btn-stats-csv-sheet').addEventListener('click', exportSheetCSV);
+    $('btn-stats-csv-people').addEventListener('click', exportPeopleCSV);
+    $('sess-body').addEventListener('click', function (e) {
+      var btn = e.target.closest('button[data-sess-act]');
+      if (!btn) return;
+      var date = btn.getAttribute('data-date');
+      var meeting = btn.getAttribute('data-meeting');
+      if (btn.getAttribute('data-sess-act') === 'open') {
+        curDate = date;
+        curMeeting = meeting;
+        searchText = '';
+        groupFilter = '';
+        openMemo = {};
+        switchView('attend');
+      } else {
+        confirmModal('기록 삭제', labelDate(date) + ' · ' + meeting + ' 기록을 지울까요?\n되돌릴 수 없습니다.', '삭제', function () {
+          delete state.records[sessionKey(date, meeting)];
+          save();
+          if (canShareAttendance()) {
+            roomDocRef(ATTENDANCE_COL, cloudDateKey(date, meeting)).delete()
+              .catch(function (err) { cloudDataError('attendance-write', err); });
+          }
+          if (curDate === date && curMeeting === meeting) {
+            /* 출석 화면 데이터도 갱신 */
+          }
+          renderAttend();
+          renderStats();
+          renderBackup();
+          toast('기록을 삭제했습니다.');
+        }, true);
+      }
+    });
+
+    /* 백업 */
+    $('btn-json-export').addEventListener('click', exportJSON);
+    $('btn-json-import').addEventListener('click', function () { $('file-json-import').click(); });
+    $('file-json-import').addEventListener('change', function (e) {
+      var f = e.target.files && e.target.files[0];
+      if (f) importJSONFile(f);
+      e.target.value = '';
+    });
+    $('btn-clear-all').addEventListener('click', clearAllData);
+
+    /* 클라우드 올리기 · 반 전환 · 교사/대표신우 관리 */
+    $('btn-cloud-upload').addEventListener('click', uploadLocalToCloud);
+    $('sel-room').addEventListener('change', function () {
+      var id = $('sel-room').value;
+      if (id && id !== ROOM_KEY) enterRoom(id);
+    });
+    $('btn-room-mismatch').addEventListener('click', function () {
+      var id = $('room-mismatch').getAttribute('data-room');
+      if (id) window.location.href = roomLink(id);
+    });
+    $('room-pick-list').addEventListener('click', function (e) {
+      var btn = e.target.closest('[data-pick-room]');
+      if (!btn) return;
+      window.location.href = roomLink(btn.getAttribute('data-pick-room'));
+    });
+    document.addEventListener('click', function (e) {
+      var t = e.target;
+      if (!t || !t.closest) return;
+      var addBtn = t.closest('[data-lead-add]');
+      if (addBtn) { addLeader(addBtn.closest('[data-lead-card]')); return; }
+      var delBtn = t.closest('[data-lead-act="del"]');
+      if (delBtn) {
+        var row = delBtn.closest('.leadrow');
+        if (row) removeLeader(row.getAttribute('data-email'));
+        return;
+      }
+      var copyBtn = t.closest('[data-link-act="copy"]');
+      if (copyBtn) {
+        var li = copyBtn.closest('.linkrow');
+        var rid = li ? li.getAttribute('data-room') : '';
+        if (!rid) return;
+        copyText(roomLink(rid)).then(function () {
+          toast(roomName(rid) + ' 반 링크를 복사했습니다.');
+        }).catch(function () {
+          toast('복사하지 못했습니다. 아래 주소를 길게 눌러 복사해 주세요.');
+        });
+      }
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key !== 'Enter') return;
+      var t = e.target;
+      if (t && t.closest && t.closest('[data-lead-email]')) {
+        e.preventDefault();
+        addLeader(t.closest('[data-lead-card]'));
+      }
+    });
+
+    /* 모달 공통 */
+    Array.prototype.forEach.call(document.querySelectorAll('[data-close]'), function (btn) {
+      btn.addEventListener('click', function () {
+        var bd = btn.closest('.backdrop');
+        if (bd) closeModal(bd.id);
+      });
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('.backdrop'), function (bd) {
+      bd.addEventListener('mousedown', function (e) {
+        if (e.target === bd) closeModal(bd.id);
+      });
+    });
+    $('confirm-ok').addEventListener('click', function () {
+      var cb = confirmCallback;
+      confirmCallback = null;
+      closeModal('modal-confirm');
+      if (typeof cb === 'function') cb();
+    });
+    $('confirm-cancel').addEventListener('click', function () {
+      confirmCallback = null;
+      closeModal('modal-confirm');
+    });
+    $('prompt-ok').addEventListener('click', function () {
+      var cb = promptCallback;
+      var val = $('prompt-input').value;
+      promptCallback = null;
+      closeModal('modal-prompt');
+      if (typeof cb === 'function') cb(val);
+    });
+    $('prompt-cancel').addEventListener('click', function () {
+      promptCallback = null;
+      closeModal('modal-prompt');
+    });
+    $('prompt-input').addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') { e.preventDefault(); $('prompt-ok').click(); }
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        var open = document.querySelector('.backdrop.open');
+        if (open) closeModal(open.id);
+      }
+    });
+
+    window.addEventListener('beforeunload', function () {
+      save();
+    });
+  }
+
+  /* ===================== 시작 ===================== */
+  function init() {
+    var urlRoom = urlRoomId();
+    roomFromUrl = !!urlRoom;
+    ROOM_KEY = urlRoom || DEFAULT_ROOM;
+    loadState();
+    curDate = todayISO();
+    curMeeting = state.meetings[0] || '주일예배';
+    statsMonth = todayISO().slice(0, 7);
+    bindEvents();
+    bindAuthEvents();
+    renderAll();
+    if (!storageOK) {
+      renderSaveState();
+    } else if (!state.members.length) {
+      $('save-state').textContent = '시작하려면 명단을 등록하세요';
+    }
+    startAuth();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script>
+<script>
+  // PWA: 서비스 워커 등록 (오프라인 실행용). 실패해도 앱 동작에는 영향 없음.
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('./sw.js').catch(function (err) {
+        if (window.console) console.warn('Service worker registration failed:', err);
+      });
+    });
+  }
+</script>
+</body>
+</html>
